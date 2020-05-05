@@ -1,6 +1,7 @@
 import pyrebase
 from flask import *
 import secrets
+import time
 
 ##############################################
 ############# CONFIG #########################
@@ -19,10 +20,15 @@ config = {
     "appId": "1:858997576334:web:973fcb03973218aba62fdf",
     "measurementId": "G-GJPBZD2GD4"  
 }
+
 # Firebase init
 firebase = pyrebase.initialize_app(config)
+
 # Firebase authentication
 auth = firebase.auth()
+
+# Firebase Database
+db = firebase.database()
 
 ##############################################
 ############# ROUTES #########################
@@ -70,15 +76,24 @@ def register() :
     
     if request.method == 'POST' :
         
-        username = request.form['username']
-        email = request.form['email']
-        function = request.form['function']
-        password = request.form['pass']
+        username     = request.form['username']
+        email        = request.form['email']
+        function     = request.form['function']
+        password     = request.form['pass']
         confirm_pass = request.form['pass_confirmation']
         
+        creation_date = time.time()
+        
         if password == confirm_pass :
+                        
             new_user = auth.create_user_with_email_and_password(email, password)
+            # We send a confirmation email to the new memeber
             auth.send_email_verification(new_user['idToken'])
+            
+            # user db creation
+            userDB = {'username': username, 'email' : email, 'function' : function, 'registration_date' : creation_date}
+            db.child('users').push(userDB)
+            
             return redirect(url_for('login'))
         
         else :
@@ -92,6 +107,12 @@ def plateform() :
     
     # Manage the user connection
     if 'user' in session :
+        
+        user = session['user']
+        # idToken expires after 1 hour, so we refresh the token to avoid stale token.
+        user = auth.refresh(user['refreshToken'])
+        session['user'] = user
+
         return render_template('plateform.html')
     
     return redirect(url_for('login'))

@@ -1,37 +1,47 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Login Page - Machine Learning Plateform</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<!-- Optional theme -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-	<!-- Latest compiled and minified JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-</head>
-<body>
-	<div class="log-container">
-		{% if valid %}
-			<div class="alert alert-success">
-				<h2>{{valid}}</h2>
-			</div>
-		{% endif %}
-		{% if invalid %}
-			<div class="alert alert-danger">
-				<h2>{{invalid}}</h2>
-			</div>
-		{% endif %}
 
-      <form action="#" method="post">
-        <h2>Please sign in</h2>
-        <label for="inputEmail">Email address</label>
-        <input type="email" id="inputEmail" name="email"  placeholder="Email address" required autofocus>
-        <label for="inputPassword">Password</label>
-        <input type="password" id="inputPassword" name="pass"  placeholder="Password" required>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      </form>
+<head>
+	<title>Login Page - Machine Learning Plateform</title>
+
+	<link rel ="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css')}}">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+  <h1 id='page-title'>Login Page</h1>
+
+	<div class="card" class="shadow p-3 mb-5 bg-white rounded">
+		<div class="card-header" >
+    		Please fill the informations below
+  		</div>
+		<div class="card-body">
+			{% if valid %}
+				<div class="alert alert-success">
+					<h2>{{valid}}</h2>
+				</div>
+			{% endif %}
+			{% if invalid %}
+				<div class="alert alert-danger" role = 'alert'>
+					<h2>{{invalid}}</h2>
+				</div>
+			{% endif %}
+
+			<form class="d-flex flex-column bd-highlight mb-3" action="#" method="post">
+				<h2></h2>
+				<label for="inputEmail" class="text-info">Email address</label>
+				<input type="email" id="inputEmail" name="email"  placeholder="Email address" required autofocus>
+				<label for="inputPassword" class="text-info">Password</label>
+				<input type="password" id="inputPassword" name="pass"  placeholder="Password" required>
+				<button id='btn' class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+			</form>
+		</div>
+
     </div>
 
-	<div><a href="{{url_for('change_password')}}">Forgot Your Password ?</a></div>
+	<div class="container-fluid"><a class="text-info" href="{{url_for('change_password')}}">Forgot Your Password ?</a></div>
 
 <footer>Copyright Meidi KADRI 2020</footer> 
 

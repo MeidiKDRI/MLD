@@ -1,0 +1,37 @@
+body {
+    padding : 30px;
+    min-height: 75rem;
+    padding-top: 4.5rem;
+}
+
+#page-title{
+    width: 60%;
+    margin: auto;
+    text-align: center;
+    text-decoration-style: solid;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 15px;
+}
+
+.anchors{
+    padding-top: 60px;
+}
+
+#anchor-title{
+    width: 60%;
+    margin: auto;
+    text-align: center;
+    text-decoration-style: solid;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 15px;
+}
+
+#navbar-btn{
+    margin-left: 20px;
+}
+
+#btn{
+    margin-top: 20px;
+}
