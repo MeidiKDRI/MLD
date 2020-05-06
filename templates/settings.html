@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Plateform - Machine Learning Plateform</title>
+	<link rel ="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css')}}">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+	<a class="navbar-brand" href="#">Machine Learning Plateform</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse" id="navbarCollapse">
+		<ul class="navbar-nav mr-auto">
+		<li class="nav-item">
+			<a class="nav-link" href="{{url_for('exploration')}}">Data Exploration</a>
+		</li>        
+		<li class="nav-item">
+			<a class="nav-link" href="{{url_for('visualization')}}">Data Visualization</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="{{url_for('model')}}">Model Training</a>
+		</li>
+        <li class="nav-item">
+			<a class="nav-link" href="{{url_for('prediction')}}">Prediction & Export</a>
+		</li>
+		<li class="nav-item active">
+			<a class="nav-link" href="#">Settings<span class="sr-only">(current)</span></a>
+		</li>        
+		</ul>
+
+        <a href="{{url_for('logout')}}" class="btn btn-danger">Disconnect</a>
+
+	</div>
+	</nav>
+
+</head>
+
+<body>
+
+    <h1 id='page-title'>Settings</h1>
+
+    <div class="card">
+    <div class="card-header">
+        Profile
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <h4>Username : </h4>
+             {% if username %}
+                {{username}}
+             {% endif %}
+        </li>
+        <li class="list-group-item">
+            <h4>Email : </h4>
+             {% if email %}
+                {{email}}
+             {% endif %}
+        </li>
+        <li class="list-group-item">
+            <h4>Function : </h4>
+             {% if function %}
+                {{function}}
+             {% endif %}
+        </li>
+        <div class="card-body">
+            <div class="d-flex justify-content-around" >
+                <a href="change_pass" class="btn btn-primary">Change Password</a>
+                <a href="{{url_for('update_infos')}}" class="btn btn-info">Update Informations</a>
+                    {% if info_updated %}
+                        <div class="alert alert-success">
+                            <h2>{{info_updated}}</h2>
+                        </div>
+                    {% endif %}
+                <a href="{{url_for('delete_account')}}" class="btn btn-danger">Delete account</a>
+            </div>
+
+
+
+        </div>
+    </ul>
+    </div>
+
+    <div class="card">
+    <div class="card-header">
+        Package
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Free Membership</h5>
+                <p class="card-text">The pack for little explorer !</p>
+                    <li>Only 2 datasets</li>
+                    <li>Backup : Only 2 models</li>
+                    <div class="d-flex justify-content-around"><a href="" class="btn btn-warning btn-lg disabled">I just want to try !</a></div>
+            </div>
+            </div>
+        </div>
+            <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body" >
+                <h5 class="card-title">Premium Pack</h5>
+                <p class="card-text">The best choice for futur AI professionnals !</p>
+                    <li>Unlimited datasets</li>
+                    <li>Unlimited Backup</li>
+                    <div class="d-flex justify-content-around"><a href="" class="btn btn-success btn-lg disabled">I want to perform !</a></div>
+            </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<footer>Copyright Meidi KADRI 2020</footer> 
+
+</html>

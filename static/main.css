@@ -4,6 +4,15 @@ body {
     padding-top: 4.5rem;
 }
 
+footer {
+    position: fixed;
+    height: 35px;
+    bottom: 0;
+    width: 100%;
+    background-color: lightgray;
+    text-align: center;
+}
+
 #page-title{
     width: 60%;
     margin: auto;
@@ -35,3 +44,4 @@ body {
 #btn{
     margin-top: 20px;
 }
+

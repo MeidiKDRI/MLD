@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Updates Info - Machine Learning Plateform</title>
+	<link rel ="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css')}}">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+
+<body>
+
+  <h1 id='page-title'>Updates Info</h1>
+
+  <div class="reg-container">
+
+
+    </form>
+  </div>
+
+
+	<div class="card" class="shadow p-3 mb-5 bg-white rounded">
+		<div class="card-header" >
+    		Please fill the form bellow.
+  		</div>
+		<div class="card-body">
+		{% if warning %}
+			<div class="alert alert-danger">
+				<h2>{{warning}}</h2>
+			</div>
+		{% endif %}
+
+    <form class="d-flex flex-column bd-highlight mb-3" action="#" method="post">
+
+      <label class="text-info" for="inputUsername">Username</label>
+      <input type="name" id="inputName" name="username"  placeholder="Username" required autofocus>
+
+      <label class="text-info" for "inputFunction">Function</label>
+      <select name="function" id = "funct-select" class="custom-select">
+        <option value="student">Student</option>
+        <option value="teacher">Teacher</option>
+        <option value="pro">Professionnal</option>
+        <option value="curious">Only Curious</option>
+      </select>
+
+      <label class="text-info" for="inputEmail">Email address</label>
+      <input type="email" id="inputEmail" name="email"  placeholder="Email address" required autofocus>
+
+      <button id='btn' class="btn btn-lg btn-primary btn-block" type="submit">Update Informations</button>
+	</div>
+
+    </div>
+
+</body>
+
+<footer>Copyright Meidi KADRI 2020</footer> 
+
+</html>

@@ -2,6 +2,7 @@ import pyrebase
 from flask import *
 import secrets
 import time
+import json
 
 ##############################################
 ############# CONFIG #########################
@@ -60,6 +61,13 @@ def login() :
         
     return render_template('login.html')
 
+# Log Out
+@app.route('/logout')
+def logout():
+    
+    session.pop('user', None)
+    return redirect(url_for('home'))
+
 # Change Password Page
 @app.route('/change_pass', methods = ['GET', 'POST'])
 def change_password() :
@@ -90,9 +98,13 @@ def register() :
             # We send a confirmation email to the new memeber
             auth.send_email_verification(new_user['idToken'])
             
-            # user db creation
+            # We need to associate the authentication id with userId in the user database
+            userInfo = auth.get_account_info(new_user['idToken'])
+            userId = userInfo['users'][0]['localId']
+            
+            # User db creation
             userDB = {'username': username, 'email' : email, 'function' : function, 'registration_date' : creation_date}
-            db.child('users').push(userDB)
+            db.child('users').child(userId).set(userDB)
             
             return redirect(url_for('login'))
         
@@ -100,6 +112,41 @@ def register() :
             return render_template('register.html', warning = 'Please enter the same password for confirmation.')
     
     return render_template('register.html')
+
+@app.route('/update_infos', methods=['GET', 'POST'])
+def update_infos() :
+    
+    user     = session['user']
+    user     = auth.refresh(user['refreshToken'])
+    userInfo = auth.get_account_info(user['idToken'])
+    userId   = userInfo['users'][0]['localId']
+    
+    if request.method == 'POST' :
+        
+        username     = request.form['username']
+        email        = request.form['email']
+        function     = request.form['function']
+
+        # User db creation
+        userDB = {'username': username, 'email' : email, 'function' : function}
+        db.child('users').child(userId).set(userDB)
+        
+        return render_template('settings.html', info_updated = 'Your informations have been changed.')
+
+    return render_template('update_info.html')
+
+    
+@app.route('/delete_account')
+def delete_account() :
+    
+    user     = session['user']
+    user     = auth.refresh(user['refreshToken'])
+    userInfo = auth.get_account_info(user['idToken'])
+    userId   = userInfo['users'][0]['localId']
+    
+    db.child('users').child(userId).remove()
+    
+    return redirect(url_for('home'))
 
 # Plateform
 @app.route('/plateform')
@@ -116,6 +163,55 @@ def plateform() :
         return render_template('plateform.html')
     
     return redirect(url_for('login'))
+
+# Plateform Anchors Management
+# ----------------------------
+
+# Data Exploration
+@app.route('/exploration')
+def exploration() :
+    return redirect(url_for('plateform') + '#exploration')
+
+# Data Visualisation
+@app.route('/visualization')
+def visualization() :
+    return redirect(url_for('plateform') + '#visualization')
+
+# Model training
+@app.route('/model')
+def model() :
+    return redirect(url_for('plateform') + '#model')
+
+# Prediction
+@app.route('/prediction')
+def prediction() :
+    return redirect(url_for('plateform') + '#prediction')
+
+# ----------------------------
+# Plateform Anchors Management
+
+# Settings
+@app.route('/settings')
+def settings() :
+    
+    try:
+        user     = session['user']
+        user     = auth.refresh(user['refreshToken'])
+        userInfo = auth.get_account_info(user['idToken'])
+        userId   = userInfo['users'][0]['localId']
+        username = db.child("users").child(userId).child('username').get().val()
+        email    = db.child("users").child(userId).child('email').get().val()
+        function = db.child("users").child(userId).child('function').get().val()
+        
+        return render_template('settings.html', 
+                               username = username, 
+                               email = email, 
+                               function = function)
+    
+    except:
+        return render_template('settings.html')
+    
+    return render_template('settings.html')
 
 if __name__ == '__main__' :
     app.run(debug=True)
