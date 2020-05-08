@@ -6,13 +6,13 @@
 	<link rel ="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css')}}">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-	<a class="navbar-brand" href="#">Machine Learning Plateform</a>
+	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark shadow">
+	<a class="navbar-brand mb-0 h1" href="#">Machine Learning Plateform</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
 	<div class="collapse navbar-collapse" id="navbarCollapse">
-		<ul class="navbar-nav mr-auto">
+		<ul class="navbar-nav ml-auto">
 		<li class="nav-item">
 			<a class="nav-link" href="{{url_for('exploration')}}">Data Exploration</a>
 		</li>        
@@ -30,7 +30,7 @@
 		</li>        
 		</ul>
 
-        <a href="{{url_for('logout')}}" class="btn btn-danger">Disconnect</a>
+        <a id= 'navbar-btn' href="{{url_for('logout')}}" class="btn btn-danger">Disconnect</a>
 
 	</div>
 	</nav>
@@ -41,9 +41,9 @@
 
     <h1 id='page-title'>Settings</h1>
 
-    <div class="card">
+    <div class="card shadow w-75 mx-auto" class="d-flex justify-content-around">
     <div class="card-header">
-        Profile
+        <h4 class="my-0 font-weight-normal">Profile</h4>
     </div>
     <ul class="list-group list-group-flush">
         <li class="list-group-item">
@@ -75,41 +75,61 @@
                     {% endif %}
                 <a href="{{url_for('delete_account')}}" class="btn btn-danger">Delete account</a>
             </div>
-
-
-
         </div>
     </ul>
     </div>
 
-    <div class="card">
-    <div class="card-header">
-        Package
-    </div>
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Free Membership</h5>
-                <p class="card-text">The pack for little explorer !</p>
-                    <li>Only 2 datasets</li>
-                    <li>Backup : Only 2 models</li>
-                    <div class="d-flex justify-content-around"><a href="" class="btn btn-warning btn-lg disabled">I just want to try !</a></div>
-            </div>
-            </div>
+    <h2 id='page-title'>Packages</h2>
+
+    <div class="row" id="princing-row">
+    <div class="container" >
+      <div class="card-deck mb-3 text-center mx-auto" class="align-self-center">
+        <div class="card mb-4 shadow">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Free</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">$0 <small class="text-muted">/ mo</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>10 users included</li>
+              <li>2 GB of storage</li>
+              <li>Email support</li>
+              <li>Help center access</li>
+            </ul>
+            <button type="button" class="btn btn-lg btn-block btn-outline-primary">Sign up for free</button>
+          </div>
         </div>
-            <div class="col-sm-6">
-            <div class="card">
-                <div class="card-body" >
-                <h5 class="card-title">Premium Pack</h5>
-                <p class="card-text">The best choice for futur AI professionnals !</p>
-                    <li>Unlimited datasets</li>
-                    <li>Unlimited Backup</li>
-                    <div class="d-flex justify-content-around"><a href="" class="btn btn-success btn-lg disabled">I want to perform !</a></div>
-            </div>
-            </div>
-            </div>
+        <div class="card mb-4 shadow">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Pro</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">$15 <small class="text-muted">/ mo</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>20 users included</li>
+              <li>10 GB of storage</li>
+              <li>Priority email support</li>
+              <li>Help center access</li>
+            </ul>
+            <button type="button" class="btn btn-lg btn-block btn-outline-success">Get started</button>
+          </div>
         </div>
+        <div class="card mb-4 shadow">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Enterprise</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">$29 <small class="text-muted">/ mo</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>30 users included</li>
+              <li>15 GB of storage</li>
+              <li>Phone and email support</li>
+              <li>Help center access</li>
+            </ul>
+            <button type="button" class="btn btn-lg btn-block btn-success">Contact us</button>
+          </div>
+        </div>
+      </div>
     </div>
 
 </body>

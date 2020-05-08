@@ -13,6 +13,10 @@ footer {
     text-align: center;
 }
 
+#princing-row{
+    margin-top: 20px;
+}
+
 #page-title{
     width: 60%;
     margin: auto;
@@ -25,6 +29,11 @@ footer {
 
 .anchors{
     padding-top: 60px;
+    height: 1000px;
+}
+
+#anchors-container{
+    height: 100%;
 }
 
 #anchor-title{
@@ -32,16 +41,19 @@ footer {
     margin: auto;
     text-align: center;
     text-decoration-style: solid;
-    padding-top: 20px;
+    padding-top: 30px;
     padding-bottom: 20px;
     border-radius: 15px;
 }
 
 #navbar-btn{
     margin-left: 20px;
+    margin-right: 20px;
 }
 
 #btn{
     margin-top: 20px;
 }
+
+
 

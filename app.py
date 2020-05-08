@@ -3,6 +3,8 @@ from flask import *
 import secrets
 import time
 import json
+import pandas as pd
+from werkzeug.utils import secure_filename
 
 ##############################################
 ############# CONFIG #########################
@@ -164,13 +166,29 @@ def plateform() :
     
     return redirect(url_for('login'))
 
+# Upload File
+@app.route('/plateform', methods = ['GET', 'POST'])
+def upload_file():
+    
+   if request.method == 'POST':
+      f        = request.files['file']
+      filename = secure_filename(f.filename)
+      df       = pd.read_csv(f)
+      desc     = df.describe()
+      
+      return render_template('plateform.html', df_name = filename,
+                             dataset = [df.to_html(classes = 'data')],
+                             describe = [desc.to_html(classes = 'data')])
+
 # Plateform Anchors Management
 # ----------------------------
 
 # Data Exploration
 @app.route('/exploration')
 def exploration() :
+    
     return redirect(url_for('plateform') + '#exploration')
+
 
 # Data Visualisation
 @app.route('/visualization')
