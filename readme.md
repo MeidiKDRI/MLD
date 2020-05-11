@@ -35,20 +35,24 @@ Data Exploration, Data Visualization, Model Training, Model Prediction, Model ex
 
 ## Done
 - Connection to firebase.
+- Users Database.
 - Login page.
+- Sign-Up page.
+- Update informations page.
+- Change password page.
+- Settings page.
 
 ## In progress :
-- Sign-Up page.
+- Plateform.
+    - Data Exploration part.
+- CSS.
 
 ## To Do :
 - Presentation page.
-- Plateform.
-- Data Exploration part.
 - Data Visualization part.
 - Model Training part.
 - Model prediction part.
-- CSS.
 
 ## Credits :
 Plateform developped by Meidi KADRI - Feb 2020.  
-Projet d'étude final Formation Développeur Data IA Simplon By Microsoft - Mai 2020.
+Final project study for the AI developer certifications By Microsoft - May 2020.
