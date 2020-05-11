@@ -5,6 +5,8 @@ import time
 import json
 import pandas as pd
 from werkzeug.utils import secure_filename
+import io
+
 
 ##############################################
 ############# CONFIG #########################
@@ -171,24 +173,58 @@ def plateform() :
 def upload_file():
     
    if request.method == 'POST':
-      f        = request.files['file']
-      filename = secure_filename(f.filename)
-      df       = pd.read_csv(f)
-      desc     = df.describe()
-      
-      return render_template('plateform.html', df_name = filename,
-                             dataset = [df.to_html(classes = 'data')],
-                             describe = [desc.to_html(classes = 'data')])
 
+        f        = request.files['file']
+        filename = secure_filename(f.filename)
+        df       = pd.read_csv(f)
+
+        # Summary
+        desc     = df.describe()
+
+        # Dataframe shape
+        nb_rows  = df.shape[0]
+        nb_col   = df.shape[1]
+
+        # Dictionnary of columns for form select
+        cols = df.columns
+        df_col_dic = [{'name':col} for col in cols]
+
+        # Dataframe informations
+        # To display df.infos() in html template, we need to make some manipulations first.
+        buffer = pd.compat.StringIO()
+        df.info(buf=buffer)
+        infos = buffer.getvalue()
+        df_infos = pd.DataFrame(infos.split('\n'), columns= ['info'])
+
+        # Missing Values Count
+        df_na = df.isna().sum()
+        df_na = pd.DataFrame(df_na, columns= ['Missing Value Count'])
+
+        na_actions = [{'name': 'Drop NA'}, {'name': 'Fill NA'}, {'name': 'Replace NA'}]
+        select = request.args.get('col_selector')
+        print(select)
+        
+        return render_template('plateform.html',
+                                df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
+                                dataset = [df.to_html(classes = 'data')],
+                                describe = [desc.to_html(classes = 'data')],
+                                df_infos = [df_infos.to_html(classes = 'data')],
+                                df_na = [df_na.to_html(classes= 'data')],
+                                col_selec = df_col_dic,
+                                na_actions = na_actions)
+
+
+@app.route("/test" , methods=['GET', 'POST'])
+def test():
+    select = request.form.get('col_select')
+    return(str(select)) # just to see what select is
 # Plateform Anchors Management
 # ----------------------------
 
 # Data Exploration
 @app.route('/exploration')
 def exploration() :
-    
     return redirect(url_for('plateform') + '#exploration')
-
 
 # Data Visualisation
 @app.route('/visualization')
@@ -211,7 +247,7 @@ def prediction() :
 # Settings
 @app.route('/settings')
 def settings() :
-    
+
     try:
         user     = session['user']
         user     = auth.refresh(user['refreshToken'])
@@ -220,15 +256,15 @@ def settings() :
         username = db.child("users").child(userId).child('username').get().val()
         email    = db.child("users").child(userId).child('email').get().val()
         function = db.child("users").child(userId).child('function').get().val()
-        
+
         return render_template('settings.html', 
                                username = username, 
                                email = email, 
                                function = function)
-    
+
     except:
         return render_template('settings.html')
-    
+
     return render_template('settings.html')
 
 if __name__ == '__main__' :

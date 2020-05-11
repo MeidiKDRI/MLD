@@ -9,8 +9,9 @@ footer {
     height: 35px;
     bottom: 0;
     width: 100%;
-    background-color: lightgray;
+    background-color: black;
     text-align: center;
+    color: lightgray;
 }
 
 #princing-row{
@@ -34,6 +35,8 @@ footer {
 
 #anchors-container{
     height: 100%;
+    padding-bottom: 20px;
+
 }
 
 #anchor-title{
@@ -54,6 +57,7 @@ footer {
 #btn{
     margin-top: 20px;
 }
+
 
 
 

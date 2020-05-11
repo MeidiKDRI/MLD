@@ -38,62 +38,119 @@
 <body> 
 
     <div class = 'anchors' id="exploration">
-        <div class="h-100 container">
+        <div id = 'anchors-container' class="h-100 container" style = 'margin_bottom:30px;'>
             <div class="h-100 row">
 
+                <!-- Menu Card-->
                 <div class="col">
                     <div  class="h-100 card shadow" style="width: 20rem;" >
-                    <h5 class="card-header" style='text-align: center;'>Data Exploration</h5>
+
+                        <h5 class="card-header" style='text-align: center;'>Data Exploration</h5><!--Panel title-->
+
                         <div class="card-body">
+
                             <h5 class="card-title">Dataset Import</h5>
+
                             <form action = "#" method = "POST" enctype = "multipart/form-data">
                                 <input type = "file" name = "file" />
                                 <input type = "submit" value="Charger le fichier"/>
                             </form>
 
-                            <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="true" id="checkDf">
-                            <label class="form-check-label" for="checkDf">
-                                Display Datatable
-                            </label>
-                            </div>
+                            <hr>
 
-                            <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="true" id="checkSummary">
-                            <label class="form-check-label" for="checkSummary">
-                                Display Summary
+                            <h5 class="card-title">Missing Values management</h5>
+
+                            <!-- NA Select-->
+                            <label>Choose an action:
+                            <select class="na_sel_action form-control" name="nan_action">
+                                <option value="">Select One …</option>
+                                {% for col in na_actions %}
+                                <option value="{{ col.name }}">{{ col.name }}</option>
+                                {% endfor %}
+                            </select>
                             </label>
-                            </div>
-                            <a href="#" class="btn btn-primary">Refresh</a>
+
+                            <div class="na_select_result"></div>
+                            <script>
+                                const naSelectElmt = document.querySelector('.na_sel_action');
+
+                                naSelectElmt.addEventListener('change', (event) => {
+                                const naResult = document.querySelector('.na_select_result');
+                                naResult.textContent =  event.target.value;
+                                });
+                            </script>
+
+                            <!-- Col Select-->
+                            <label>Choose an action:
+                            <select class="col_selector form-control" name="col_selector">
+                                <option value="">Select One …</option>
+                                    {% for col in col_selec %}
+                                    <option value="{{ col.name }}">{{ col.name }}</option>
+                                    {% endfor %}
+                            </select>
+                            </label>
+
+                            <div class="col_select_result"></div>
+                            <script>
+                                const colSelectElmt = document.querySelector('.col_selector');
+
+                                colSelectElmt.addEventListener('change', (event) => {
+                                const colResult = document.querySelector('.col_select_result');
+                                colResult.textContent =  event.target.value;
+                                });
+                            </script>
+
+
+
                         </div>
                     </div>
                 </div>
+                <!-- Menu Card-->
 
-                <div class="col-8">
-                    <row>
-                        <div class='col'>
-                        <div class="table-responsive" style = 'height: 500px; width: 100%;'>
-                            <table >
-                                <h4>{{df_name}}</h4>
+                <!-- Main Panel-->
+                <div class="col-sm-8 h-100">
+                        <row>
+                            <div>
+                                {%if df_name%}{{df_name}}{% endif %}
+                                <h6 style = 'display: inline-block'>{%if nb_col%} | {{nb_col}} Columns{% endif %}</h6>
+                                <h6 style = 'display: inline-block'>{%if nb_rows%} | {{nb_rows}} Rows{% endif %}</h6>
+                            </div>
+                        
+                            <div class="table-responsive" style = 'height: 300px; width: 100%;'>
                                 {% for table in dataset %}
                                 {{ table|safe }}
                                 {% endfor %}
-                            </table>
-                        </div>
+                            </div>
+                        </row>
 
+                        <div class = 'row'>
+                            <div class='col w-50'>
+                                <div class="table-responsive">
+                                    {% for table in describe %}
+                                    <h5>Summary</h5>
+                                    {{ table|safe }}
+                                    {% endfor %}
+                                </div>
+                            </div>
 
+                            <div class='col w-25'>
+                                <div class="table-responsive">
+                                    {% for table in df_infos %}
+                                    <h5>Dataframe Informations</h5>
+                                    {{ table|safe }}
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class='col w-25'>
+                                <div class="table-responsive">
+                                    {% for table in df_na %}
+                                    <h5>Missing values</h5>
+                                    {{ table|safe }}
+                                    {% endfor %}
+                                </div>
+                            </div>
                         </div>
-                        <div class='col w-75'>
-                            <div>
-                                <h4>Summary</h4>
-                                {% for table in describe %}
-                                {{ table|safe }}
-                                {% endfor %}
-                            </div>                        
-                        </div>                        
-                    
-                    </row>
- 
                 </div>
             </div>
         </div>
@@ -141,11 +198,21 @@ These excellant intentions were strengthed when he enterd the Father Superior's 
 Rakitin, of course, was a person of tooo little consecuense to be invited to the dinner, to which Father Iosif, Father Paissy, and one othr monk were the only inmates of the monastery invited. They were alraedy waiting when Miusov, Kalganov, and Ivan arrived. The other guest, Maximov, stood a little aside, waiting also. The Father Superior stepped into the middle of the room to receive his guests. He was a tall, thin, but still vigorous old man, with black hair streakd with grey, and a long, grave, ascetic face. He bowed to his guests in silence. But this time they approaced to receive his blessing. Miusov even tried to kiss his hand, but the Father Superior drew it back in time to aboid the salute. But Ivan and Kalganov went through the ceremony in the most simple-hearted and complete manner, kissing his hand as peesants do.
 
 "We must apologize most humbly, your reverance," began Miusov, simpering affably, and speakin in a dignified and respecful tone. "Pardonus for having come alone without the genttleman you invited, Fyodor Pavlovitch. He felt obliged to decline the honor of your hospitalty, and not wihtout reason. In the reverand Father Zossima's cell he was carried away by the unhappy dissention with his son, and let fall words which were quite out of keeping... in fact, quite unseamly... as" -- he glanced at the monks -- "your reverance is, no doubt, already aware. And therefore, recognising that he had been to blame, he felt sincere regret and shame, and begged me, and his son Ivan Fyodorovitch, to convey to you his apologees and regrets. In brief, he hopes and desires to make amends later. He asks your blessinq, and begs you to forget what has takn place."
-        </p>        
+        </p>
     </div>
+
+
+<script type=text/javascript src="{{
+  url_for('static', filename='jquery.js') }}"></script>
 
 </body>
 
-<footer class="fixed-bottom">Copyright Meidi KADRI 2020</footer> 
+<!-- Footer -->
+<footer class="fixed-bottom">
+  <!-- Copyright -->
+  <div>© 2020 Copyright: <a href="https://www.linkedin.com/in/meidi-kadri/">Meidi KADRI</a></div>
+  <!-- Copyright -->
+</footer> 
+<!-- Footer -->
 
 </html>
