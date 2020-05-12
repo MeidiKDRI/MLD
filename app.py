@@ -39,118 +39,163 @@ db = firebase.database()
 ############# ROUTES #########################
 ##############################################
 
+#####################
 # Index for Home Page
+#####################
+
 @app.route('/')
 def home() :
     return render_template('index.html')
 
+############
 # Login page
+############
+
 @app.route('/login', methods=['GET', 'POST'])
 def login() :
-    
-    not_logged = 'Please check your account informations.'
-    logged = 'Welcome Back !'
-    
+
     if request.method == 'POST' :
+
         email    = request.form['email']
         password = request.form['pass']
         
         try:
             user = auth.sign_in_with_email_and_password(email, password)
-            session['user'] = user
+            session['user'] = user # We store user for next calls.
+
+            # We fetch the user infos
+            userInfo = auth.get_account_info(user['idToken'])
+            userId   = userInfo['users'][0]['localId']
+            username = db.child("users").child(userId).child('username').get().val()
+            username = username.capitalize()
+            
+            flash(f'Welcome back {username}', 'success')
             return redirect(url_for('dataset'))
         
         except:
-            return render_template('login.html', invalid = not_logged)
-        
+
+            flash('Please check your account informations.', 'danger')
+            return render_template('login.html')
+
     return render_template('login.html')
 
+
+#########
 # Log Out
+#########
+
 @app.route('/logout')
 def logout():
-    
+
+    # We refresh session['user']
     session.pop('user', None)
+
+    flash('You have been disconnected. We hope to see you back soon.', 'warning')
     return redirect(url_for('home'))
 
+
+######################
 # Change Password Page
+######################
+
 @app.route('/change_pass', methods = ['GET', 'POST'])
 def change_password() :
-    
+
     if request.method == 'POST' :
+
         email = request.form['email']
         auth.send_password_reset_email(email)
-        
+
+        flash('You will receive an email. Please check your box and spam box.', 'warning')
     return render_template('change_pass.html')
- 
+
+
+##############
 # Sign Up Page
+##############
+
 @app.route('/register', methods=['GET', 'POST'])
 def register() :
-    
+
     if request.method == 'POST' :
-        
+
         username     = request.form['username']
         email        = request.form['email']
         function     = request.form['function']
         password     = request.form['pass']
         confirm_pass = request.form['pass_confirmation']
-        
+
         creation_date = time.time()
-        
+
         if password == confirm_pass :
-                        
+
             new_user = auth.create_user_with_email_and_password(email, password)
             # We send a confirmation email to the new memeber
             auth.send_email_verification(new_user['idToken'])
-            
+
             # We need to associate the authentication id with userId in the user database
             userInfo = auth.get_account_info(new_user['idToken'])
             userId = userInfo['users'][0]['localId']
-            
+
             # User db creation
             userDB = {'username': username, 'email' : email, 'function' : function, 'registration_date' : creation_date}
             db.child('users').child(userId).set(userDB)
-            
+
+            flash('Your account has been created', 'success')
             return redirect(url_for('login'))
-        
+
         else :
-            return render_template('register.html', warning = 'Please enter the same password for confirmation.')
-    
+            flash('Please enter the same password for confirmation.', 'warning')
+            return render_template('register.html')
+
     return render_template('register.html')
+
+
+##########################
+# Update informations page
+##########################
 
 @app.route('/update_infos', methods=['GET', 'POST'])
 def update_infos() :
-    
+
     user     = session['user']
     user     = auth.refresh(user['refreshToken'])
     userInfo = auth.get_account_info(user['idToken'])
     userId   = userInfo['users'][0]['localId']
-    
+
     if request.method == 'POST' :
-        
+
         username     = request.form['username']
         email        = request.form['email']
         function     = request.form['function']
 
-        # User db creation
+        # User db modification
         userDB = {'username': username, 'email' : email, 'function' : function}
         db.child('users').child(userId).set(userDB)
-        
-        return render_template('settings.html', info_updated = 'Your informations have been changed.')
+
+        flash('Your informations have been changed.', 'success')
+        return render_template('settings.html')
 
     return render_template('update_info.html')
 
-    
+
+####################
+# Delete Account Page
+####################
+
 @app.route('/delete_account')
 def delete_account() :
-    
+
     user     = session['user']
     user     = auth.refresh(user['refreshToken'])
     userInfo = auth.get_account_info(user['idToken'])
     userId   = userInfo['users'][0]['localId']
-    
+
     db.child('users').child(userId).remove()
-    
+
+    flash('Your account has been deleted', 'danger')
     return redirect(url_for('home'))
+
 
 # Plateform
 @app.route('/plateform')
@@ -169,21 +214,20 @@ def plateform() :
     return redirect(url_for('login'))
 
 
+#####################
 # Dataset upload page
+#####################
+
 @app.route('/dataset', methods = ['GET', 'POST'])
 def dataset() :
     global df
-    if request.method == 'POST':
     
-        f        = request.files['file']
-        filename = secure_filename(f.filename)
-        session['filename'] = filename
-        
-        df = pd.read_csv(f)
-
+    try:
+        filename = session['filename']
+        print(filename)
         # Summary
         desc     = df.describe()
-
+        
         # Dataframe shape
         nb_rows  = df.shape[0]
         nb_col   = df.shape[1]
@@ -198,19 +242,56 @@ def dataset() :
         # Missing Values Count
         df_na = df.isna().sum()
         df_na = pd.DataFrame(df_na, columns= ['Missing Value Count'])
-
-        na_actions = [{'name': 'Drop NA'}, {'name': 'Fill NA'}, {'name': 'Replace NA'}]
-        #select = request.args.get('nan_action')
-        #print('test',  select)
-
+        
         return render_template('dataset.html',
-                                df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
-                                dataset = [df.to_html(classes = 'data')],
-                                describe = [desc.to_html(classes = 'data')],
-                                df_infos = [df_infos.to_html(classes = 'data')],
-                                df_na = [df_na.to_html(classes= 'data')])
+                               df_name = filename,
+                               nb_col = nb_col, nb_rows = nb_rows,
+                               dataset = [df.to_html(classes = 'data')],
+                               describe = [desc.to_html(classes = 'data')],
+                               df_infos = [df_infos.to_html(classes = 'data')],
+                               df_na = [df_na.to_html(classes= 'data')])
+        
+    except:
+        
+        if request.method == 'POST':
+
+            f        = request.files['file']
+            filename = secure_filename(f.filename)
+            session['filename'] = filename
+            
+            df = pd.read_csv(f)
+
+            # Summary
+            desc     = df.describe()
+
+            # Dataframe shape
+            nb_rows  = df.shape[0]
+            nb_col   = df.shape[1]
+
+            # Dataframe informations
+            # To display df.infos() in html template, we need to make some manipulations first.
+            buffer = pd.compat.StringIO()
+            df.info(buf=buffer)
+            infos = buffer.getvalue()
+            df_infos = pd.DataFrame(infos.split('\n'), columns= ['info'])
+
+            # Missing Values Count
+            df_na = df.isna().sum()
+            df_na = pd.DataFrame(df_na, columns= ['Missing Value Count'])
+
+            na_actions = [{'name': 'Drop NA'}, {'name': 'Fill NA'}, {'name': 'Replace NA'}]
+            #select = request.args.get('nan_action')
+            #print('test',  select)
+
+            return render_template('dataset.html',
+                                    df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
+                                    dataset = [df.to_html(classes = 'data')],
+                                    describe = [desc.to_html(classes = 'data')],
+                                    df_infos = [df_infos.to_html(classes = 'data')],
+                                    df_na = [df_na.to_html(classes= 'data')])
         
     return render_template('dataset.html')
+
 
 # Upload File
 @app.route('/plateform')
@@ -219,10 +300,10 @@ def upload_file():
     return render_template('plateform.html',dataset = [df.to_html(classes = 'data')])
 
 
-# Plateform Anchors Management
-# ----------------------------
-
+##################
 # Data Exploration
+##################
+
 @app.route('/exploration')
 def exploration() :
     
@@ -239,29 +320,75 @@ def exploration() :
 
     return render_template('dataxplo.html')
 
+
+####################
 # Data Visualisation
+####################
+
 @app.route('/visualization')
 def visualization() :
-    return render_template('dataviz.html', dataset = [df.to_html(classes = 'data')])
+    
+    try:
+        # Dictionnary of columns for form select
+        cols = df.columns
+        df_col_dic = [{'name':col} for col in cols]
+        
+        return render_template('dataviz.html', dataset = [df.to_html(classes = 'data')])
+    except:
+        
+        flash('There is no dataframe uploaded. PLease visit DATASET page first', 'warning')
+        return render_template('dataviz.html')
 
+    return render_template('dataviz.html')
+
+
+################
 # Model training
+################
+
 @app.route('/model')
 def model() :
-    return render_template('model.html', dataset = [df.to_html(classes = 'data')])
+    try:
+        # Dictionnary of columns for form select
+        cols = df.columns
+        df_col_dic = [{'name':col} for col in cols]
+        
+        return render_template('model.html', dataset = [df.to_html(classes = 'data')])
+    except:
+        
+        flash('There is no dataframe uploaded. PLease visit DATASET page first', 'warning')
+        return render_template('model.html')
 
+    return render_template('model.html')
+
+
+############
 # Prediction
+############
+
 @app.route('/prediction')
 def prediction() :
-    return render_template('prediction.html', dataset = [df.to_html(classes = 'data')])
+    try:
+        # Dictionnary of columns for form select
+        cols = df.columns
+        df_col_dic = [{'name':col} for col in cols]
+        
+        return render_template('prediction.html', dataset = [df.to_html(classes = 'data')])
+    except:
+        
+        flash('There is no dataframe uploaded. PLease visit DATASET page first', 'warning')
+        return render_template('prediction.html')
 
-# ----------------------------
-# Plateform Anchors Management
+    return render_template('prediction.html')
 
+
+##########
 # Settings
+##########
+
 @app.route('/settings')
 def settings() :
 
-    print(df)
     try:
         user     = session['user']
         user     = auth.refresh(user['refreshToken'])
@@ -280,6 +407,7 @@ def settings() :
         return render_template('settings.html')
 
     return render_template('settings.html')
+
 
 if __name__ == '__main__' :
     app.run(debug=True)

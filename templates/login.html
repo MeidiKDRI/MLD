@@ -11,6 +11,21 @@
 
 <body>
 
+    <!-- Flash message-->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    <strong>{{ message }}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="this.parentElement.style.display='none';">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <!-- Flash message-->
+
   <h1 id='page-title'>Login Page</h1>
 
 	<div class="card" class="shadow p-3 mb-5 bg-white rounded">
@@ -18,16 +33,6 @@
     		Please fill the informations below
   		</div>
 		<div class="card-body">
-			{% if valid %}
-				<div class="alert alert-success">
-					<h2>{{valid}}</h2>
-				</div>
-			{% endif %}
-			{% if invalid %}
-				<div class="alert alert-danger" role = 'alert'>
-					<h2>{{invalid}}</h2>
-				</div>
-			{% endif %}
 
 			<form class="d-flex flex-column bd-highlight mb-3" action="#" method="post">
 				<h2></h2>

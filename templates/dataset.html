@@ -38,7 +38,23 @@
 
 </head>
 
-<body> 
+<body>
+
+    <!-- Flash message-->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    <strong>{{ message }}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="this.parentElement.style.display='none';">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <!-- Flash message-->
+
 
   <h1 id='page-title'>Dataset</h1>
     <div id = 'anchors-container' class="h-100 container" style = 'margin_bottom:30px;'>

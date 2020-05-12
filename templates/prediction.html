@@ -38,7 +38,20 @@
 
 </head>
 
-<body> 
+<body>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    <strong>{{ message }}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="this.parentElement.style.display='none';">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
     <!-- Menu Card-->
     <div class="col">
@@ -61,7 +74,7 @@
 
                 <!-- NA Select-->
                 <label>Choose an action:
-                <select class="na_sel_action form-control" name="nan_action" action="{{ url_for('test') }}">
+                <select class="na_sel_action form-control" name="nan_action" action="{{ url_for('dataset') }}">
                     <option value="">Select One …</option>
                     {% for col in na_actions %}
                     <option value="{{ col.name }}">{{ col.name }}</option>

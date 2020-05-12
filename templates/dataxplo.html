@@ -39,6 +39,8 @@
 </head>
 
 <body> 
+
+    <!-- Flash message-->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
@@ -51,6 +53,7 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
+    <!-- Flash message-->
 
     <!-- Menu Card-->
     <div class="col">
