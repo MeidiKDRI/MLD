@@ -58,7 +58,7 @@ def login() :
         try:
             user = auth.sign_in_with_email_and_password(email, password)
             session['user'] = user
-            return redirect(url_for('plateform'))
+            return redirect(url_for('dataset'))
         
         except:
             return render_template('login.html', invalid = not_logged)
@@ -168,15 +168,18 @@ def plateform() :
     
     return redirect(url_for('login'))
 
-# Upload File
-@app.route('/plateform', methods = ['GET', 'POST'])
-def upload_file():
-    
-   if request.method == 'POST':
 
+# Dataset upload page
+@app.route('/dataset', methods = ['GET', 'POST'])
+def dataset() :
+    global df
+    if request.method == 'POST':
+    
         f        = request.files['file']
         filename = secure_filename(f.filename)
-        df       = pd.read_csv(f)
+        session['filename'] = filename
+        
+        df = pd.read_csv(f)
 
         # Summary
         desc     = df.describe()
@@ -184,10 +187,6 @@ def upload_file():
         # Dataframe shape
         nb_rows  = df.shape[0]
         nb_col   = df.shape[1]
-
-        # Dictionnary of columns for form select
-        cols = df.columns
-        df_col_dic = [{'name':col} for col in cols]
 
         # Dataframe informations
         # To display df.infos() in html template, we need to make some manipulations first.
@@ -201,45 +200,59 @@ def upload_file():
         df_na = pd.DataFrame(df_na, columns= ['Missing Value Count'])
 
         na_actions = [{'name': 'Drop NA'}, {'name': 'Fill NA'}, {'name': 'Replace NA'}]
-        select = request.args.get('col_selector')
-        print(select)
-        
-        return render_template('plateform.html',
+        #select = request.args.get('nan_action')
+        #print('test',  select)
+
+        return render_template('dataset.html',
                                 df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
                                 dataset = [df.to_html(classes = 'data')],
                                 describe = [desc.to_html(classes = 'data')],
                                 df_infos = [df_infos.to_html(classes = 'data')],
-                                df_na = [df_na.to_html(classes= 'data')],
-                                col_selec = df_col_dic,
-                                na_actions = na_actions)
+                                df_na = [df_na.to_html(classes= 'data')])
+        
+    return render_template('dataset.html')
+
+# Upload File
+@app.route('/plateform')
+def upload_file():
+
+    return render_template('plateform.html',dataset = [df.to_html(classes = 'data')])
 
 
-@app.route("/test" , methods=['GET', 'POST'])
-def test():
-    select = request.form.get('col_select')
-    return(str(select)) # just to see what select is
 # Plateform Anchors Management
 # ----------------------------
 
 # Data Exploration
 @app.route('/exploration')
 def exploration() :
-    return redirect(url_for('plateform') + '#exploration')
+    
+    try:
+        # Dictionnary of columns for form select
+        cols = df.columns
+        df_col_dic = [{'name':col} for col in cols]
+        
+        return render_template('dataxplo.html', dataset = [df.to_html(classes = 'data')])
+    except:
+        
+        flash('There is no dataframe uploaded. PLease visit DATASET page first', 'warning')
+        return render_template('dataxplo.html')
+
+    return render_template('dataxplo.html')
 
 # Data Visualisation
 @app.route('/visualization')
 def visualization() :
-    return redirect(url_for('plateform') + '#visualization')
+    return render_template('dataviz.html', dataset = [df.to_html(classes = 'data')])
 
 # Model training
 @app.route('/model')
 def model() :
-    return redirect(url_for('plateform') + '#model')
+    return render_template('model.html', dataset = [df.to_html(classes = 'data')])
 
 # Prediction
 @app.route('/prediction')
 def prediction() :
-    return redirect(url_for('plateform') + '#prediction')
+    return render_template('prediction.html', dataset = [df.to_html(classes = 'data')])
 
 # ----------------------------
 # Plateform Anchors Management
@@ -248,6 +261,7 @@ def prediction() :
 @app.route('/settings')
 def settings() :
 
+    print(df)
     try:
         user     = session['user']
         user     = auth.refresh(user['refreshToken'])

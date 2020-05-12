@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Data Exploration - Machine Learning Plateform</title>
+	<link rel ="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css')}}">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark shadow">
+        <a class="navbar-brand mb-0 h1" href="#">Machine Learning Plateform</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{{url_for('dataset')}}">Dataset Upload<span class="sr-only"></span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{url_for('exploration')}}">Data Exploration<span class="sr-only"></span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{url_for('visualization')}}">Data Visualization<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{url_for('model')}}">Model Training<span class="sr-only"></span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{url_for('prediction')}}">Prediction & Export<span class="sr-only"></span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{url_for('settings')}}">Settings<span class="sr-only"></span></a>
+            </li>
+            </ul>
+            <a id= 'navbar-btn' href="{{url_for('logout')}}" class="btn btn-danger">Disconnect</a>
+        </div>
+	</nav>
+
+</head>
+
+<body> 
+
+    <!-- Menu Card-->
+    <div class="col">
+        <div  class="h-100 card shadow" style="width: 20rem;" >
+
+            <h5 class="card-header" style='text-align: center;'>Data Exploration</h5><!--Panel title-->
+
+            <div class="card-body">
+
+                <h5 class="card-title">Dataset Import</h5>
+
+                <form action = "#" method = "POST" enctype = "multipart/form-data">
+                    <input type = "file" name = "file" />
+                    <input type = "submit" value="Charger le fichier"/>
+                </form>
+
+                <hr>
+
+                <h5 class="card-title">Missing Values management</h5>
+
+                <!-- NA Select-->
+                <label>Choose an action:
+                <select class="na_sel_action form-control" name="nan_action" action="{{ url_for('test') }}">
+                    <option value="">Select One …</option>
+                    {% for col in na_actions %}
+                    <option value="{{ col.name }}">{{ col.name }}</option>
+                    {% endfor %}
+                </select>
+                </label>
+
+                <div class="na_select_result"></div>
+                <script>
+                    const naSelectElmt = document.querySelector('.na_sel_action');
+
+                    naSelectElmt.addEventListener('change', (event) => {
+                    const naResult = document.querySelector('.na_select_result');
+                    naResult.textContent =  event.target.value;
+                    });
+                </script>
+
+                <!-- Col Select-->
+                <label>Choose an action:
+                <select class="col_selector form-control" name="col_selector">
+                    <option value="">Select One …</option>
+                        {% for col in col_selec %}
+                        <option value="{{ col.name }}">{{ col.name }}</option>
+                        {% endfor %}
+                </select>
+                </label>
+
+                <div class="col_select_result"></div>
+                <script>
+                    const colSelectElmt = document.querySelector('.col_selector');
+
+                    colSelectElmt.addEventListener('change', (event) => {
+                    const colResult = document.querySelector('.col_select_result');
+                    colResult.textContent =  event.target.value;
+                    });
+                </script>
+
+
+
+            </div>
+        </div>
+    </div>
+    <!-- Menu Card-->
+
+    <!-- Main Panel-->
+    <div class="col-sm-8 h-100">
+            <row>
+                <div>
+                    {%if df_name%}{{df_name}}{% endif %}
+                    <h6 style = 'display: inline-block'>{%if nb_col%} | {{nb_col}} Columns{% endif %}</h6>
+                    <h6 style = 'display: inline-block'>{%if nb_rows%} | {{nb_rows}} Rows{% endif %}</h6>
+                </div>
+            
+                <div class="table-responsive" style = 'height: 300px; width: 100%;'>
+                    {% for table in dataset %}
+                    {{ table|safe }}
+                    {% endfor %}
+                </div>
+            </row>
+
+            <div class = 'row'>
+                <div class='col w-50'>
+                    <div class="table-responsive">
+                        {% for table in describe %}
+                        <h5>Summary</h5>
+                        {{ table|safe }}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class='col w-25'>
+                    <div class="table-responsive">
+                        {% for table in df_infos %}
+                        <h5>Dataframe Informations</h5>
+                        {{ table|safe }}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class='col w-25'>
+                    <div class="table-responsive">
+                        {% for table in df_na %}
+                        <h5>Missing values</h5>
+                        {{ table|safe }}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+<script type=text/javascript src="{{
+  url_for('static', filename='jquery.js') }}"></script>
+
+</body>
+
+<!-- Footer -->
+<footer class="fixed-bottom">
+  <!-- Copyright -->
+  <div>© 2020 Copyright: <a href="https://www.linkedin.com/in/meidi-kadri/">Meidi KADRI</a></div>
+  <!-- Copyright -->
+</footer> 
+<!-- Footer -->
+
+</html>

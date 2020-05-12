@@ -55,4 +55,4 @@ Data Exploration, Data Visualization, Model Training, Model Prediction, Model ex
 
 ## Credits :
 Plateform developped by Meidi KADRI - Feb 2020.  
-Final project study for the AI developer certifications By Microsoft - May 2020.
+Final project study for the AI Developer Certification By Microsoft - May 2020.
