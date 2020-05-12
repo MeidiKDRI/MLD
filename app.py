@@ -290,43 +290,45 @@ def dataset() :
 
 @app.route('/exploration', methods = ['GET', 'POST'])
 def exploration() :
-    
+
     # Manage the user connection
     if 'user' in session :
-        
+
         user = session['user']
         # idToken expires after 1 hour, so we refresh the token to avoid stale token.
         user = auth.refresh(user['refreshToken'])
         session['user'] = user
 
-        try:
+        global na_action_selected
+        global col_selected
 
-            # Missing Values
+        try :
+
+            # Missing Values for form-select
             na_actions = [{'name': 'Drop NA'}, {'name': 'Fill NA'}, {'name': 'Replace NA'}]
-            na_action_selected = request.form.get('nan_action')
 
-            #select = request.args.get('nan_action')
-            #print('test',  select)
-            
-            # Dictionnary of columns for form select
+            # Dictionnary of columns for form-select
             cols = df.columns
             df_col_dic = [{'name':col} for col in cols]
-            
-            col_selected = request.form.get('col_selector')
+
+
+            na_action_selected = request.form.get('nan_action')
             print(na_action_selected)
+            col_selected = request.form.get('col_selector')
             print(col_selected)
 
             return render_template('dataxplo.html',
-                                   dataset = [df.to_html(classes = 'data')],
-                                   na_actions = na_actions, col_selec = df_col_dic)
+                                dataset = [df.to_html(classes = 'data')],
+                                na_actions = na_actions, col_selec = df_col_dic,
+                                col_selected = na_action_selected)
 
         except:
-            
+
             flash('There is no dataframe uploaded. PLease visit DATASET page first', 'warning')
             return render_template('dataxplo.html')
 
         return render_template('dataxplo.html')
-    
+
     return redirect(url_for('login'))
 
 

@@ -63,36 +63,33 @@
 
             <div class="card-body">
 
-                <h5 class="card-title">Missing Values management</h5>
+                <h5 class="card-title">Missing Values</h5>
 
                 <!-- NA Select-->
-                <form class="form-inline" method="POST" action="{{ url_for('exploration') }}">
+                <form method="POST" >
                 <div class="form-group">
-                    <div class="input-group">
-                        <span class="form-control">Select method</span>
-                            <select name="nan_action" class="selectpicker form-control">
-                            {% for na_meth in na_actions %}
-                            <option value="{{ na_meth.name }}">{{ na_meth.name }}</option>
-                            {% endfor %}
-                            </select>
-                    </div>
-                    <button type="submit" class="btn btn-default">Go</button>
+                    <span class="form-control">Method</span>
+                        <select name="nan_action" class="selectpicker form-control">
+                        {% for na_meth in na_actions %}
+                        <option value="{{ na_meth.name }}">{{ na_meth.name }}</option>
+                        {% endfor %}
+                        </select>
+                    <button type="submit" class="btn btn-default" >Select</button>
                 </div>
                 </form>
                 <!-- NA Select-->
 
                 <!-- Col Select-->
-                <form class="form-inline" method="POST" action="{{ url_for('exploration') }}">
+                <form method="POST" >
                 <div class="form-group">
-                    <div class="input-group">
-                        <span class="form-control">Select Col</span>
-                            <select name="col_selector" class="selectpicker form-control">
-                            {% for col in col_selec %}
-                            <option value="{{ col.name }}">{{ col.name }}</option>
-                            {% endfor %}
-                            </select>
-                    </div>
-                    <button type="submit" class="btn btn-default">V</button>
+                    <span class="form-control">Column</span>
+                        <select name="col_selector" class="selectpicker form-control">
+                        <option value="all">All</option>
+                        {% for col in col_selec %}
+                        <option value="{{ col.name }}">{{ col.name }}</option>
+                        {% endfor %}
+                        </select>
+                    <button type="submit" class="btn btn-default">Select</button>
                 </div>
                 </form>
                 <!-- Col Select-->
@@ -106,9 +103,8 @@
     <div class="col-sm-8 h-100">
             <row>
                 <div>
-                    {%if df_name%}{{df_name}}{% endif %}
-                    <h6 style = 'display: inline-block'>{%if nb_col%} | {{nb_col}} Columns{% endif %}</h6>
-                    <h6 style = 'display: inline-block'>{%if nb_rows%} | {{nb_rows}} Rows{% endif %}</h6>
+                    <h6 style = 'display: inline-block'>{% if na_action_selected %} | {{na_action_selected}} {% endif %}</h6>
+                    <h6 style = 'display: inline-block'>{% if col_selected %} | {{col_selected}} {% endif %}</h6>
                 </div>
             
                 <div class="table-responsive" style = 'height: 300px; width: 100%;'>
@@ -118,41 +114,9 @@
                 </div>
             </row>
 
-            <div class = 'row'>
-                <div class='col w-50'>
-                    <div class="table-responsive">
-                        {% for table in describe %}
-                        <h5>Summary</h5>
-                        {{ table|safe }}
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <div class='col w-25'>
-                    <div class="table-responsive">
-                        {% for table in df_infos %}
-                        <h5>Dataframe Informations</h5>
-                        {{ table|safe }}
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <div class='col w-25'>
-                    <div class="table-responsive">
-                        {% for table in df_na %}
-                        <h5>Missing values</h5>
-                        {{ table|safe }}
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
         </div>
 
     </div>
-
-
-<script type=text/javascript src="{{
-  url_for('static', filename='jquery.js') }}"></script>
 
 </body>
 
