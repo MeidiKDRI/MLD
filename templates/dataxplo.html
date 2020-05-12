@@ -63,58 +63,39 @@
 
             <div class="card-body">
 
-                <h5 class="card-title">Dataset Import</h5>
-
-                <form action = "#" method = "POST" enctype = "multipart/form-data">
-                    <input type = "file" name = "file" />
-                    <input type = "submit" value="Charger le fichier"/>
-                </form>
-
-                <hr>
-
                 <h5 class="card-title">Missing Values management</h5>
 
                 <!-- NA Select-->
-                <label>Choose an action:
-                <select class="na_sel_action form-control" name="nan_action" action="{{ url_for('dataset') }}">
-                    <option value="">Select One …</option>
-                    {% for col in na_actions %}
-                    <option value="{{ col.name }}">{{ col.name }}</option>
-                    {% endfor %}
-                </select>
-                </label>
-
-                <div class="na_select_result"></div>
-                <script>
-                    const naSelectElmt = document.querySelector('.na_sel_action');
-
-                    naSelectElmt.addEventListener('change', (event) => {
-                    const naResult = document.querySelector('.na_select_result');
-                    naResult.textContent =  event.target.value;
-                    });
-                </script>
+                <form class="form-inline" method="POST" action="{{ url_for('exploration') }}">
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="form-control">Select method</span>
+                            <select name="nan_action" class="selectpicker form-control">
+                            {% for na_meth in na_actions %}
+                            <option value="{{ na_meth.name }}">{{ na_meth.name }}</option>
+                            {% endfor %}
+                            </select>
+                    </div>
+                    <button type="submit" class="btn btn-default">Go</button>
+                </div>
+                </form>
+                <!-- NA Select-->
 
                 <!-- Col Select-->
-                <label>Choose an action:
-                <select class="col_selector form-control" name="col_selector">
-                    <option value="">Select One …</option>
-                        {% for col in col_selec %}
-                        <option value="{{ col.name }}">{{ col.name }}</option>
-                        {% endfor %}
-                </select>
-                </label>
-
-                <div class="col_select_result"></div>
-                <script>
-                    const colSelectElmt = document.querySelector('.col_selector');
-
-                    colSelectElmt.addEventListener('change', (event) => {
-                    const colResult = document.querySelector('.col_select_result');
-                    colResult.textContent =  event.target.value;
-                    });
-                </script>
-
-
+                <form class="form-inline" method="POST" action="{{ url_for('exploration') }}">
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="form-control">Select Col</span>
+                            <select name="col_selector" class="selectpicker form-control">
+                            {% for col in col_selec %}
+                            <option value="{{ col.name }}">{{ col.name }}</option>
+                            {% endfor %}
+                            </select>
+                    </div>
+                    <button type="submit" class="btn btn-default">V</button>
+                </div>
+                </form>
+                <!-- Col Select-->
 
             </div>
         </div>
