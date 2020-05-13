@@ -6,6 +6,8 @@ import json
 import pandas as pd
 from werkzeug.utils import secure_filename
 import io
+from flask_wtf import FlaskForm
+from wtforms import SelectField
 
 
 ##############################################
@@ -34,6 +36,11 @@ auth = firebase.auth()
 
 # Firebase Database
 db = firebase.database()
+
+
+class SelectForm(FlaskForm):
+    na_act = SelectField('Missing Values', choices=[
+        ('dropna()','Drop NA'),('fillna()','Fill NA'),('replace()','Replace NA')])
 
 ##############################################
 ############# ROUTES #########################
@@ -284,6 +291,7 @@ def dataset() :
 
 
 
+    
 ##################
 # Data Exploration
 ##################
@@ -298,29 +306,41 @@ def exploration() :
         # idToken expires after 1 hour, so we refresh the token to avoid stale token.
         user = auth.refresh(user['refreshToken'])
         session['user'] = user
-
-        global na_action_selected
-        global col_selected
-
+        
         try :
 
+            df_to_clean = df.copy()
             # Missing Values for form-select
-            na_actions = [{'name': 'Drop NA'}, {'name': 'Fill NA'}, {'name': 'Replace NA'}]
+            na_actions = [{'name': 'Drop NA'}, {'name': 'Fill NA'}]
 
             # Dictionnary of columns for form-select
-            cols = df.columns
+            cols = df_to_clean.columns
             df_col_dic = [{'name':col} for col in cols]
 
+            if request.method == 'POST' :
+                na_action_selected = request.form['nan_action']
+                col_selected = request.form['col_selector']
 
-            na_action_selected = request.form.get('nan_action')
-            print(na_action_selected)
-            col_selected = request.form.get('col_selector')
-            print(col_selected)
+                if na_action_selected.lower() == 'drop na' :
+                    if col_selected.lower() == 'all' :
+                        df_wo_na = df_to_clean.dropna()
+                    else :
+                        df_wo_na = df_to_clean.dropna(subset = [col_selected])
+
+                    return render_template('dataxplo.html',
+                                           dataset = [df_wo_na.to_html(classes = 'data')],
+                                           na_actions = na_actions, col_selec = df_col_dic,
+                                           col_selected = col_selected, na_action_selected = na_action_selected)
+                
+                
+                return render_template('dataxplo.html',
+                                na_actions = na_actions, col_selec = df_col_dic,
+                                col_selected = na_action_selected, na_action_selected =na_action_selected)
+                
 
             return render_template('dataxplo.html',
                                 dataset = [df.to_html(classes = 'data')],
-                                na_actions = na_actions, col_selec = df_col_dic,
-                                col_selected = na_action_selected)
+                                na_actions = na_actions, col_selec = df_col_dic)
 
         except:
 
