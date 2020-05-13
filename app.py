@@ -37,11 +37,6 @@ auth = firebase.auth()
 # Firebase Database
 db = firebase.database()
 
-
-class SelectForm(FlaskForm):
-    na_act = SelectField('Missing Values', choices=[
-        ('dropna()','Drop NA'),('fillna()','Fill NA'),('replace()','Replace NA')])
-
 ##############################################
 ############# ROUTES #########################
 ##############################################
@@ -219,6 +214,12 @@ def dataset() :
         user = auth.refresh(user['refreshToken'])
         session['user'] = user
         
+        # We fetch the user infos
+        userInfo = auth.get_account_info(user['idToken'])
+        userId   = userInfo['users'][0]['localId']
+        username = db.child("users").child(userId).child('username').get().val()
+        username = username.capitalize()
+        
         global df
     
         try:
@@ -243,12 +244,13 @@ def dataset() :
             df_na = pd.DataFrame(df_na, columns= ['Missing Value Count'])
             
             return render_template('dataset.html',
-                                df_name = filename,
-                                nb_col = nb_col, nb_rows = nb_rows,
-                                dataset = [df.to_html(classes = 'data')],
-                                describe = [desc.to_html(classes = 'data')],
-                                df_infos = [df_infos.to_html(classes = 'data')],
-                                df_na = [df_na.to_html(classes= 'data')])
+                                   username = username,
+                                    df_name = filename,
+                                    nb_col = nb_col, nb_rows = nb_rows,
+                                    dataset = [df.to_html(classes = 'data')],
+                                    describe = [desc.to_html(classes = 'data')],
+                                    df_infos = [df_infos.to_html(classes = 'data')],
+                                    df_na = [df_na.to_html(classes= 'data')])
             
         except:
             

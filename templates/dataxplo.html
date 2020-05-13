@@ -76,7 +76,7 @@
                         {% endfor %}
                         </select>
 
-                        <select name="col_selector" class="selectpicker" multiple data-live-search="true" title = 'Select columns'>
+                        <select name="col_selector" class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
                         <option value="all">All</option>
                         {% for col in col_selec %}
                         <option value="{{ col.name }}">{{ col.name }}</option>
@@ -101,9 +101,12 @@
                 </div>
             
                 <div class="table-responsive" style = 'height: 300px; width: 100%;'>
-                    {% for table in dataset %}
-                    {{ table|safe }}
-                    {% endfor %}
+                    <table class="table table-striped table-sm">
+                        {% for table in dataset %}
+                        {{ table|safe }}
+                        {% endfor %}
+                    </table>
+
                 </div>
             </row>
 
