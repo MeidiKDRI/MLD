@@ -259,6 +259,7 @@ def dataset() :
                 session['filename'] = filename
                 
                 df = pd.read_csv(f)
+                
 
                 # Summary
                 desc     = df.describe()
@@ -327,6 +328,7 @@ def exploration() :
                     
                     # We handle dropna() depending on selections.
                     if col_selected[0].lower() == 'all' :
+                        global df_wo_na
                         df_wo_na = df_to_clean.dropna()
                     else :
                         df_wo_na = df_to_clean.dropna(subset = (col_selected))
