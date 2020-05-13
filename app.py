@@ -309,6 +309,7 @@ def exploration() :
         
         try :
 
+            # We first make a copy of the dataframe
             df_to_clean = df.copy()
             # Missing Values for form-select
             na_actions = [{'name': 'Drop NA'}, {'name': 'Fill NA'}]
@@ -318,21 +319,23 @@ def exploration() :
             df_col_dic = [{'name':col} for col in cols]
 
             if request.method == 'POST' :
+                
                 na_action_selected = request.form['nan_action']
-                col_selected = request.form['col_selector']
+                col_selected = request.form.getlist('col_selector')
 
                 if na_action_selected.lower() == 'drop na' :
-                    if col_selected.lower() == 'all' :
+                    
+                    # We handle dropna() depending on selections.
+                    if col_selected[0].lower() == 'all' :
                         df_wo_na = df_to_clean.dropna()
                     else :
-                        df_wo_na = df_to_clean.dropna(subset = [col_selected])
+                        df_wo_na = df_to_clean.dropna(subset = (col_selected))
 
                     return render_template('dataxplo.html',
                                            dataset = [df_wo_na.to_html(classes = 'data')],
                                            na_actions = na_actions, col_selec = df_col_dic,
                                            col_selected = col_selected, na_action_selected = na_action_selected)
-                
-                
+
                 return render_template('dataxplo.html',
                                 na_actions = na_actions, col_selec = df_col_dic,
                                 col_selected = na_action_selected, na_action_selected =na_action_selected)
