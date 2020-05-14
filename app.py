@@ -70,10 +70,10 @@ def login() :
             userId   = userInfo['users'][0]['localId']
             username = db.child("users").child(userId).child('username').get().val()
             username = username.capitalize()
-            
+
             flash(f'Welcome back {username}', 'success')
             return redirect(url_for('dataset'))
-        
+
         except:
 
             flash('Please check your account informations.', 'danger')
@@ -89,8 +89,10 @@ def login() :
 @app.route('/logout')
 def logout():
 
-    # We refresh session['user']
+    # We refresh session
     session.pop('user', None)
+    session.pop('filename', None)
+    df = None
 
     flash('You have been disconnected. We hope to see you back soon.', 'warning')
     return redirect(url_for('home'))
@@ -198,13 +200,11 @@ def delete_account() :
     flash('Your account has been deleted', 'danger')
     return redirect(url_for('home'))
 
-
 #####################
 # Dataset upload page
 #####################
 @app.route('/dataset', methods = ['GET', 'POST'])
 def dataset() :
-
 
     # Manage the user connection
     if 'user' in session :
@@ -224,7 +224,6 @@ def dataset() :
     
         try:
             filename = session['filename']
-            print(filename)
             # Summary
             desc     = df.describe()
             
@@ -251,9 +250,9 @@ def dataset() :
                                     describe = [desc.to_html(classes = 'data')],
                                     df_infos = [df_infos.to_html(classes = 'data')],
                                     df_na = [df_na.to_html(classes= 'data')])
-            
+
         except:
-            
+
             if request.method == 'POST':
 
                 f        = request.files['file']
@@ -286,14 +285,12 @@ def dataset() :
                                         describe = [desc.to_html(classes = 'data')],
                                         df_infos = [df_infos.to_html(classes = 'data')],
                                         df_na = [df_na.to_html(classes= 'data')])
-            
+
         return render_template('dataset.html')
-    
+
     return redirect(url_for('login'))
 
 
-
-    
 ##################
 # Data Exploration
 ##################
@@ -308,9 +305,9 @@ def exploration() :
         # idToken expires after 1 hour, so we refresh the token to avoid stale token.
         user = auth.refresh(user['refreshToken'])
         session['user'] = user
-        
+
         global df
-        
+
         try :
 
             # We first make a copy of the dataframe
@@ -321,33 +318,50 @@ def exploration() :
             # Dictionnary of columns for form-select
             cols = df.columns
             df_col_dic = [{'name':col} for col in cols]
+            
+            # Dataframe shape
+            nb_rows  = df.shape[0]
+            nb_col   = df.shape[1]
+            filename = session['filename']
 
             if request.method == 'POST' :
                 
                 na_action_selected = request.form['nan_action']
-                col_selected = request.form.getlist('col_selector')
+                na_col_selected = request.form.getlist('na_col_selector')
+                checkbox = request.form.get('dropDup')
 
                 if na_action_selected.lower() == 'drop na' :
-                    
+
                     # We handle dropna() depending on selections.
-                    if col_selected[0].lower() == 'all' :
-                        
+                    if na_col_selected[0].lower() == 'all' :
+
                         df = df.dropna()
+
+                        # Dataframe shape
+                        nb_rows  = df.shape[0]
+                        nb_col   = df.shape[1]
+
                     else :
-                        df = df.dropna(subset = (col_selected))
+                        df = df.dropna(subset = (na_col_selected))
+
+                        # Dataframe shape
+                        nb_rows  = df.shape[0]
+                        nb_col   = df.shape[1]
 
                     return render_template('dataxplo.html',
+                                           df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
                                            dataset = [df.to_html(classes = 'data')],
                                            na_actions = na_actions, col_selec = df_col_dic,
-                                           col_selected = col_selected, na_action_selected = na_action_selected)
+                                           na_col_selected = na_col_selected, na_action_selected = na_action_selected)
 
                 return render_template('dataxplo.html',
                                 na_actions = na_actions, col_selec = df_col_dic,
                                 col_selected = na_action_selected, na_action_selected =na_action_selected)
 
             return render_template('dataxplo.html',
-                                dataset = [df.to_html(classes = 'data')],
-                                na_actions = na_actions, col_selec = df_col_dic)
+                                   df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
+                                   dataset = [df.to_html(classes = 'data')],
+                                   na_actions = na_actions, col_selec = df_col_dic)
 
         except:
 

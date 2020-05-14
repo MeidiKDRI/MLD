@@ -70,9 +70,9 @@
             </li>
             <li class="nav-item">
                 <hr>
-                <h5>Missing Values</h5>
 
                 <!-- Missing Values Selectors -->
+                <h5>Missing Values</h5>
                 <form method="POST" >
                 <div class="form-group">
                         <select name="nan_action" class="selectpicker form-control" title = 'Select a method'>
@@ -81,7 +81,7 @@
                         {% endfor %}
                         </select>
 
-                        <select name="col_selector" class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
+                        <select name="na_col_selector" class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
                         <option value="all">All</option>
                         {% for col in col_selec %}
                         <option value="{{ col.name }}">{{ col.name }}</option>
@@ -95,9 +95,36 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="shopping-cart"></span>
-                ...
+
+                <!-- Data Cleaning Panel -->
+                <h5>Data Cleaning Panel</h5>
+                <form method="POST" >
+                <div class="form-group">
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" name ="dropDup">
+                        <label class="form-check-label" for="defaultCheck1">
+                            Drop duplicates
+                        </label>
+                    </div>
+                    <hr>
+                    <div>
+                        <h6> Select columns to drop.</h6>
+                        <select name="drop_col_selector" class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
+                            {% for col in col_selec %}
+                            <option value="{{ col.name }}">{{ col.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <hr>
+
+                    <button type="submit" class="btn btn-info btn-block" >Clean Dataset</button>
+                </div>
+
+
+                </form>
+                <!-- Data Cleaning Panel -->
+                <hr>
                 </a>
             </li>
             <li class="nav-item">
@@ -168,7 +195,7 @@
                 <h6 style = 'display: inline-block'>{%if nb_col%} | {{nb_col}} Columns{% endif %}</h6>
                 <h6 style = 'display: inline-block'>{%if nb_rows%} | {{nb_rows}} Rows{% endif %}</h6>
             </div>
-        
+
             <div class="table-responsive" style = 'height: 300px; width: 100%; border-style:solid; border-width:2px;'>
                 {% for table in dataset %}
                 {{ table|safe }}
