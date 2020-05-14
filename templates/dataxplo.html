@@ -57,15 +57,20 @@
     {% endwith %}
     <!-- Flash message-->
 
-    <!-- Menu Card-->
-    <div class="col">
-        <div  class="h-100 card shadow" style="width: 20rem;" >
+    <!-- Main Panel-->
+    <div class="container-fluid h-100">
+    <div class="row h-100">
 
-            <h5 class="card-header" style='text-align: center;'>Data Exploration</h5><!--Panel title-->
-
-            <div class="card-body">
-
-                <h5 class="card-title">Missing Values</h5>
+        <!-- Sidebar menu -->
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <div class="sidebar-sticky pt-3">
+            <ul class="nav flex-column">
+            <li class="nav-item">
+                <h3 style = 'text-align: center'>{%if username %} {{username}} {% endif %}</h3>
+            </li>
+            <li class="nav-item">
+                <hr>
+                <h5>Missing Values</h5>
 
                 <!-- Missing Values Selectors -->
                 <form method="POST" >
@@ -82,37 +87,102 @@
                         <option value="{{ col.name }}">{{ col.name }}</option>
                         {% endfor %}
                         </select>
-                    <button type="submit" class="btn btn-outline-info btn-block" >Clean NaN</button>
+                    <button type="submit" class="btn btn-info btn-block" >Clean NaN</button>
                 </div>
                 </form>
                 <!-- Missing Values Selectors -->
+                <hr>
+            </li>
 
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                <span data-feather="shopping-cart"></span>
+                ...
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                <span data-feather="users"></span>
+                ...
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                <span data-feather="bar-chart-2"></span>
+                ...
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                <span data-feather="layers"></span>
+                ...
+                </a>
+            </li>
+            </ul>
+
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>...</span>
+            <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
+                <span data-feather="plus-circle"></span>
+            </a>
+            </h6>
+            <ul class="nav flex-column mb-2">
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                <span data-feather="file-text"></span>
+                ...
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                <span data-feather="file-text"></span>
+                ...
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                <span data-feather="file-text"></span>
+                ...
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                <span data-feather="file-text"></span>
+                ...
+                </a>
+            </li>
+            </ul>
+        </div>
+        </nav>
+        <!-- Sidebar menu -->
+
+        <!-- Main page -->
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+
+            <h1 class="h2">Data Exploration</h1>
+        </div>
+
+            <div>
+                {%if df_name%}{{df_name}}{% endif %}
+                <h6 style = 'display: inline-block'>{%if nb_col%} | {{nb_col}} Columns{% endif %}</h6>
+                <h6 style = 'display: inline-block'>{%if nb_rows%} | {{nb_rows}} Rows{% endif %}</h6>
             </div>
-        </div>
-    </div>
-    <!-- Menu Card-->
+        
+            <div class="table-responsive" style = 'height: 300px; width: 100%; border-style:solid; border-width:2px;'>
+                {% for table in dataset %}
+                {{ table|safe }}
+                {% endfor %}
+            </div>
 
-    <!-- Main Panel-->
-    <div class="col-sm-8 h-100">
-            <row>
-                <div>
-                    <h6 style = 'display: inline-block'>{% if na_action_selected %} | {{na_action_selected}} {% endif %}</h6>
-                    <h6 style = 'display: inline-block'>{% if col_selected %} | {{col_selected}} {% endif %}</h6>
-                </div>
-            
-                <div class="table-responsive" style = 'height: 300px; width: 100%;'>
-                    <table class="table table-striped table-sm">
-                        {% for table in dataset %}
-                        {{ table|safe }}
-                        {% endfor %}
-                    </table>
+            <hr>
 
-                </div>
-            </row>
-
-        </div>
+        </main>
+        <!-- Main page -->
 
     </div>
+    </div>
+
 
 <!--Scripts-->
 <script>$('select').selectpicker();</script>

@@ -1,7 +1,11 @@
+html {
+	height: 100%;
+}
+
 body {
-    padding : 30px;
-    min-height: 75rem;
     padding-top: 4.5rem;
+    height: 100%;
+    overflow:auto;
 }
 
 footer {
@@ -14,6 +18,19 @@ footer {
     color: lightgray;
 }
 
+#container {
+    height: 100%;
+    overflow:auto;
+}
+
+#sidebar {
+	display: inline-block;
+	vertical-align: top;
+	height: 100%;
+	width: 18%;
+	overflow: auto;
+}
+
 #princing-row{
     margin-top: 20px;
 }
@@ -24,27 +41,6 @@ footer {
     text-align: center;
     text-decoration-style: solid;
     padding-top: 20px;
-    padding-bottom: 20px;
-    border-radius: 15px;
-}
-
-.anchors{
-    padding-top: 60px;
-    height: 1000px;
-}
-
-#anchors-container{
-    height: 100%;
-    padding-bottom: 20px;
-
-}
-
-#anchor-title{
-    width: 60%;
-    margin: auto;
-    text-align: center;
-    text-decoration-style: solid;
-    padding-top: 30px;
     padding-bottom: 20px;
     border-radius: 15px;
 }

@@ -261,7 +261,6 @@ def dataset() :
                 session['filename'] = filename
                 
                 df = pd.read_csv(f)
-                
 
                 # Summary
                 desc     = df.describe()
@@ -310,15 +309,17 @@ def exploration() :
         user = auth.refresh(user['refreshToken'])
         session['user'] = user
         
+        global df
+        
         try :
 
             # We first make a copy of the dataframe
-            df_to_clean = df.copy()
+            df = df.copy()
             # Missing Values for form-select
             na_actions = [{'name': 'Drop NA'}, {'name': 'Fill NA'}]
 
             # Dictionnary of columns for form-select
-            cols = df_to_clean.columns
+            cols = df.columns
             df_col_dic = [{'name':col} for col in cols]
 
             if request.method == 'POST' :
@@ -330,20 +331,19 @@ def exploration() :
                     
                     # We handle dropna() depending on selections.
                     if col_selected[0].lower() == 'all' :
-                        global df_wo_na
-                        df_wo_na = df_to_clean.dropna()
+                        
+                        df = df.dropna()
                     else :
-                        df_wo_na = df_to_clean.dropna(subset = (col_selected))
+                        df = df.dropna(subset = (col_selected))
 
                     return render_template('dataxplo.html',
-                                           dataset = [df_wo_na.to_html(classes = 'data')],
+                                           dataset = [df.to_html(classes = 'data')],
                                            na_actions = na_actions, col_selec = df_col_dic,
                                            col_selected = col_selected, na_action_selected = na_action_selected)
 
                 return render_template('dataxplo.html',
                                 na_actions = na_actions, col_selec = df_col_dic,
                                 col_selected = na_action_selected, na_action_selected =na_action_selected)
-                
 
             return render_template('dataxplo.html',
                                 dataset = [df.to_html(classes = 'data')],
@@ -357,8 +357,6 @@ def exploration() :
         return render_template('dataxplo.html')
 
     return redirect(url_for('login'))
-
-
 
 
 ####################
