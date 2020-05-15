@@ -9,7 +9,6 @@ import io
 from flask_wtf import FlaskForm
 from wtforms import SelectField
 
-
 ##############################################
 ############# CONFIG #########################
 ##############################################
@@ -30,10 +29,8 @@ config = {
 
 # Firebase init
 firebase = pyrebase.initialize_app(config)
-
 # Firebase authentication
 auth = firebase.auth()
-
 # Firebase Database
 db = firebase.database()
 
@@ -149,6 +146,7 @@ def register() :
             return redirect(url_for('login'))
 
         else :
+
             flash('Please enter the same password for confirmation.', 'warning')
             return render_template('register.html')
 
@@ -219,14 +217,14 @@ def dataset() :
         userId   = userInfo['users'][0]['localId']
         username = db.child("users").child(userId).child('username').get().val()
         username = username.capitalize()
-        
+
         global df
-    
+
         try:
             filename = session['filename']
             # Summary
             desc     = df.describe()
-            
+
             # Dataframe shape
             nb_rows  = df.shape[0]
             nb_col   = df.shape[1]
@@ -385,7 +383,7 @@ def exploration() :
                             df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
                             dataset = [df.to_html(classes = 'data')],
                             col_selec = df_col_dic)
-                        
+
                     # Fill NaN by Median Value
                     elif  fillnabymean_checkbox == 'true' :
 
@@ -404,7 +402,7 @@ def exploration() :
                             df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
                             dataset = [df.to_html(classes = 'data')],
                             col_selec = df_col_dic)
-                        
+
                     # Fill NaN by a specific Value
                     elif fillnabyvalue_checkbox == 'true' :
 
@@ -453,7 +451,7 @@ def visualization() :
 
     # Manage the user connection
     if 'user' in session :
-        
+
         user = session['user']
         # idToken expires after 1 hour, so we refresh the token to avoid stale token.
         user = auth.refresh(user['refreshToken'])
@@ -463,15 +461,15 @@ def visualization() :
             # Dictionnary of columns for form select
             cols = df.columns
             df_col_dic = [{'name':col} for col in cols]
-            
+
             return render_template('dataviz.html', dataset = [df.to_html(classes = 'data')])
         except:
-            
+
             flash('There is no dataframe uploaded. PLease visit DATASET page first', 'warning')
             return render_template('dataviz.html')
 
         return render_template('dataviz.html')
-    
+
     return redirect(url_for('login'))
 
 
@@ -484,7 +482,7 @@ def model() :
 
     # Manage the user connection
     if 'user' in session :
-        
+
         user = session['user']
         # idToken expires after 1 hour, so we refresh the token to avoid stale token.
         user = auth.refresh(user['refreshToken'])
@@ -495,7 +493,7 @@ def model() :
             # Dictionnary of columns for form-select
             cols = df.columns
             df_col_dic = [{'name':col} for col in cols]
-            
+
             # Models
             regression_models = ['Linear Regression', 'Logistic Regression']
             classification_models = ['KNN',
@@ -503,7 +501,7 @@ def model() :
                     'Random Forest Classifier',
                     'Decision Tree Classifier',
                     'SGDClassifier']
-            
+
             # Dictionnary of models for form select
             regression_dic = [{'name': model} for model in regression_models]
             classification_dic = [{'name': model} for model in classification_models]
@@ -519,7 +517,7 @@ def model() :
             return render_template('model.html')
 
         return render_template('model.html')
-    
+
     return redirect(url_for('login'))
 
 
@@ -532,7 +530,7 @@ def prediction() :
 
     # Manage the user connection
     if 'user' in session :
-        
+
         user = session['user']
         # idToken expires after 1 hour, so we refresh the token to avoid stale token.
         user = auth.refresh(user['refreshToken'])
@@ -545,12 +543,12 @@ def prediction() :
             
             return render_template('prediction.html', dataset = [df.to_html(classes = 'data')])
         except:
-            
+
             flash('There is no dataframe uploaded. PLease visit DATASET page first', 'warning')
             return render_template('prediction.html')
 
         return render_template('prediction.html')
-    
+
     return redirect(url_for('login'))
 
 
@@ -581,7 +579,6 @@ def settings() :
                             username = username, 
                             email = email, 
                             function = function)
-
 
         return render_template('settings.html')
 
