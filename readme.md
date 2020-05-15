@@ -9,10 +9,13 @@ After a connection to the plateform member area, the user is able to import and 
 
 Then, the user will be able to try one or several models, evaluate and compre them in **'Model Training'** page.  
 
-In the **'Model Prediction'** area, it gonna be easy to make a prediction and export the model.
+In the **'Model Prediction'** area, it gonna be easy to make a prediction and export the model.  
 
+## Screenshot of the new version using Flask.
+![image](https://user-images.githubusercontent.com/57437129/82053064-00862c80-96bd-11ea-9202-a3764ad1ed42.png)  
+
+## Screenshot of the first version using Dash.
 ![Screenshot001](https://user-images.githubusercontent.com/57437129/80616232-f1f31080-8a40-11ea-904b-8acaf8181f1c.png)  
-Screenshot of the first version using Dash.
 
 ## Web Map
 - Presentation page :  
