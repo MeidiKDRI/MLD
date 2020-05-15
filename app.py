@@ -318,41 +318,52 @@ def exploration() :
             # Dictionnary of columns for form-select
             cols = df.columns
             df_col_dic = [{'name':col} for col in cols]
-            
+
             # Dataframe shape
             nb_rows  = df.shape[0]
             nb_col   = df.shape[1]
             filename = session['filename']
 
             if request.method == 'POST' :
-                
-                na_action_selected = request.form['nan_action']
-                na_col_selected = request.form.getlist('na_col_selector')
-                checkbox = request.form.get('dropDup')
 
-                if na_action_selected.lower() == 'drop na' :
+                # Drop NA
+                dropna_checkbox = request.form.get('dropna_checkbox')
+                dropna_col_selected = request.form.getlist('dropna_col_selector')
+
+                # Fill NA
+                fillna_checkbox = request.form.get('fillna_checkbox')
+
+                if dropna_checkbox == 'true' :
 
                     # We handle dropna() depending on selections.
-                    if na_col_selected[0].lower() == 'all' :
+                    if dropna_col_selected[0].lower() == 'all' :
 
                         df = df.dropna()
-
                         # Dataframe shape
                         nb_rows  = df.shape[0]
                         nb_col   = df.shape[1]
+                        na_action_selected = 'Drop NaN to all dataset'
 
                     else :
-                        df = df.dropna(subset = (na_col_selected))
 
+                        df = df.dropna(subset = (dropna_col_selected))
                         # Dataframe shape
                         nb_rows  = df.shape[0]
                         nb_col   = df.shape[1]
+                        na_action_selected = 'Drop NaN to selected column'
 
                     return render_template('dataxplo.html',
                                            df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
                                            dataset = [df.to_html(classes = 'data')],
                                            na_actions = na_actions, col_selec = df_col_dic,
-                                           na_col_selected = na_col_selected, na_action_selected = na_action_selected)
+                                           dropna_col_selected = dropna_col_selected, na_action_selected = na_action_selected)
+                
+                elif fillna_checkbox == 'true' :
+                    
+                    if 
+                    
+                                    fillna_col_selector = request.form.getlist('fillna_col_selector')
+
 
                 return render_template('dataxplo.html',
                                 na_actions = na_actions, col_selec = df_col_dic,

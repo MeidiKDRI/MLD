@@ -54,6 +54,21 @@ footer {
     margin-top: 20px;
 }
 
+/* div depending on checkbox */
+#dropna_col_sel_div
+{
+  display:none;
+}
 
+#fillna_by_mean_col
+{
+  display:none;
+}
+
+#fillna_by_val_col
+{
+  display:none;
+}
+/* div depending on checkbox */
 
 
