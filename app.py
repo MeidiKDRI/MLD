@@ -342,7 +342,6 @@ def exploration() :
                         # Dataframe shape
                         nb_rows  = df.shape[0]
                         nb_col   = df.shape[1]
-                        na_action_selected = 'Drop NaN to all dataset'
 
                     else :
 
@@ -350,24 +349,39 @@ def exploration() :
                         # Dataframe shape
                         nb_rows  = df.shape[0]
                         nb_col   = df.shape[1]
-                        na_action_selected = 'Drop NaN to selected column'
 
                     return render_template('dataxplo.html',
                                            df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
                                            dataset = [df.to_html(classes = 'data')],
-                                           na_actions = na_actions, col_selec = df_col_dic,
-                                           dropna_col_selected = dropna_col_selected, na_action_selected = na_action_selected)
+                                           na_actions = na_actions, col_selec = df_col_dic)
                 
                 elif fillna_checkbox == 'true' :
                     
-                    if 
-                    
-                                    fillna_col_selector = request.form.getlist('fillna_col_selector')
+                    fillnabymean_checkbox = request.form.get('fillnabymean_checkbox')
+                    fillnabyvalue_checkbox = request.form.get('fillnabyvalue_checkbox')
 
+                    fillna_col_selector = request.form.getlist('fillna_col_selector')
+                    print(fillna_col_selector)
+
+                    if  fillnabymean_checkbox == 'true' :
+
+                        if fillna_col_selector[0].lower() == 'all' :
+
+                            df = df.fillna(df.mean())
+
+                        else :
+
+                            col = fillna_col_selector[0].lower()
+                            df[col] = df[col].fillna(df[col].mean())
+
+                        return render_template('dataxplo.html',
+                            df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
+                            dataset = [df.to_html(classes = 'data')],
+                            na_actions = na_actions, col_selec = df_col_dic)
+                    
 
                 return render_template('dataxplo.html',
-                                na_actions = na_actions, col_selec = df_col_dic,
-                                col_selected = na_action_selected, na_action_selected =na_action_selected)
+                                na_actions = na_actions, col_selec = df_col_dic)
 
             return render_template('dataxplo.html',
                                    df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
