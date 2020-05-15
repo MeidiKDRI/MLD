@@ -86,12 +86,12 @@
 
                         <!-- Displayed only if DroplNaN is checked -->
                         <div id = 'dropna_col_sel_div'>
-                        <select name="dropna_col_selector"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
-                        <option value="all">All</option>
-                        {% for col in col_selec %}
-                        <option value="{{ col.name }}">{{ col.name }}</option>
-                        {% endfor %}
-                        </select>
+                            <select name="dropna_col_selector"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
+                            <option value="all">All</option>
+                            {% for col in col_selec %}
+                            <option value="{{ col.name }}">{{ col.name }}</option>
+                            {% endfor %}
+                            </select>
                         </div>
                         <!-- Drop NaN -->
 

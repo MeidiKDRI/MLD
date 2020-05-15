@@ -491,13 +491,30 @@ def model() :
         session['user'] = user
 
         try:
-            # Dictionnary of columns for form select
+
+            # Dictionnary of columns for form-select
             cols = df.columns
             df_col_dic = [{'name':col} for col in cols]
             
-            return render_template('model.html', dataset = [df.to_html(classes = 'data')])
-        except:
+            # Models
+            regression_models = ['Linear Regression', 'Logistic Regression']
+            classification_models = ['KNN',
+                    'KMeans',
+                    'Random Forest Classifier',
+                    'Decision Tree Classifier',
+                    'SGDClassifier']
             
+            # Dictionnary of models for form select
+            regression_dic = [{'name': model} for model in regression_models]
+            classification_dic = [{'name': model} for model in classification_models]
+
+            return render_template('model.html',
+                                   reg_models = regression_dic,
+                                   classif_model = classification_dic,
+                                   col_selec = df_col_dic)
+
+        except:
+
             flash('There is no dataframe uploaded. PLease visit DATASET page first', 'warning')
             return render_template('model.html')
 

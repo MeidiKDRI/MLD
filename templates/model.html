@@ -5,6 +5,8 @@
     <title>Data Exploration - Machine Learning Plateform</title>
 	<link rel ="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css')}}">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
 
 	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark shadow">
         <a class="navbar-brand mb-0 h1" href="#">Machine Learning Plateform</a>
@@ -68,27 +70,43 @@
             </li>
             <li class="nav-item">
                 <hr>
-                <h5>Missing Values</h5>
-
-                <!-- Missing Values Selectors -->
-                <form method="POST" >
-                <div class="form-group">
-                        <select name="nan_action" class="selectpicker form-control" title = 'Select a method'>
-                        {% for na_meth in na_actions %}
-                        <option value="{{ na_meth.name }}">{{ na_meth.name }}</option>
-                        {% endfor %}
-                        </select>
-
-                        <select name="col_selector" class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
+                <!-- Target Selectors -->
+                <h5>Target</h5>
+                <div >
+                    <h6>Select target 'y'</h6>
+                    <select name="fillna_col_selector"  class="selectpicker form-control" data-live-search="true" title = 'Select a column'>
                         <option value="all">All</option>
                         {% for col in col_selec %}
                         <option value="{{ col.name }}">{{ col.name }}</option>
                         {% endfor %}
-                        </select>
-                    <button type="submit" class="btn btn-info btn-block" >Clean NaN</button>
+                    </select>
+                    <hr>
                 </div>
-                </form>
-                <!-- Missing Values Selectors -->
+                <!-- Target Selectors -->
+
+                <!-- Models Selectors -->
+                <form method="POST" >
+                <div class="form-group">
+                    <h6>Regression</h6>
+                    <select name="reg_model"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select model(s)'>
+                        <option value="all">All</option>
+                        {% for model in reg_models %}
+                        <option value="{{ model.name }}">{{ model.name }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <hr>
+                    <h6>Classification</h6>
+                    <select name="reg_model"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select model(s)'>
+                        <option value="all">All</option>
+                        {% for model in classif_model %}
+                        <option value="{{ model.name }}">{{ model.name }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <button type="submit" class="btn btn-info btn-block" style = 'margin-top:10px;'>Launch model(s)</button>
+                </div>
+                
                 <hr>
             </li>
 
@@ -158,7 +176,7 @@
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 
-            <h1 class="h2">Models Pages</h1>
+            <h1 class="h2">Models Page</h1>
         </div>
 
             <div>
