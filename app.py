@@ -333,44 +333,49 @@ def exploration() :
                 # Fill NA
                 fillna_checkbox = request.form.get('fillna_checkbox')
 
+                # Drop NA Management
                 if dropna_checkbox == 'true' :
 
                     # We handle dropna() depending on selections.
                     if dropna_col_selected[0].lower() == 'all' :
 
                         df = df.dropna()
-                        # Dataframe shape
+                        # New Dataframe shape
                         nb_rows  = df.shape[0]
                         nb_col   = df.shape[1]
 
                     else :
 
+                        # We drop na on specific columns selected by user
                         df = df.dropna(subset = (dropna_col_selected))
-                        # Dataframe shape
+                        # New Dataframe shape
                         nb_rows  = df.shape[0]
                         nb_col   = df.shape[1]
 
                     return render_template('dataxplo.html',
                                            df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
                                            dataset = [df.to_html(classes = 'data')],
-                                           na_actions = na_actions, col_selec = df_col_dic)
-                
+                                           col_selec = df_col_dic)
+
+                # Fill NA Management
                 elif fillna_checkbox == 'true' :
 
                     # Get the value from fillna checkboxes
                     fillnabymean_checkbox = request.form.get('fillnabymean_checkbox')
+                    fillnabymedian_checkbox = request.form.get('fillnabymedian_checkbox')
                     fillnabyvalue_checkbox = request.form.get('fillnabyvalue_checkbox')
 
                     fillna_col_selector = request.form.getlist('fillna_col_selector')
-                    print(fillna_col_selector)
 
                     # Fill NaN by Mean Value
                     if  fillnabymean_checkbox == 'true' :
 
+                        # On the full dataframe
                         if fillna_col_selector[0].lower() == 'all' :
 
                             df = df.fillna(df.mean())
 
+                        # On selected columns
                         else :
 
                             for col in fillna_col_selector:
@@ -379,17 +384,39 @@ def exploration() :
                         return render_template('dataxplo.html',
                             df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
                             dataset = [df.to_html(classes = 'data')],
-                            na_actions = na_actions, col_selec = df_col_dic)
+                            col_selec = df_col_dic)
+                        
+                    # Fill NaN by Median Value
+                    elif  fillnabymean_checkbox == 'true' :
 
+                        # On the full dataframe
+                        if fillna_col_selector[0].lower() == 'all' :
+
+                            df = df.fillna(df.median())
+
+                        # On selected columns
+                        else :
+
+                            for col in fillna_col_selector:
+                                df[col].fillna(df[col].median(), inplace=True)
+
+                        return render_template('dataxplo.html',
+                            df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
+                            dataset = [df.to_html(classes = 'data')],
+                            col_selec = df_col_dic)
+                        
                     # Fill NaN by a specific Value
                     elif fillnabyvalue_checkbox == 'true' :
 
+                        # We fetch the value input by user
                         na_value = request.form.get('fill_value')
 
+                        # On the full dataframe
                         if fillna_col_selector[0].lower() == 'all' :
-                            
+
                             df = df.fillna(na_value)
 
+                        # On selected columns
                         else :
 
                             for col in fillna_col_selector:
@@ -398,15 +425,14 @@ def exploration() :
                         return render_template('dataxplo.html',
                             df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
                             dataset = [df.to_html(classes = 'data')],
-                            na_actions = na_actions, col_selec = df_col_dic)
+                            col_selec = df_col_dic)
 
-                return render_template('dataxplo.html',
-                                na_actions = na_actions, col_selec = df_col_dic)
+                return render_template('dataxplo.html', col_selec = df_col_dic)
 
             return render_template('dataxplo.html',
                                    df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
                                    dataset = [df.to_html(classes = 'data')],
-                                   na_actions = na_actions, col_selec = df_col_dic)
+                                   col_selec = df_col_dic)
 
         except:
 

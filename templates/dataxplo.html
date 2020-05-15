@@ -105,14 +105,21 @@
 
                         <!-- Displayed only if fillNaN is checked -->
                         <div id= 'fill_values' style = 'display:none'>
-                            <div class="form-check">
+                            <div class="custom-control custom-checkbox my-1 mr-sm-2">
                                 <input class="form-check-input" type="checkbox" value= true name ="fillnabymean_checkbox" onclick="isChecked('fillnabymean_checkbox','fillna_by_mean_col')">
                                 <label class="form-check-label" for="defaultCheck1">
                                     Fill by Mean
                                 </label>
                             </div>
 
-                            <div class="form-check">
+                            <div class="custom-control custom-checkbox my-1 mr-sm-2">
+                                <input class="form-check-input" type="checkbox" value= true name ="fillnabymedian_checkbox" onclick="isChecked('fillnabymedian_checkbox','fillna_by_mean_col')">
+                                <label class="form-check-label" for="defaultCheck1">
+                                    Fill by Median
+                                </label>
+                            </div>
+
+                            <div class="custom-control custom-checkbox my-1 mr-sm-2">
                                 <input class="form-check-input" type="checkbox" value= true name ="fillnabyvalue_checkbox" onclick="isChecked('fillnabyvalue_checkbox','fillna_by_val_col')">
                                 <label class="form-check-label" for="defaultCheck1">
                                     Fill by Value
@@ -133,7 +140,7 @@
 
                         <!-- Displayed only when fill value is checked is checked -->
                         <div id = 'fillna_by_val_col'>
-                            <input id = 'fill_value' type="text">
+                            <input name = 'fill_value' type="text">
                             <select name="fillna_col_selector"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
                                 <option value="all">All</option>
                                 {% for col in col_selec %}
