@@ -97,7 +97,8 @@
 
                         <!-- Fill NaN -->
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value= true name ="fillna_checkbox" onclick="isChecked('fillna_checkbox','fill_values')">
+                            <input class="form-check-input" type="checkbox" value= true name ="fillna_checkbox"
+                            onclick="isChecked('fillna_checkbox','fill_values')">
                             <label class="form-check-label" for="defaultCheck1">
                                 Fill NaN Values
                             </label>
@@ -106,21 +107,24 @@
                         <!-- Displayed only if fillNaN is checked -->
                         <div id= 'fill_values' style = 'display:none'>
                             <div class="custom-control custom-checkbox my-1 mr-sm-2">
-                                <input class="form-check-input" type="checkbox" value= true name ="fillnabymean_checkbox" onclick="isChecked('fillnabymean_checkbox','fillna_by_mean_col')">
+                                <input class="form-check-input" type="checkbox" value= true name ="fillnabymean_checkbox"
+                                onclick="isChecked('fillnabymean_checkbox','fillna_by_mean_col')">
                                 <label class="form-check-label" for="defaultCheck1">
                                     Fill by Mean
                                 </label>
                             </div>
 
                             <div class="custom-control custom-checkbox my-1 mr-sm-2">
-                                <input class="form-check-input" type="checkbox" value= true name ="fillnabymedian_checkbox" onclick="isChecked('fillnabymedian_checkbox','fillna_by_mean_col')">
+                                <input class="form-check-input" type="checkbox" value= true name ="fillnabymedian_checkbox"
+                                onclick="isChecked('fillnabymedian_checkbox','fillna_by_mean_col')">
                                 <label class="form-check-label" for="defaultCheck1">
                                     Fill by Median
                                 </label>
                             </div>
 
                             <div class="custom-control custom-checkbox my-1 mr-sm-2">
-                                <input class="form-check-input" type="checkbox" value= true name ="fillnabyvalue_checkbox" onclick="isChecked('fillnabyvalue_checkbox','fillna_by_val_col')">
+                                <input class="form-check-input" type="checkbox" value= true name ="fillnabyvalue_checkbox"
+                                onclick="isChecked('fillnabyvalue_checkbox','fillna_by_val_col')">
                                 <label class="form-check-label" for="defaultCheck1">
                                     Fill by Value
                                 </label>
@@ -150,22 +154,6 @@
                         </div>
                         <hr>
                         <!-- Fill NaN -->
-
-                        <!-- SCRIPT FOR CHECKBO TO PUT IN JAVASCRIPT FILE INSIDE STATIC -->
-                        <script>
-                        function isChecked(checkbox, box) {
-                            var chboxs = document.getElementsByName(checkbox);
-                            var display = "none";
-                            for(var i=0;i<chboxs.length;i++) { 
-                                if(chboxs[i].checked){
-                                display = "block";
-                                    break;
-                                }
-                            }
-                            document.getElementById(box).style.display = display;
-                        }
-                        </script>
-                        <!-- SCRIPT FOR CHECKBO TO PUT IN JAVASCRIPT FILE INSIDE STATIC -->
 
                     <button type="submit" class="btn btn-info btn-block" style = 'margin-top:10px;'>Clean NaN</button>
                 </div>
@@ -290,15 +278,14 @@
     </div>
     </div>
 
+</body>
 
 <!--Scripts-->
-<script>$('select').selectpicker();</script>
+<script src = "{{ url_for('static', filename = 'main.js') }}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 <!--Scripts-->
-
-</body>
 
 <!-- Footer -->
 <footer class="fixed-bottom">

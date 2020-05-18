@@ -6,8 +6,6 @@ import json
 import pandas as pd
 from werkzeug.utils import secure_filename
 import io
-from flask_wtf import FlaskForm
-from wtforms import SelectField
 
 ##############################################
 ############# CONFIG #########################

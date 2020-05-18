@@ -112,12 +112,6 @@
 
                     <button type="submit" class="btn btn-info btn-block" style = 'margin-top:10px;'>Train model(s)</button>
                 </div>
-                <script>
-                    function selected(select_input, selected) {
-                    var selection = document.getElementById(select_input).value;
-                    document.getElementById(selected).innerHTML = selection;
-                    }
-                </script>
 
                 <hr>
             </li>
@@ -223,16 +217,14 @@
     </div>
     </div>
 
+</body>
 
 <!--Scripts-->
 <script src = "{{ url_for('static', filename = 'main.js') }}"></script>
-<script>$('select').selectpicker();</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 <!--Scripts-->
-
-</body>
 
 <!-- Footer -->
 <footer class="fixed-bottom">
