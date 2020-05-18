@@ -475,7 +475,7 @@ def visualization() :
 # Model training
 ################
 
-@app.route('/model')
+@app.route('/model', methods = ['GET', 'POST'])
 def model() :
 
     # Manage the user connection
@@ -503,6 +503,14 @@ def model() :
             # Dictionnary of models for form select
             regression_dic = [{'name': model} for model in regression_models]
             classification_dic = [{'name': model} for model in classification_models]
+            
+            if request.method == 'POST':
+                model1 = request.form.getlist('class_model')
+                
+                resp = jsonify({'model' : model1})
+                parsed = json.loads(resp)
+                print(parsed)
+                return jsonify({'model' : model1})
 
             return render_template('model.html',
                                    reg_models = regression_dic,
