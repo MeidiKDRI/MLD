@@ -74,7 +74,9 @@
                 <h5>Target</h5>
                 <div >
                     <h6>Select target 'y'</h6>
-                    <select name="fillna_col_selector"  class="selectpicker form-control" data-live-search="true" title = 'Select a column'>
+                    <select id = 'target' name="fillna_col_selector" 
+                    class="selectpicker form-control" data-live-search="true" title = 'Select a column'
+                    onchange = "selected('target', 'target_selected')">
                         <option value="all">All</option>
                         {% for col in col_selec %}
                         <option value="{{ col.name }}">{{ col.name }}</option>
@@ -88,7 +90,9 @@
                 <form method="POST" >
                 <div class="form-group">
                     <h6>Regression</h6>
-                    <select name="reg_model"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select model(s)'>
+                    <select id="reg_model" name="reg_model"
+                    class="selectpicker form-control" multiple data-live-search="true" title = 'Select model(s)'
+                    onchange = "selected('reg_model', 'regmod_selected')">
                         <option value="all">All</option>
                         {% for model in reg_models %}
                         <option value="{{ model.name }}">{{ model.name }}</option>
@@ -97,16 +101,24 @@
 
                     <hr>
                     <h6>Classification</h6>
-                    <select name="reg_model"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select model(s)'>
+                    <select id="class_model" name="class_model"
+                    class="selectpicker form-control" multiple data-live-search="true" title = 'Select model(s)'
+                    onchange = "selected('class_model', 'classmod_selected')">
                         <option value="all">All</option>
                         {% for model in classif_model %}
                         <option value="{{ model.name }}">{{ model.name }}</option>
                         {% endfor %}
                     </select>
 
-                    <button type="submit" class="btn btn-info btn-block" style = 'margin-top:10px;'>Launch model(s)</button>
+                    <button type="submit" class="btn btn-info btn-block" style = 'margin-top:10px;'>Train model(s)</button>
                 </div>
-                
+                <script>
+                    function selected(select_input, selected) {
+                    var selection = document.getElementById(select_input).value;
+                    document.getElementById(selected).innerHTML = selection;
+                    }
+                </script>
+
                 <hr>
             </li>
 
@@ -179,6 +191,18 @@
             <h1 class="h2">Models Page</h1>
         </div>
 
+        <div>
+            <span style = 'display: inline-block;font-weight: bold;'>Target Variable (y) : <h6 style = 'font-weight: normal;' id="target_selected"></h6></span>
+        </div>
+
+        <div>
+            <span style = 'display: inline-block; font-weight: bold;'>Regression Model : <h6 style = 'font-weight: normal;' id="regmod_selected"></h6></span>
+        </div>
+
+        <div>
+            <span style = 'display: inline-block; font-weight: bold;'>Classification Model : <h6 style = 'font-weight: normal;' id="classmod_selected"></h6></span>
+        </div>
+
             <div>
                 {%if df_name%}{{df_name}}{% endif %}
                 <h6 style = 'display: inline-block'>{%if nb_col%} | {{nb_col}} Columns{% endif %}</h6>
@@ -201,6 +225,7 @@
 
 
 <!--Scripts-->
+<script src = "{{ url_for('static', filename = 'main.js') }}"></script>
 <script>$('select').selectpicker();</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
