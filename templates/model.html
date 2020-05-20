@@ -115,28 +115,6 @@
                     <button type="submit" class="btn btn-info btn-block" style = 'margin-top:10px;'>Train model(s)</button>
                 </div>
 
-<script>
-$(document).ready(function() {
-    $('form').on('submit', function(event) {
-        $.ajax({
-            data : {
-                model : $('#class_model').val(),
-            },
-            type : 'POST',
-            url : '/model'
-        })
-        .done(function(data) {
-            if (data.error) {
-                $('#errorAlert').text(data.error).show();
-                $('#successAlert').hide();
-            }
-        });
-        event.preventDefault();
-    });
-});
-</script>
-
-
                 <hr>
             </li>
 

@@ -48,6 +48,7 @@ def home() :
 # Login page
 ############
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login() :
 
@@ -439,6 +440,12 @@ def exploration() :
 
     return redirect(url_for('login'))
 
+@app.route('/process', methods = ['POST'])
+def process():
+    col = request.form['drop_col_selector']
+    return jsonify({'colonne' : col})
+
+
 
 ####################
 # Data Visualisation
@@ -505,13 +512,31 @@ def model() :
             classification_dic = [{'name': model} for model in classification_models]
             
             if request.method == 'POST':
-                model1 = request.form.getlist('class_model')
-                
-                resp = jsonify({'model' : model1})
-                parsed = json.loads(resp)
-                print(parsed)
-                return jsonify({'model' : model1})
+                # Dictionnary of columns for form-select
+                cols = df.columns
+                df_col_dic = [{'name':col} for col in cols]
 
+                # Models
+                regression_models = ['Linear Regression', 'Logistic Regression']
+                classification_models = ['KNN',
+                        'KMeans',
+                        'Random Forest Classifier',
+                        'Decision Tree Classifier',
+                        'SGDClassifier']
+
+                # Dictionnary of models for form select
+                regression_dic = [{'name': model} for model in regression_models]
+                classification_dic = [{'name': model} for model in classification_models]
+                
+                data = request.get_json()
+                result = ''
+                
+                for model in data :
+                    result += str(model['model'])
+                
+                print(result)
+                return result
+                
             return render_template('model.html',
                                    reg_models = regression_dic,
                                    classif_model = classification_dic,
