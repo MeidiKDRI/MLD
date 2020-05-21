@@ -495,11 +495,12 @@ def model() :
 
         try:
 
-            # Dictionnary of columns for form-select
+
+            # Dictionnary of columns to display into select tags
             cols = df.columns
             df_col_dic = [{'name':col} for col in cols]
 
-            # Models
+            # Models for dictionnaries
             regression_models = ['Linear Regression', 'Logistic Regression']
             classification_models = ['KNN',
                     'KMeans',
@@ -507,35 +508,75 @@ def model() :
                     'Decision Tree Classifier',
                     'SGDClassifier']
 
-            # Dictionnary of models for form select
+            # Dictionnary of models to display into select tags
             regression_dic = [{'name': model} for model in regression_models]
             classification_dic = [{'name': model} for model in classification_models]
+
+            ###########################################
+            ###########################################
+            ##### FOR TEST ONLY #######################
+            ###########################################
+            data = df.copy()
+            data.drop(['cabin', 'body', 'boat', 'home.dest'], axis = 1, inplace = True)
+            data.dropna()
+            data['age'] = data['age'].fillna(data.groupby(['pclass', 'sex'])['age'].transform('mean'))
+            data.head()
+            data.dropna(axis = 0, inplace = True)
+
+            dummies = pd.get_dummies(data['pclass'])
+            data = pd.concat([data, dummies], axis = 1)
+            data.drop(['pclass', 3.0], inplace = True, axis = 1)
+
+            dummies = pd.get_dummies(data['sex'])
+            data = pd.concat([data, dummies], axis = 1)
+            data.drop(['sex', 'male'], inplace = True, axis = 1)
+
+            dummies = pd.get_dummies(data['embarked'])
+            data = pd.concat([data, dummies], axis = 1)
+            data.drop(['embarked', 'C'], inplace = True, axis = 1)
+
+            X = data.drop(['survived', 'ticket', 'name'], axis = 1)
+            y = data['survived']
+
+            from sklearn.model_selection import train_test_split
+            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 123456)
+
+
+            ###########################################
+            ###########################################
+            ##### FOR TEST ONLY #######################
+            ###########################################
+
+
+            # Empty list & dict for the training loop management
+            models_list = []
+            mods = {}
+            
             
             if request.method == 'POST':
-                # Dictionnary of columns for form-select
-                cols = df.columns
-                df_col_dic = [{'name':col} for col in cols]
+                
+                label_selected = request.form.get('target')
+                features_selected = request.form.getlist('features')
+                test_size = request.form['splitValueInput']
+                reg_mods_selected = request.form.getlist('reg_model')
+                classif_mods_selected = request.form.getlist('class_model')
+                
+                # We concat the 2 models lists
+                models_list = reg_mods_selected + classif_mods_selected
+                
+                minimum_context = {'reg_models' : regression_dic,
+                'classif_model'  : classification_dic,
+                'col_selec' : df_col_dic}
 
-                # Models
-                regression_models = ['Linear Regression', 'Logistic Regression']
-                classification_models = ['KNN',
-                        'KMeans',
-                        'Random Forest Classifier',
-                        'Decision Tree Classifier',
-                        'SGDClassifier']
+                if len(models_list) == 0 :
+                    
+                    flash('No model selected. Please select at least one model.', 'danger')
+                    return render_template('model.html', **minimum_context)
 
-                # Dictionnary of models for form select
-                regression_dic = [{'name': model} for model in regression_models]
-                classification_dic = [{'name': model} for model in classification_models]
-                
-                data = request.get_json()
-                result = ''
-                
-                for model in data :
-                    result += str(model['model'])
-                
-                print(result)
-                return result
+                return render_template('model.html',
+                        **minimum_context,
+                        label_selected = label_selected, features_selected = features_selected, test_size = test_size,
+                        reg_mods_selected = reg_mods_selected, classif_mods_selected = classif_mods_selected)
                 
             return render_template('model.html',
                                    reg_models = regression_dic,

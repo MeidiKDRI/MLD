@@ -71,50 +71,58 @@
             <li class="nav-item">
                 <h4>Control Panel</h4>
                 <hr>
-                <!-- Target Selectors -->
-                <div >
-                    <h6>Label 'y'</h6>
-                    <select id = 'target' name="fillna_col_selector" 
-                    class="selectpicker form-control" data-live-search="true" title = 'Select your Label'
-                    onchange = "selected('target', 'target_selected')">
-                        <option value="all">All</option>
-                        {% for col in col_selec %}
-                        <option value="{{ col.name }}">{{ col.name }}</option>
-                        {% endfor %}
-                    </select>
-                    <hr>
-                </div>
-                <!-- Target Selectors -->
 
-                <!-- Features Selectors -->
-                <div >
-                    <h6>Features 'X'</h6>
-                    <select id = 'features' name="fillna_col_selector" 
-                    class="selectpicker form-control" multiple data-live-search="true" title = 'Select your Label'
-                    onchange = "selected('features', 'features_selected')">
-                        <option value="all">All</option>
-                        {% for col in col_selec %}
-                        <option value="{{ col.name }}">{{ col.name }}</option>
-                        {% endfor %}
-                    </select>
-                    <hr>
-                </div>
-                <!-- Features Selectors -->
-
-                <h6>Split Train / Test</h6>
-                <div class="d-flex justify-content-center my-4">
-                    <span class="font-weight-bold blue-text mr-2 mt-1">0</span>
-                    <form class="form-group">
-                        <input type="range" min = "0" max = "1" step="0.01" class="custom-range" id="splitValueInput"
-                        onchange = "selected('splitValueInput', 'split_value')">
-                    </form>
-                    <span class="font-weight-bold blue-text ml-2 mt-1">1</span>
-                </div>
-
-
-                <!-- Models Selectors -->
                 <form method="POST" >
                 <div class="form-group">
+
+                    <!-- Target Selectors -->
+                    <div >
+                        <h6>Label 'y'</h6>
+                        <select id = 'target' name="target" 
+                        class="selectpicker form-control" data-live-search="true" title = 'Select your Label'
+                        onchange = "selected('target', 'target_selected')">
+                            <option value="all">All</option>
+                            {% for col in col_selec %}
+                            <option value="{{ col.name }}">{{ col.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <!-- Target Selectors -->
+
+                    <hr>
+
+                    <!-- Features Selectors -->
+                    <div >
+                        <h6>Features 'X'</h6>
+                        <select id = 'features' name="features" 
+                        class="selectpicker form-control" multiple data-live-search="true" title = 'Select your Label'
+                        onchange = "selected('features', 'features_selected')">
+                            <option value="all">All</option>
+                            {% for col in col_selec %}
+                            <option value="{{ col.name }}">{{ col.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <hr>
+                    </div>
+                    <!-- Features Selectors -->
+
+                    <hr>
+
+                    <!-- Split Xtrain Xtest -->
+                    <h6>Test Size for Split Train-Test</h6>
+                    <div class="d-flex justify-content-center my-4">
+                        <span class="font-weight-bold blue-text mr-2 mt-1">0</span>
+                        <form class="form-group">
+                            <input type="range" min = "0" max = "1" step="0.1" class="custom-range" id="splitValueInput" name = "splitValueInput"
+                            onchange = "selected('splitValueInput', 'split_value')">
+                        </form>
+                        <span class="font-weight-bold blue-text ml-2 mt-1">1</span>
+                    </div>
+                    <!-- Split Xtrain Xtest -->
+
+                    <hr>
+
+                    <!-- Models Selectors -->
                     <h6>Regression</h6>
                     <select id="reg_model" name="reg_model"
                     class="selectpicker form-control" multiple data-live-search="true" title = 'Select model(s)'
@@ -126,6 +134,7 @@
                     </select>
 
                     <hr>
+
                     <h6>Classification</h6>
                     <select id="class_model" name="class_model"
                     class="selectpicker form-control" multiple data-live-search="true" title = 'Select model(s)'
@@ -135,69 +144,11 @@
                         <option value="{{ model.name }}">{{ model.name }}</option>
                         {% endfor %}
                     </select>
+                    <!-- Models Selectors -->
 
                     <button type="submit" class="btn btn-info btn-block" style = 'margin-top:10px;'>TRAIN</button>
                 </div>
 
-                <hr>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="shopping-cart"></span>
-                ...
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="users"></span>
-                ...
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="bar-chart-2"></span>
-                ...
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="layers"></span>
-                ...
-                </a>
-            </li>
-            </ul>
-
-            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-            <span>...</span>
-            <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
-                <span data-feather="plus-circle"></span>
-            </a>
-            </h6>
-            <ul class="nav flex-column mb-2">
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="file-text"></span>
-                ...
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="file-text"></span>
-                ...
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="file-text"></span>
-                ...
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="file-text"></span>
-                ...
-                </a>
             </li>
             </ul>
         </div>
@@ -212,28 +163,43 @@
         </div>
 
         <div>
-            <span style = 'display: inline-block;font-weight: bold;'>Label [y] : <h6 style = 'font-weight: normal;'
-            id="target_selected"></h6></span>
+            <span style = 'display: inline-block;font-weight: bold;'>
+            Label [y] : 
+            <h6 style = 'font-weight: normal;' id="target_selected"></h6>
+            <h6 style = "display:inline-block">{%if label_selected%}{{label_selected}}{% endif %}</h6>
+            </span>
         </div>
 
         <div>
-            <span style = 'display: inline-block;font-weight: bold;'>Features [X] : <h6 style = 'font-weight: normal;'
-            id="features_selected"></h6></span>
+            <span style = 'display: inline-block;font-weight: bold;'>
+            Features [X] : 
+            <h6 style = 'font-weight: normal;' id="features_selected"></h6>
+            <h6 style = "display:inline-block">{%if features_selected%}{{features_selected}}{% endif %}</h6>
+            </span>
         </div>
 
         <div>
-            <span style = 'display: inline-block;font-weight: bold;'>Split : <h6 style = 'font-weight: normal;'
-            id="split_value"></h6></span>
+            <span style = 'display: inline-block;font-weight: bold;'>
+            Test Size : 
+            <h6 style = 'font-weight: normal;' id="split_value"></h6>
+            <h6 style = "display:inline-block">{%if test_size%}{{test_size}}{% endif %}</h6>
+            </span>
         </div>
 
         <div>
-            <span style = 'display: inline-block; font-weight: bold;'>Regression Model : <h6 style = 'font-weight: normal;'
-            id="regmod_selected"></h6></span>
+            <span style = 'display: inline-block; font-weight: bold;'>
+            Regression Model : 
+            <h6 style = 'font-weight: normal;' id="regmod_selected"></h6>
+            <h6 style = "display:inline-block">{%if reg_mods_selected%}{{reg_mods_selected}}{% endif %}</h6>
+            </span>
         </div>
 
         <div>
-            <span style = 'display: inline-block; font-weight: bold;'>Classification Model : <h6 style = 'font-weight: normal;'
-            id="classmod_selected"></h6></span>
+            <span style = 'display: inline-block; font-weight: bold;'>
+            Classification Model : 
+            <h6 style = 'font-weight: normal;' id="classmod_selected"></h6>
+            <h6 style = "display:inline-block">{%if classif_mods_selected%}{{classif_mods_selected}}{% endif %}</h6>
+            </span>
         </div>
 
             <div>
