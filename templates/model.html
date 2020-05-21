@@ -69,13 +69,13 @@
                 <h3 style = 'text-align: center'>{%if username %} {{username}} {% endif %}</h3>
             </li>
             <li class="nav-item">
+                <h4>Control Panel</h4>
                 <hr>
                 <!-- Target Selectors -->
-                <h5>Target</h5>
                 <div >
-                    <h6>Select target 'y'</h6>
+                    <h6>Label 'y'</h6>
                     <select id = 'target' name="fillna_col_selector" 
-                    class="selectpicker form-control" data-live-search="true" title = 'Select a column'
+                    class="selectpicker form-control" data-live-search="true" title = 'Select your Label'
                     onchange = "selected('target', 'target_selected')">
                         <option value="all">All</option>
                         {% for col in col_selec %}
@@ -86,6 +86,30 @@
                 </div>
                 <!-- Target Selectors -->
 
+                <!-- Features Selectors -->
+                <div >
+                    <h6>Features 'X'</h6>
+                    <select id = 'features' name="fillna_col_selector" 
+                    class="selectpicker form-control" multiple data-live-search="true" title = 'Select your Label'
+                    onchange = "selected('features', 'features_selected')">
+                        <option value="all">All</option>
+                        {% for col in col_selec %}
+                        <option value="{{ col.name }}">{{ col.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <hr>
+                </div>
+                <!-- Features Selectors -->
+
+                <h6>Split Train / Test</h6>
+                <div class="d-flex justify-content-center my-4">
+                    <span class="font-weight-bold blue-text mr-2 mt-1">0</span>
+                    <form class="form-group">
+                        <input type="range" min = "0" max = "1" step="0.01" class="custom-range" id="splitValueInput"
+                        onchange = "selected('splitValueInput', 'split_value')">
+                    </form>
+                    <span class="font-weight-bold blue-text ml-2 mt-1">1</span>
+                </div>
 
 
                 <!-- Models Selectors -->
@@ -112,7 +136,7 @@
                         {% endfor %}
                     </select>
 
-                    <button type="submit" class="btn btn-info btn-block" style = 'margin-top:10px;'>Train model(s)</button>
+                    <button type="submit" class="btn btn-info btn-block" style = 'margin-top:10px;'>TRAIN</button>
                 </div>
 
                 <hr>
@@ -184,12 +208,22 @@
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 
-            <h1 class="h2">Models Page</h1>
+            <h1 class="h2">Model Training</h1>
         </div>
 
         <div>
-            <span style = 'display: inline-block;font-weight: bold;'>Target Variable (y) : <h6 style = 'font-weight: normal;'
+            <span style = 'display: inline-block;font-weight: bold;'>Label [y] : <h6 style = 'font-weight: normal;'
             id="target_selected"></h6></span>
+        </div>
+
+        <div>
+            <span style = 'display: inline-block;font-weight: bold;'>Features [X] : <h6 style = 'font-weight: normal;'
+            id="features_selected"></h6></span>
+        </div>
+
+        <div>
+            <span style = 'display: inline-block;font-weight: bold;'>Split : <h6 style = 'font-weight: normal;'
+            id="split_value"></h6></span>
         </div>
 
         <div>

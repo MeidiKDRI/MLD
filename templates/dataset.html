@@ -141,18 +141,20 @@
             <div class="form-group mb-3" >
 
 
-                <form action = "#" method = "POST" enctype = "multipart/form-data" class = 'custom-file' style = 'display: inline-block'>
+                <form action = "#" method = "POST" enctype = "multipart/form-data" class = 'custom-file form-inline' style = 'display: inline-block'>
                     <input type = "file" class = 'custom-file-input' id = 'file_input' name = "file" oninput = "input_filename();"/>
                     <label for="file_input" id = 'file_input_label' class = 'custom-file-label'>Select file</label>
                 <input onclick = "upload('{{ request.url }}')" id = 'upload_btn' type = "submit" value="Upload" class = 'btn btn-primary'/>
 
                 </form>
-            <div id="progress_wrapper" style="display: none"></div>
-                <label id = 'progress_status'></label>
-                <div class="progress mb-3">
-                    <div id="progress" class = 'progress-bar' role = 'progressbar' aria-valuenow='25' aria-valuemin='0' aria-valuemax = '100'></div>
+
+                <!-- !!!! Not working yet !!!! Progressbar-->
+                <div id="progress_wrapper" style="display: none"></div>
+                    <label id = 'progress_status'></label>
+                    <div class="progress mb-3">
+                        <div id="progress" class = 'progress-bar' role = 'progressbar' aria-valuenow='25' aria-valuemin='0' aria-valuemax = '100'></div>
+                    </div>
                 </div>
-            </div>
             </div>
 
 

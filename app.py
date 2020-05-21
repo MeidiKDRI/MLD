@@ -440,11 +440,11 @@ def exploration() :
 
     return redirect(url_for('login'))
 
-@app.route('/process', methods = ['POST'])
+@app.route('/process',methods= ['GET','POST'])
 def process():
-    col = request.form['drop_col_selector']
-    return jsonify({'colonne' : col})
-
+    firstName = request.form.get('firstName')
+    print(format(firstName))
+    return jsonify({'output':'Full Name: ' + format(firstName)})
 
 
 ####################

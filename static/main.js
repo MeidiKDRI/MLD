@@ -53,7 +53,7 @@ function upload(url){
 
 /* Display the selection of the select input */
 function selected(select_input, selected) {
-    var selection = document.getElementById(select_input).value;
+    let selection = document.getElementById(select_input).value;
     document.getElementById(selected).innerHTML = selection;
     }
 
@@ -62,9 +62,9 @@ function selected(select_input, selected) {
 
 /* Display dynamically a box when the checkbox is selected */
 function isChecked(checkbox, box) {
-    var chboxs = document.getElementsByName(checkbox);
-    var display = "none";
-    for(var i=0;i<chboxs.length;i++) { 
+    let chboxs = document.getElementsByName(checkbox);
+    let display = "none";
+    for(let i=0;i<chboxs.length;i++) { 
         if(chboxs[i].checked){
         display = "block";
             break;
@@ -75,40 +75,23 @@ function isChecked(checkbox, box) {
 
 
 
-
-function drop(){
-
-    document.getElementById('drop_col_selector').value;
-    var fd = new FormData(document.forms['droping']);
-
-    var xhr = new XMLHttpRequest({mozSystem: true});
-    xhr.open('POST', 'http://127.0.0.1:5000/test', true);
-
-    xhr.onreadystatechange = function(){
-        if (xhr.readyState == XMLHttpRequest.DONE) {
-            document.getElementById('num').innerHTML = xhr.responseText;
-        }
-
-        xhr.onload = function() {
-        };
-        xhr.send(fd);
-    }
-}
-
-
-$(document).ready(function() {
-    $('form1').on('submit', function(event) {
-        $.ajax({
-            data : {
-                colonne : $('#drop_col_selector').val(),
-            },
-            type : 'POST',
-            url : '/process'
-        })
-        .done(function(data) {
-            $('#num').text(data.colonne).show();
+jQuery(function() {
+    jQuery("#varia").change(function() {
+        var firstName = $(this).val();
+        jQuery.ajax({
+        url: "/process",
+        type: "GET",
+        data: {
+            "firstName": String(firstName)
             
+        },
+        dataType: "html",
+        success: function(data) {
+
+            jQuery("#output").html(data);
+        }
         });
-        event.preventDefault();
     });
-});
+    console.log(firstName)
+
+    });

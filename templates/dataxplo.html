@@ -77,9 +77,10 @@
                 <div class="form-group">
 
                         <!-- Drop NaN -->
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value= true name ="dropna_checkbox" onclick="isChecked('dropna_checkbox', 'dropna_col_sel_div')">
-                            <label class="form-check-label" for="defaultCheck1">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="dropnaSwitch" value= true name ="dropna_checkbox"
+                            onclick="isChecked('dropna_checkbox', 'dropna_col_sel_div')">
+                            <label class="custom-control-label" for="dropnaSwitch">
                                 Drop NaN Values
                             </label>
                         </div>
@@ -96,39 +97,41 @@
                         <!-- Drop NaN -->
 
                         <!-- Fill NaN -->
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value= true name ="fillna_checkbox"
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="fillnaSwitch" value= true name ="fillna_checkbox"
                             onclick="isChecked('fillna_checkbox','fill_values')">
-                            <label class="form-check-label" for="defaultCheck1">
+                            <label class="custom-control-label" for="fillnaSwitch">
                                 Fill NaN Values
                             </label>
                         </div>
 
                         <!-- Displayed only if fillNaN is checked -->
                         <div id= 'fill_values' style = 'display:none'>
-                            <div class="custom-control custom-checkbox my-1 mr-sm-2">
-                                <input class="form-check-input" type="checkbox" value= true name ="fillnabymean_checkbox"
+
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="fillbymeanSwitch" value= true name ="fillnabymean_checkbox"
                                 onclick="isChecked('fillnabymean_checkbox','fillna_by_mean_col')">
-                                <label class="form-check-label" for="defaultCheck1">
+                                <label class="custom-control-label" for="fillbymeanSwitch">
                                     Fill by Mean
                                 </label>
                             </div>
 
-                            <div class="custom-control custom-checkbox my-1 mr-sm-2">
-                                <input class="form-check-input" type="checkbox" value= true name ="fillnabymedian_checkbox"
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="fillbymedianSwitch" value= true name ="fillnabymedian_checkbox"
                                 onclick="isChecked('fillnabymedian_checkbox','fillna_by_mean_col')">
-                                <label class="form-check-label" for="defaultCheck1">
+                                <label class="custom-control-label" for="fillbymedianSwitch">
                                     Fill by Median
                                 </label>
                             </div>
 
-                            <div class="custom-control custom-checkbox my-1 mr-sm-2">
-                                <input class="form-check-input" type="checkbox" value= true name ="fillnabyvalue_checkbox"
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="fillbyvalueSwitch" value= true name ="fillnabyvalue_checkbox"
                                 onclick="isChecked('fillnabyvalue_checkbox','fillna_by_val_col')">
-                                <label class="form-check-label" for="defaultCheck1">
+                                <label class="custom-control-label" for="fillbyvalueSwitch">
                                     Fill by Value
                                 </label>
                             </div>
+
                         </div>
 
                         <!-- Displayed only when fill mean is checked is checked -->
@@ -144,7 +147,7 @@
 
                         <!-- Displayed only when fill value is checked is checked -->
                         <div id = 'fillna_by_val_col'>
-                            <input name = 'fill_value' type="text">
+                            <input name = 'fill_value' type="text" class="form-control" placeholder="Enter Value">
                             <select name="fillna_col_selector"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
                                 <option value="all">All</option>
                                 {% for col in col_selec %}
@@ -164,31 +167,32 @@
 
             <li class="nav-item">
 
-                <!-- Data Cleaning Panel -->
-                <h5>Data Cleaning Panel</h5>
-                <form method="POST" name = 'droping'>
-                    <div class="form-group">
-
-                        <div class="form-check" name = 'form-duplicate'>
-                            <input id = "dropDup" class="form-check-input" type="checkbox" value= "dropDup" name ="dropDup">
-                            <label class="form-check-label" for="defaultCheck1">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="dropDup" value= 'dropDup' name ="dropDup">
+                            <label class="custom-control-label" for="dropDup">
                                 Drop duplicates
                             </label>
                         </div>
+
                         <hr>
+                <!-- Data Cleaning Panel -->
+                <h5>Data Cleaning Panel</h5>
+                <form id='testor' method="POST" name = 'droping'>
+                    <div class="form-group">
+
                         <div>
                             <h6> Select columns to drop.</h6>
-                            <select id = 'drop_col_selector' name="drop_col_selector" class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
-                                {% for col in col_selec %}
-                                <option value="{{ col.name }}">{{ col.name }}</option>
-                                {% endfor %}
+                            <select id = 'varia' name="variat" class="selectpicker form-control" data-live-search="true" title = 'Select columns'
+                            >
+                                <option value="pomme">cool</option>
+                                <option value="avocat">mega</option>
+                                <option value="tarte">puf</option>
+
                             </select>
                         </div>
                         <hr>
 
-                        <button type = 'submit' class="btn btn-info btn-block" value = 'Clean' />
                     </div>
-
 
                 </form>
                 <!-- Data Cleaning Panel -->
@@ -259,9 +263,9 @@
         </div>
 
             <div>
-                <h6 style = 'display: inline-block'>{%if df_name%}{{df_name}}{% endif %}</h6>
-                <h6 style = 'display: inline-block'>{%if nb_col%} | {{nb_col}} Columns{% endif %}</h6>
-                <h6 style = 'display: inline-block'>{%if nb_rows%} | {{nb_rows}} Rows{% endif %}</h6>
+                <h6 style = "display:inline-block">{%if df_name%}{{df_name}}{% endif %}</h6>
+                <h6 style = "display:inline-block">{%if nb_col%} | {{nb_col}} Columns{% endif %}</h6>
+                <h6 style = "display:inline-block">{%if nb_rows%} | {{nb_rows}} Rows{% endif %}</h6>
             </div>
 
             <div class="table-responsive" style = 'height: 300px; width: 100%; border-style:solid; border-width:2px;'>
@@ -269,10 +273,30 @@
                 {{ table|safe }}
                 {% endfor %}
             </div>
-        <div>
-            <h5> test<span id="num" style="font-style: italic;"></span></h5>
-        </div>
+
             <hr>
+
+
+
+
+            <form class="form-inline">
+            <!--First Name-->
+            <div class="form-group">
+            <label class="sr-only" for="firstName">First Name</label>
+            <input type="text" class="form-control" id="firstName" placeholder="First Name">
+            </div>
+            <!--Last Name-->
+            <div class="form-group">
+            <label class="sr-only" for="lastName">Last Name</label>
+            <input type="text" class="form-control" id="lastName" placeholder="Last Name">
+            </div>
+
+            <!--Submit Button-->
+            <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+            </br>
+            <div id="output"></div>
+            </br>
 
         </main>
         <!-- Main page -->
@@ -283,8 +307,10 @@
 </body>
 
 <!--Scripts-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 <script src = "{{ url_for('static', filename = 'main.js') }}"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 <!--Scripts-->
