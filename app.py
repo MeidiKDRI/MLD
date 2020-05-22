@@ -7,6 +7,27 @@ import pandas as pd
 from werkzeug.utils import secure_filename
 import io
 
+
+from sklearn.model_selection import train_test_split
+
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.cluster import KMeans
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LinearRegression, LogisticRegression, SGDClassifier
+
+from sklearn.pipeline import Pipeline
+from sklearn.feature_extraction.text import TfidfTransformer
+
+from sklearn.model_selection import cross_val_score
+from sklearn.metrics import classification_report
+
+import datetime
+import time
+from time import strftime, gmtime
+
+
 ##############################################
 ############# CONFIG #########################
 ##############################################
@@ -535,11 +556,8 @@ def model() :
             data = pd.concat([data, dummies], axis = 1)
             data.drop(['embarked', 'C'], inplace = True, axis = 1)
 
-            X = data.drop(['survived', 'ticket', 'name'], axis = 1)
-            y = data['survived']
 
-            from sklearn.model_selection import train_test_split
-            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 123456)
+
 
 
             ###########################################
@@ -551,29 +569,82 @@ def model() :
             # Empty list & dict for the training loop management
             models_list = []
             mods = {}
-            
-            
+
             if request.method == 'POST':
-                
+
                 label_selected = request.form.get('target')
                 features_selected = request.form.getlist('features')
                 test_size = request.form['splitValueInput']
                 reg_mods_selected = request.form.getlist('reg_model')
                 classif_mods_selected = request.form.getlist('class_model')
-                
+
                 # We concat the 2 models lists
                 models_list = reg_mods_selected + classif_mods_selected
-                
+                #print(models_list)
+                #print(data)
                 minimum_context = {'reg_models' : regression_dic,
                 'classif_model'  : classification_dic,
                 'col_selec' : df_col_dic}
 
-                if len(models_list) == 0 :
-                    
-                    flash('No model selected. Please select at least one model.', 'danger')
-                    return render_template('model.html', **minimum_context)
 
-                return render_template('model.html',
+
+                X = data.drop(['survived', 'ticket', 'name'], axis = 1)
+                y = data['survived']
+
+                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 123456)
+
+                #print(X_train)
+                #print(y_train)
+
+                # Training Loop        
+                models = {'Linear Regression': LinearRegression(),
+                        'Logistic Regression' : LogisticRegression(solver= 'lbfgs', max_iter= 10000),
+                        'KNN' : KNeighborsClassifier(n_neighbors = 10),
+                        'Random Forest Classifier' : RandomForestClassifier(),
+                        'Decision Tree Classifier' : DecisionTreeClassifier(),
+                        'SGDClassifier' : SGDClassifier()
+                        }
+                #print(models)
+
+                # Empties lists for the result dataTable
+                model_list = []
+                model_list = []
+                runtime_list = []
+                scor_list = []
+                csv_list = []
+
+                for k, v in models.items() :
+                    
+                    print(v)
+                    print(k)
+                    start_time = time.time()
+                    print()
+                    model = v
+                    print(model)
+                    model = model.fit(X_train, y_train)
+                    runtime = time.time() - start_time
+
+                    model_list.append(k)
+                    runtime_list.append(strftime("%H:%M:%S", gmtime(runtime)))
+
+                    # Scores
+                    scor = model.score(X_train, y_train)
+                    scor_list.append(round(scor, 3))
+
+                    y_predict = model.predict(X_test)
+                
+                print(model_list)
+                print(runtime_list)
+                print(scor_list)
+
+                # We pass all statistics into a dataframe to compare models
+                result = pd.DataFrame({'Model ' : model_list,
+                                    'Run time' : runtime_list,
+                                    'Accuracy Score' : scor_list})
+                print(result)
+
+    
+                return render_template('model.html', df_result = [result.to_html(classes = 'data')],
                         **minimum_context,
                         label_selected = label_selected, features_selected = features_selected, test_size = test_size,
                         reg_mods_selected = reg_mods_selected, classif_mods_selected = classif_mods_selected)
