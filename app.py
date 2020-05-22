@@ -643,7 +643,6 @@ def model() :
                                     'Accuracy Score' : scor_list})
                 print(result)
 
-    
                 return render_template('model.html', df_result = [result.to_html(classes = 'data')],
                         **minimum_context,
                         label_selected = label_selected, features_selected = features_selected, test_size = test_size,
