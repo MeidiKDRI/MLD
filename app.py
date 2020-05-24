@@ -605,6 +605,13 @@ def model() :
                         'SGDClassifier' : SGDClassifier()
                         }
                 #print(models)
+                
+                # Check element in the moelds list is in the models dict
+                for element in models_list :
+                    for k, v in models.items() :
+                        if k == element :
+                            # Add the key and value model in a new dict
+                            mods[k] = v
 
                 # Empties lists for the result dataTable
                 model_list = []
@@ -613,7 +620,7 @@ def model() :
                 scor_list = []
                 csv_list = []
 
-                for k, v in models.items() :
+                for k, v in mods.items() :
                     
                     print(v)
                     print(k)
