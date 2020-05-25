@@ -235,16 +235,17 @@ def dataset() :
         # idToken expires after 1 hour, so we refresh the token to avoid stale token.
         user = auth.refresh(user['refreshToken'])
         session['user'] = user
-        
-        # We fetch the user infos
-        userInfo = auth.get_account_info(user['idToken'])
-        userId   = userInfo['users'][0]['localId']
-        username = db.child("users").child(userId).child('username').get().val()
-        username = username.capitalize()
 
         global df
 
         try:
+            
+            # We fetch the user infos
+            userInfo = auth.get_account_info(user['idToken'])
+            userId   = userInfo['users'][0]['localId']
+            username = db.child("users").child(userId).child('username').get().val()
+            username = username.capitalize()
+            
             filename = session['filename']
             # Summary
             desc     = df.describe()

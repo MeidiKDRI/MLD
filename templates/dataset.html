@@ -66,7 +66,8 @@
             <ul class="nav flex-column">
 
                 <li>
-                    <h5 >
+                
+                    <h5 style = 'text-align:center'>
                     {%if username %} {{username}} {% endif %}
                     </h5>
 
@@ -79,7 +80,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <form action = "#" method = "POST" enctype = "multipart/form-data" class = 'custom-file form-inline' style = 'display: inline-block'>
+                    <form action = "#" method = "POST" enctype = "multipart/form-data" class = 'custom-file form'>
                         <input type = "file" class = 'custom-file-input' id = 'file_input' name = "file" oninput = "input_filename();"/>
                         <label for="file_input" id = 'file_input_label' class = 'custom-file-label' style = 'text-align:left'>Select file</label>
                         <input onclick = "upload('{{ request.url }}')" id = 'upload_btn' type = "submit" value="Upload" 
@@ -107,7 +108,6 @@
                     </div>
 
                 </form>
-
 
             </ul>
 
