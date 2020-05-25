@@ -7,6 +7,10 @@ import pandas as pd
 from werkzeug.utils import secure_filename
 import io
 
+from sklearn.datasets import load_iris
+from sklearn.datasets import load_boston
+from sklearn.datasets import load_diabetes
+from sklearn.datasets import load_digits
 
 from sklearn.model_selection import train_test_split
 

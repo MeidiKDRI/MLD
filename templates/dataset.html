@@ -5,6 +5,8 @@
     <title>Plateform - Machine Learning Plateform</title>
 	<link rel ="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css')}}">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
 
 	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark shadow">
         <a class="navbar-brand mb-0 h1" href="#">Machine Learning Plateform</a>
@@ -62,73 +64,55 @@
         <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
         <div class="sidebar-sticky pt-3">
             <ul class="nav flex-column">
-            <li class="nav-item">
-                <h3 style = 'text-align: center'>{%if username %} {{username}} {% endif %}</h3>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="file"></span>
-                Sidebar in progress
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="shopping-cart"></span>
-                ...
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="users"></span>
-                ...
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="bar-chart-2"></span>
-                ...
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="layers"></span>
-                ...
-                </a>
-            </li>
+
+                <li>
+                    <h5 >
+                    {%if username %} {{username}} {% endif %}
+                    </h5>
+
+                    <hr color = 'darkgrey' style='margin-top:30px;'>
+                </li>
+
+
+                <li class="nav-item">
+                    <h6 style = 'text-align: center'>Import your dataset</h6>
+                </li>
+
+                <li class="nav-item">
+                    <form action = "#" method = "POST" enctype = "multipart/form-data" class = 'custom-file form-inline' style = 'display: inline-block'>
+                        <input type = "file" class = 'custom-file-input' id = 'file_input' name = "file" oninput = "input_filename();"/>
+                        <label for="file_input" id = 'file_input_label' class = 'custom-file-label' style = 'text-align:left'>Select file</label>
+                        <input onclick = "upload('{{ request.url }}')" id = 'upload_btn' type = "submit" value="Upload" 
+                        class = 'btn btn-primary btn-md btn-block' style = 'margin-top:20px;'/>
+                    </form>
+                    <hr color = 'darkgrey' style='margin-top:30px;'>
+                </li>
+
+
+                <form method="POST" name = 'sk_dataset'>
+                    <div class="form-group">
+
+                        <div>
+                            <h6 style = 'text-align: center'> Scickit Learn dataset</h6>
+                            <select id = 'varia' name="variat" class="selectpicker form-control" data-live-search="true" title = 'Select dataset'>
+                                <option value="iris">Iris</option>
+                                <option value="wine">Wine</option>
+                                <option value="boston">Boston</option>
+                                <option value="diabetes">Diabetes</option>
+                                <option value="digits">Digits</option>
+                            </select>
+                        </div>
+                        <hr>
+
+                    </div>
+
+                </form>
+
+
             </ul>
 
-            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-            <span>...</span>
-            <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
-                <span data-feather="plus-circle"></span>
-            </a>
-            </h6>
-            <ul class="nav flex-column mb-2">
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="file-text"></span>
-                ...
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="file-text"></span>
-                ...
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="file-text"></span>
-                ...
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="file-text"></span>
-                ...
-                </a>
-            </li>
-            </ul>
+
+
         </div>
         </nav>
         <!-- Sidebar menu -->
@@ -141,12 +125,7 @@
             <div class="form-group mb-3" >
 
 
-                <form action = "#" method = "POST" enctype = "multipart/form-data" class = 'custom-file form-inline' style = 'display: inline-block'>
-                    <input type = "file" class = 'custom-file-input' id = 'file_input' name = "file" oninput = "input_filename();"/>
-                    <label for="file_input" id = 'file_input_label' class = 'custom-file-label'>Select file</label>
-                <input onclick = "upload('{{ request.url }}')" id = 'upload_btn' type = "submit" value="Upload" class = 'btn btn-primary'/>
 
-                </form>
 
                 <!-- !!!! Not working yet !!!! Progressbar-->
                 <div id="progress_wrapper" style="display: none"></div>

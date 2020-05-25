@@ -5,26 +5,12 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import SGDClassifier
 
-classif_selector = ['KNN',
-                'KMeans',
-                'Random Forest Classifier',
-                'Decision Tree Classifier']
+from sklearn.datasets import load_iris
 
-models = {'KNN' : KNeighborsClassifier(n_neighbors = 10),
-        'Random Forest Classifier' : RandomForestClassifier(),
-        'Decision Tree Classifier' : DecisionTreeClassifier(),
-        'SGDClassifier' : SGDClassifier()
-        }
+file = 'iris'
+f = load_ + file + ()
 
-mods = {}
-for element in classif_selector :
-    for k, v in models.items() :
-        if k == element :
-            mods[k] = v
-    
-print(mods)  
-    
-    
+print(f)
 
 
 
