@@ -47,18 +47,23 @@ Data Exploration, Data Visualization, Model Training, Model Prediction, Model ex
 - Settings page.
 
 ## In progress :
+- Data Visualization part.
 - Plateform.
     - Data Exploration part.
 - CSS.
-
-## To Do :
-- Presentation page.
-- Data Visualization part.
 - Model Training part.
 - Model prediction part.
 
+## To Do :
+- Presentation page.
+- Dockerize the app.
+- Deploy
+
 ## Screenshot of the first version using Dash.
 ![Screenshot001](https://user-images.githubusercontent.com/57437129/80616232-f1f31080-8a40-11ea-904b-8acaf8181f1c.png)  
+
+## Pyrebase install required :
+- pip install pyrebase.
 
 ## Credits :
 Plateform developped by Meidi KADRI - Feb 2020.  
