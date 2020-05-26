@@ -14,10 +14,10 @@
 	<div class="collapse navbar-collapse" id="navbarCollapse">
 		<ul class="navbar-nav ml-auto">
 		<li class="nav-item active">
-			<a class="nav-link" href="#">How it works <span class="sr-only">(current)</span></a>
+			<a class="nav-link" href="{{url_for('home')}}">How it works <span class="sr-only">(current)</span></a>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link" href="#">Pricing</a>
+			<a class="nav-link" href= "{{url_for('pricing')}}">Pricing</a>
 		</li>
 		</ul>
 		<form class="form-inline mt-2 mt-md-0">
@@ -54,7 +54,7 @@
 		<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
 		<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
 	</ol>
-	<div class="carousel-inner">
+	<div class="carousel-inner shadow-lg p-3 mb-5 bg-white rounded" style = 'margin:auto; width:75%; margin-top:50px; border: 1px solid black; border-radius:15px;'>
 		<div class="carousel-item active">
 		<img src="static/img/Screenshot001.png" class="d-block w-100" alt="Screenshot001">
 		</div>

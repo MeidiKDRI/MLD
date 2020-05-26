@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Pricing - Machine Learning Plateform</title>
+	<link rel ="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css')}}">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">	
+
+	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark shadow">
+	<a class="navbar-brand mb-0 h1" href="#">Machine Learning Plateform</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse" id="navbarCollapse">
+		<ul class="navbar-nav ml-auto">
+		<li class="nav-item">
+			<a class="nav-link" href="{{url_for('home')}}">How it works</a>
+		</li>
+		<li class="nav-item active">
+			<a class="nav-link" href= "{{url_for('pricing')}}">Pricing<span class="sr-only">(current)</span></a>
+		</li>
+		</ul>
+		<form class="form-inline mt-2 mt-md-0">
+		
+		<a id='navbar-btn' href = "{{url_for('register')}}"><button type="button" class="btn btn-success" >Sign-Up</button></a>
+		<a id='navbar-btn' href = "{{url_for('login')}}"><button type="button" class="btn btn-primary" >Sign-In</button></a>
+		</form>
+	</div>
+	</nav>
+
+</head>
+
+<body>
+
+    <h2 id='page-title'>Packages</h2>
+
+    <div class="row" id="princing-row">
+    <div class="container" >
+      <div class="card-deck mb-3 text-center mx-auto" class="align-self-center">
+        <div class="card mb-4 shadow">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Free</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">$0 <small class="text-muted">/ mo</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>1 Dataset per Month</li>
+              <li>1 Prediction and Export per Month</li>
+              <li>No save</li>
+              <li>No storage</li>
+            </ul>
+            <button type="button" class="btn btn-lg btn-block btn-outline-primary">Sign up for free</button>
+          </div>
+        </div>
+        <div class="card mb-4 shadow">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Pro</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">$15 <small class="text-muted">/ mo</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>10 Datasets per Month</li>
+              <li>10 Predictions and Exports</li>
+              <li>1 GB of storage</li>
+              <li>Help center access</li>
+            </ul>
+            <button type="button" class="btn btn-lg btn-block btn-outline-success">Get started</button>
+          </div>
+        </div>
+        <div class="card mb-4 shadow">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Enterprise</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">$29 <small class="text-muted">/ mo</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Unlimited Datasets</li>
+              <li>Unlimited Predictions and Exports</li>
+              <li>10 GB of storage</li>
+              <li>Help center access</li>
+            </ul>
+            <button type="button" class="btn btn-lg btn-block btn-success">Launch Now !</button>
+          </div>
+        </div>
+      </div>
+
+</body>
+
+<!-- Footer -->
+<footer class="fixed-bottom">
+  <!-- Copyright -->
+  <div>© 2020 Copyright: <a href="https://www.linkedin.com/in/meidi-kadri/">Meidi KADRI</a></div>
+  <!-- Copyright -->
+</footer> 
+<!-- Footer -->
+
+</html>
