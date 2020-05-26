@@ -57,23 +57,20 @@
     {% endwith %}
     <!-- Flash message-->
 
-    <div class="container-fluid">
-    <div class="row">
+    <div class="container-fluid h-100">
+    <div class="row h-100" style = 'overflow: auto'>
 
         <!-- Sidebar menu -->
         <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
         <div class="sidebar-sticky pt-3">
-            <ul class="nav flex-column">
+            <ul class="nav flex-column h-100">
 
                 <li>
-                
                     <h5 style = 'text-align:center'>
                     {%if username %} {{username}} {% endif %}
                     </h5>
-
                     <hr color = 'darkgrey' style='margin-top:30px;'>
                 </li>
-
 
                 <li class="nav-item">
                     <h6 style = 'text-align: center'>Import your dataset</h6>
@@ -89,29 +86,24 @@
                     <hr color = 'darkgrey' style='margin-top:30px;'>
                 </li>
 
-
-                <form method="POST" name = 'sk_dataset'>
-                    <div class="form-group">
-
-                        <div>
-                            <h6 style = 'text-align: center'> Scickit Learn dataset</h6>
-                            <select id = 'varia' name="variat" class="selectpicker form-control" data-live-search="true" title = 'Select dataset'>
-                                <option value="iris">Iris</option>
-                                <option value="wine">Wine</option>
-                                <option value="boston">Boston</option>
-                                <option value="diabetes">Diabetes</option>
-                                <option value="digits">Digits</option>
-                            </select>
+                <li>
+                    <form method="POST" name = 'sk_dataset'>
+                        <div class="form-group">
+                            <div>
+                                <h6 style = 'text-align: center'> Scickit Learn dataset</h6>
+                                <select id = 'varia' name="variat" class="selectpicker form-control" data-live-search="true" title = 'Select dataset'>
+                                    <option value="iris">Iris</option>
+                                    <option value="wine">Wine</option>
+                                    <option value="boston">Boston</option>
+                                    <option value="diabetes">Diabetes</option>
+                                    <option value="digits">Digits</option>
+                                </select>
+                            </div>
                         </div>
-                        <hr>
-
-                    </div>
-
-                </form>
+                    </form>
+                </li>
 
             </ul>
-
-
 
         </div>
         </nav>
@@ -119,69 +111,59 @@
 
         <!-- Main page -->
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 
-            <h1 class="h2">Dataset Import</h1>
-            <div class="form-group mb-3" >
+            <div class="container-fluid h-100" style = "width:100%;">
 
+                <h1 class="h2">Dataset Import</h1>
 
-
-
-                <!-- !!!! Not working yet !!!! Progressbar-->
-                <div id="progress_wrapper" style="display: none"></div>
-                    <label id = 'progress_status'></label>
-                    <div class="progress mb-3">
-                        <div id="progress" class = 'progress-bar' role = 'progressbar' aria-valuenow='25' aria-valuemin='0' aria-valuemax = '100'></div>
-                    </div>
+                <div>
+                    <h6 style = 'display: inline-block'>{%if df_name%}{{df_name}}{% endif %}</h6>
+                    <h6 style = 'display: inline-block'>{%if nb_col%} | {{nb_col}} Columns{% endif %}</h6>
+                    <h6 style = 'display: inline-block'>{%if nb_rows%} | {{nb_rows}} Rows{% endif %}</h6>
                 </div>
-            </div>
 
+                    {% for table in dataset %}
 
-            <div>
-                <h6 style = 'display: inline-block'>{%if df_name%}{{df_name}}{% endif %}</h6>
-                <h6 style = 'display: inline-block'>{%if nb_col%} | {{nb_col}} Columns{% endif %}</h6>
-                <h6 style = 'display: inline-block'>{%if nb_rows%} | {{nb_rows}} Rows{% endif %}</h6>
-            </div>
-        
-            <div class="table-responsive" style = 'height: 300px; width: 100%; border-style:solid; border-width:2px;'>
-                {% for table in dataset %}
-                {{ table|safe }}
-                {% endfor %}
-            </div>
-
-            <hr>
-
-            <div>
-                <div class="table-responsive" style = 'margin: 0 auto; width: 100%%'>
-                    {% for table in describe %}
-                    <h5>Summary</h5>
-                    {{ table|safe }}
+                        <div class="table-responsive" style = 'height: 300px; width: 100%; border-style:solid; border-width:2px;'>
+                            {{ table|safe }}
+                        </div>
                     {% endfor %}
-                </div>
-            </div>
 
-            <hr>
+                <hr>
 
-            <div class = 'row'>
-
-                <div class='col w-25'>
-                    <div class="table-responsive">
-                        {% for table in df_infos %}
-                        <h5>Dataframe Informations</h5>
+                <div>
+                    <div class="table-responsive" style = 'margin: auto; width: 75%'>
+                        {% for table in describe %}
+                        <h5>Summary</h5>
                         {{ table|safe }}
                         {% endfor %}
                     </div>
                 </div>
 
-                <div class='col w-25'>
-                    <div class="table-responsive">
-                        {% for table in df_na %}
-                        <h5>Missing values</h5>
-                        {{ table|safe }}
-                        {% endfor %}
+                <hr>
+
+                <div class = 'row' style = 'margin:auto; height:55%'>
+
+                    <div class='col w-50'>
+                        <div class="table-responsive" style = 'margin: auto; width: 50%'>
+                            {% for table in df_infos %}
+                            <h5>Dataframe Informations</h5>
+                            {{ table|safe }}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class='col w-50'>
+                        <div class="table-responsive" style = 'margin: auto; width: 50%'>
+                            {% for table in df_na %}
+                            <h5>Missing values</h5>
+                            {{ table|safe }}
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
+
         </main>
         <!-- Main page -->
 

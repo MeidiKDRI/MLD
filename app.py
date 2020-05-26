@@ -7,10 +7,16 @@ import pandas as pd
 from werkzeug.utils import secure_filename
 import io
 
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+
 from sklearn.datasets import load_iris
 from sklearn.datasets import load_boston
 from sklearn.datasets import load_diabetes
 from sklearn.datasets import load_digits
+from sklearn.datasets import load_breast_cancer
+
 
 from sklearn.model_selection import train_test_split
 
@@ -30,6 +36,20 @@ from sklearn.metrics import classification_report
 import datetime
 import time
 from time import strftime, gmtime
+
+
+
+def do_plot():
+    # Loading 
+    data = load_breast_cancer()
+    
+    plt.hist(data)
+
+    # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
+    bytes_image = io.BytesIO()
+    plt.savefig(bytes_image, format='png')
+    bytes_image.seek(0)
+    return bytes_image
 
 
 ##############################################
@@ -76,6 +96,14 @@ def pricing() :
 ############
 # Login page
 ############
+
+@app.route('/correlation_matrix', methods=['GET'])
+def correlation_matrix():
+    bytes_obj = do_plot()
+    
+    return send_file(bytes_obj,
+                     attachment_filename='plot.png',
+                     mimetype='image/png')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -352,107 +380,112 @@ def exploration() :
             filename = session['filename']
 
             if request.method == 'POST' :
+                
+                if request.form['submit'] == 'cleanNan' :
 
-                # Drop NA
-                dropna_checkbox = request.form.get('dropna_checkbox')
-                dropna_col_selected = request.form.getlist('dropna_col_selector')
+                    # Drop NA
+                    dropna_checkbox = request.form.get('dropna_checkbox')
+                    dropna_col_selected = request.form.getlist('dropna_col_selector')
 
-                # Fill NA
-                fillna_checkbox = request.form.get('fillna_checkbox')
+                    # Fill NA
+                    fillna_checkbox = request.form.get('fillna_checkbox')
 
-                # Drop NA Management
-                if dropna_checkbox == 'true' :
+                    # Drop NA Management
+                    if dropna_checkbox == 'true' :
 
-                    # We handle dropna() depending on selections.
-                    if dropna_col_selected[0].lower() == 'all' :
+                        # We handle dropna() depending on selections.
+                        if dropna_col_selected[0].lower() == 'all' :
 
-                        df = df.dropna()
-                        # New Dataframe shape
-                        nb_rows  = df.shape[0]
-                        nb_col   = df.shape[1]
+                            df = df.dropna()
+                            # New Dataframe shape
+                            nb_rows  = df.shape[0]
+                            nb_col   = df.shape[1]
 
-                    else :
-
-                        # We drop na on specific columns selected by user
-                        df = df.dropna(subset = (dropna_col_selected))
-                        # New Dataframe shape
-                        nb_rows  = df.shape[0]
-                        nb_col   = df.shape[1]
-
-                    return render_template('dataxplo.html',
-                                           df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
-                                           dataset = [df.to_html(classes = 'data')],
-                                           col_selec = df_col_dic)
-
-                # Fill NA Management
-                elif fillna_checkbox == 'true' :
-
-                    # Get the value from fillna checkboxes
-                    fillnabymean_checkbox = request.form.get('fillnabymean_checkbox')
-                    fillnabymedian_checkbox = request.form.get('fillnabymedian_checkbox')
-                    fillnabyvalue_checkbox = request.form.get('fillnabyvalue_checkbox')
-
-                    fillna_col_selector = request.form.getlist('fillna_col_selector')
-
-                    # Fill NaN by Mean Value
-                    if  fillnabymean_checkbox == 'true' :
-
-                        # On the full dataframe
-                        if fillna_col_selector[0].lower() == 'all' :
-
-                            df = df.fillna(df.mean())
-
-                        # On selected columns
                         else :
 
-                            for col in fillna_col_selector:
-                                df[col].fillna(df[col].mean(), inplace=True)
+                            # We drop na on specific columns selected by user
+                            df = df.dropna(subset = (dropna_col_selected))
+                            # New Dataframe shape
+                            nb_rows  = df.shape[0]
+                            nb_col   = df.shape[1]
 
                         return render_template('dataxplo.html',
-                            df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
-                            dataset = [df.to_html(classes = 'data')],
-                            col_selec = df_col_dic)
+                                            df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
+                                            dataset = [df.to_html(classes = 'data')],
+                                            col_selec = df_col_dic)
 
-                    # Fill NaN by Median Value
-                    elif  fillnabymean_checkbox == 'true' :
+                    # Fill NA Management
+                    elif fillna_checkbox == 'true' :
 
-                        # On the full dataframe
-                        if fillna_col_selector[0].lower() == 'all' :
+                        # Get the value from fillna checkboxes
+                        fillnabymean_checkbox = request.form.get('fillnabymean_checkbox')
+                        fillnabymedian_checkbox = request.form.get('fillnabymedian_checkbox')
+                        fillnabyvalue_checkbox = request.form.get('fillnabyvalue_checkbox')
 
-                            df = df.fillna(df.median())
+                        fillna_col_selector = request.form.getlist('fillna_col_selector')
 
-                        # On selected columns
-                        else :
+                        # Fill NaN by Mean Value
+                        if  fillnabymean_checkbox == 'true' :
 
-                            for col in fillna_col_selector:
-                                df[col].fillna(df[col].median(), inplace=True)
+                            # On the full dataframe
+                            if fillna_col_selector[0].lower() == 'all' :
 
-                        return render_template('dataxplo.html',
-                            df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
-                            dataset = [df.to_html(classes = 'data')],
-                            col_selec = df_col_dic)
+                                df = df.fillna(df.mean())
 
-                    # Fill NaN by a specific Value
-                    elif fillnabyvalue_checkbox == 'true' :
+                            # On selected columns
+                            else :
 
-                        # We fetch the value input by user
-                        na_value = request.form.get('fill_value')
+                                for col in fillna_col_selector:
+                                    df[col].fillna(df[col].mean(), inplace=True)
 
-                        # On the full dataframe
-                        if fillna_col_selector[0].lower() == 'all' :
+                            return render_template('dataxplo.html',
+                                df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
+                                dataset = [df.to_html(classes = 'data')],
+                                col_selec = df_col_dic)
 
-                            df = df.fillna(na_value)
+                        # Fill NaN by Median Value
+                        elif  fillnabymean_checkbox == 'true' :
 
-                        # On selected columns
-                        else :
+                            # On the full dataframe
+                            if fillna_col_selector[0].lower() == 'all' :
 
-                            for col in fillna_col_selector:
-                                df[col].fillna(na_value, inplace=True)
+                                df = df.fillna(df.median())
 
-                        return render_template('dataxplo.html',
-                            df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
-                            dataset = [df.to_html(classes = 'data')],
-                            col_selec = df_col_dic)
+                            # On selected columns
+                            else :
+
+                                for col in fillna_col_selector:
+                                    df[col].fillna(df[col].median(), inplace=True)
+
+                            return render_template('dataxplo.html',
+                                df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
+                                dataset = [df.to_html(classes = 'data')],
+                                col_selec = df_col_dic)
+
+                        # Fill NaN by a specific Value
+                        elif fillnabyvalue_checkbox == 'true' :
+
+                            # We fetch the value input by user
+                            na_value = request.form.get('fill_value')
+
+                            # On the full dataframe
+                            if fillna_col_selector[0].lower() == 'all' :
+
+                                df = df.fillna(na_value)
+
+                            # On selected columns
+                            else :
+
+                                for col in fillna_col_selector:
+                                    df[col].fillna(na_value, inplace=True)
+
+                            return render_template('dataxplo.html',
+                                df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
+                                dataset = [df.to_html(classes = 'data')],
+                                col_selec = df_col_dic)
+
+                elif request.form['submit'] == 'dropDup' :
+                    return render_template('settings.html')
 
                 return render_template('dataxplo.html', col_selec = df_col_dic)
 

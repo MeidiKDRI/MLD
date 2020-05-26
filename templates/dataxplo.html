@@ -158,23 +158,20 @@
                         <hr>
                         <!-- Fill NaN -->
 
-                    <button type="submit" class="btn btn-info btn-block" style = 'margin-top:10px;'>Clean NaN</button>
+                    <button name= "submit" type="submit" class="btn btn-info btn-block" style = 'margin-top:10px;' value = 'cleanNan'>Clean NaN</button>
+
+                    <hr>
+
+                    <button name= "submit" type="submit" class="btn btn-info btn-block" style = 'margin-top:10px;' value = "dropDup">Drop duplicates</button>
+
                 </div>
                 </form>
                 <!-- Missing Values Selectors -->
                 <hr>
             </li>
 
-            <li class="nav-item">
+            <li>
 
-                        <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="dropDup" value= 'dropDup' name ="dropDup">
-                            <label class="custom-control-label" for="dropDup">
-                                Drop duplicates
-                            </label>
-                        </div>
-
-                        <hr>
                 <!-- Data Cleaning Panel -->
                 <h5>Data Cleaning Panel</h5>
                 <form id='testor' method="POST" name = 'droping'>
@@ -199,13 +196,7 @@
                 <hr>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="users"></span>
-                ...
-                </a>
-            </li>
-            </ul>
+        </ul>
 
         </div>
         </nav>
@@ -232,25 +223,6 @@
 
             <hr>
 
-            <form class="form-inline">
-            <!--First Name-->
-            <div class="form-group">
-            <label class="sr-only" for="firstName">First Name</label>
-            <input type="text" class="form-control" id="firstName" placeholder="First Name">
-            </div>
-            <!--Last Name-->
-            <div class="form-group">
-            <label class="sr-only" for="lastName">Last Name</label>
-            <input type="text" class="form-control" id="lastName" placeholder="Last Name">
-            </div>
-
-            <!--Submit Button-->
-            <button type="submit" class="btn btn-default">Submit</button>
-            </form>
-            </br>
-            <div id="output"></div>
-            </br>
-
         </main>
         <!-- Main page -->
 
@@ -261,9 +233,7 @@
 
 <!--Scripts-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
 <script src = "{{ url_for('static', filename = 'main.js') }}"></script>
-
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 <!--Scripts-->
