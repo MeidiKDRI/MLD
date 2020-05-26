@@ -3,9 +3,32 @@
 
 <head>
 	<title>Login Page - Machine Learning Plateform</title>
-
 	<link rel ="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css')}}">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">	
+
+	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark shadow">
+	<a class="navbar-brand mb-0 h1" href="#">Machine Learning Plateform</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse" id="navbarCollapse">
+		<ul class="navbar-nav ml-auto">
+		<li class="nav-item">
+			<a class="nav-link" href="{{url_for('home')}}">How it works</span></a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href= "{{url_for('pricing')}}">Pricing</a>
+		</li>
+		<li>
+			<a id='navbar-btn' href = "{{url_for('register')}}"><button type="button" class="btn btn-success" >Sign-Up</button></a>
+		</li>
+		<li>
+			<a id='navbar-btn' href = "{{url_for('login')}}"><button type="button" class="btn btn-primary" >Sign-In</button></a>
+		</li>
+		</ul>
+
+	</div>
+	</nav>
 
 </head>
 
@@ -28,25 +51,27 @@
 
   <h1 id='page-title'>Login Page</h1>
 
-	<div class="card" class="shadow p-3 mb-5 bg-white rounded">
+	<div class="card" class="shadow p-3 mb-5 bg-white rounded" style = 'margin: auto; width: 50%'>
 		<div class="card-header" >
     		Please fill the informations below
-  		</div>
-		<div class="card-body">
+  	</div>
+      <div class="card-body">
 
-			<form class="d-flex flex-column bd-highlight mb-3" action="#" method="post">
-				<h2></h2>
-				<label for="inputEmail" class="text-info">Email address</label>
-				<input type="email" id="inputEmail" name="email"  placeholder="Email address" required autofocus>
-				<label for="inputPassword" class="text-info">Password</label>
-				<input type="password" id="inputPassword" name="pass"  placeholder="Password" required>
-				<button id='btn' class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-			</form>
-		</div>
-
+        <form class="d-flex flex-column bd-highlight mb-3" action="#" method="post">
+          <h2></h2>
+          <label for="inputEmail" class="text-info">Email address</label>
+          <input type="email" id="inputEmail" name="email"  placeholder="Email address" required autofocus>
+          <label for="inputPassword" class="text-info">Password</label>
+          <input type="password" id="inputPassword" name="pass"  placeholder="Password" required>
+          <button id='btn' class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        </form>
+      </div>
+	  
+    <div class="container-fluid" style = 'text-align:center; margin-bottom:20px;'>
+      <a class="text-info" href="{{url_for('change_password')}}">Forgot Your Password ?</a>
     </div>
 
-	<div class="container-fluid"><a class="text-info" href="{{url_for('change_password')}}">Forgot Your Password ?</a></div>
+  </div>
 
 </body>
 

@@ -19,12 +19,14 @@
 		<li class="nav-item">
 			<a class="nav-link" href= "{{url_for('pricing')}}">Pricing</a>
 		</li>
+		<li>
+			<a id='navbar-btn' href = "{{url_for('register')}}"><button type="button" class="btn btn-success" >Sign-Up</button></a>
+		</li>
+		<li>
+			<a id='navbar-btn' href = "{{url_for('login')}}"><button type="button" class="btn btn-primary" >Sign-In</button></a>
+		</li>
 		</ul>
-		<form class="form-inline mt-2 mt-md-0">
-		
-		<a id='navbar-btn' href = "{{url_for('register')}}"><button type="button" class="btn btn-success" >Sign-Up</button></a>
-		<a id='navbar-btn' href = "{{url_for('login')}}"><button type="button" class="btn btn-primary" >Sign-In</button></a>
-		</form>
+
 	</div>
 	</nav>
 

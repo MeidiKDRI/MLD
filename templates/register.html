@@ -4,59 +4,37 @@
 <head>
   <title>Sign Up Page - Machine Learning Plateform</title>
 	<link rel ="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css')}}">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">	
+
+	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark shadow">
+	<a class="navbar-brand mb-0 h1" href="#">Machine Learning Plateform</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse" id="navbarCollapse">
+		<ul class="navbar-nav ml-auto">
+		<li class="nav-item">
+			<a class="nav-link" href="{{url_for('home')}}">How it works</span></a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href= "{{url_for('pricing')}}">Pricing</a>
+		</li>
+		<li>
+			<a id='navbar-btn' href = "{{url_for('register')}}"><button type="button" class="btn btn-success" >Sign-Up</button></a>
+		</li>
+		<li>
+			<a id='navbar-btn' href = "{{url_for('login')}}"><button type="button" class="btn btn-primary" >Sign-In</button></a>
+		</li>
+		</ul>
+
+	</div>
+	</nav>
+
 </head>
 
+
+
 <body>
-
-  <h1 id='page-title'>Sign-Up Page</h1>
-
-  <div class="reg-container">
-
-
-    </form>
-  </div>
-
-
-	<div class="card" class="shadow p-3 mb-5 bg-white rounded">
-		<div class="card-header" >
-    		Please fill the form bellow to register
-  		</div>
-		<div class="card-body">
-		{% if warning %}
-			<div class="alert alert-danger">
-				<h2>{{warning}}</h2>
-			</div>
-		{% endif %}
-
-    <form class="d-flex flex-column bd-highlight mb-3" action="#" method="post">
-
-      <label class="text-info" for="inputUsername">Username</label>
-      <input type="name" id="inputName" name="username"  placeholder="Username" required autofocus>
-
-      <label class="text-info" for "inputFunction">Function</label>
-      <select name="function" id = "funct-select" class="custom-select">
-        <option value="student">Student</option>
-        <option value="teacher">Teacher</option>
-        <option value="pro">Professionnal</option>
-        <option value="curious">Only Curious</option>
-      </select>
-
-      <label class="text-info" for="inputEmail">Email address</label>
-      <input type="email" id="inputEmail" name="email"  placeholder="Email address" required autofocus>
-
-      <label class="text-info" for="inputPassword">Password</label>
-      <input type="password" id="inputPassword" name="pass"  placeholder="Password" required>
-
-      <label class="text-info" for="inputPasswordConfirmation">Confirm Password</label>
-      <input type="password" id="inputPasswordConfirmation" name="pass_confirmation"  placeholder="Confirm Password" required>
-
-      <button id='btn' class="btn btn-lg btn-primary btn-block" type="submit">Sign-Up</button>
-		</div>
-
-    </div>
-
-</body>
 
     <!-- Flash message-->
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -72,6 +50,52 @@
         {% endif %}
     {% endwith %}
     <!-- Flash message-->
+
+  <h1 id='page-title'>Sign-Up Page</h1>
+
+	<div class="card" class="shadow p-3 mb-5 bg-white rounded" style = 'margin: auto; width: 50%'>
+		<div class="card-header" >
+    		Please fill the form bellow to register
+  	</div>
+    <div class="card-body">
+
+      <form class="d-flex flex-column bd-highlight mb-3" action="#" method="post">
+
+        <label class="text-info" for="inputUsername">Username</label>
+        <input type="name" id="inputName" name="username"  placeholder="Username" required autofocus>
+
+        <label class="text-info" for "inputFunction">Function</label>
+        <select name="function" id = "funct-select" class="custom-select">
+          <option value="student">Student</option>
+          <option value="teacher">Teacher</option>
+          <option value="pro">Professionnal</option>
+          <option value="curious">Only Curious</option>
+        </select>
+
+        <label class="text-info" for="inputEmail">Email address</label>
+        <input type="email" id="inputEmail" name="email"  placeholder="Email address" required autofocus>
+
+        <label class="text-info" for="inputPassword">Password</label>
+        <input type="password" id="inputPassword" name="pass"  placeholder="Password" required>
+
+        <label class="text-info" for="inputPasswordConfirmation">Confirm Password</label>
+        <input type="password" id="inputPasswordConfirmation" name="pass_confirmation"  placeholder="Confirm Password" required>
+
+        <button id='btn' class="btn btn-lg btn-primary btn-block" type="submit">Sign-Up</button>
+
+      </form>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  </div>
+
+</body>
 
 <!-- Footer -->
 <footer class="fixed-bottom">
