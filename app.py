@@ -310,37 +310,94 @@ def dataset() :
 
             if request.method == 'POST':
 
-                f        = request.files['file']
-                filename = secure_filename(f.filename)
-                session['filename'] = filename
+                if request.form['upload'] == 'upload_dataset' :
+                    f        = request.files['file']
+                    filename = secure_filename(f.filename)
+                    session['filename'] = filename
+                    
+                    df = pd.read_csv(f)
+
+                    # Summary
+                    desc     = df.describe()
+
+                    # Dataframe shape
+                    nb_rows  = df.shape[0]
+                    nb_col   = df.shape[1]
+
+                    # Dataframe informations
+                    # To display df.infos() in html template, we need to make some manipulations first.
+                    buffer = pd.compat.StringIO()
+                    df.info(buf=buffer)
+                    infos = buffer.getvalue()
+                    df_infos = pd.DataFrame(infos.split('\n'), columns= ['info'])
+
+                    # Missing Values Count
+                    df_na = df.isna().sum()
+                    df_na = pd.DataFrame(df_na, columns= ['Missing Value Count'])
+
+                    return render_template('dataset.html',
+                                            df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
+                                            dataset = [df.to_html(classes = 'data')],
+                                            describe = [desc.to_html(classes = 'data')],
+                                            df_infos = [df_infos.to_html(classes = 'data')],
+                                            df_na = [df_na.to_html(classes= 'data')])
+
+                elif request.form['upload'] == 'load_dataset' :
+
+                    df_to_load = request.form.get('dataset_to_load')
+
+                    if df_to_load == 'iris' :
+                        dataset = load_iris()
+                    elif df_to_load == 'boston' :
+                        dataset = load_boston()
+                    elif df_to_load == 'diabetes' :
+                        dataset = load_diabetes()
+                    elif df_to_load == 'digits' :
+                        dataset = load_digits()
+                    elif df_to_load == 'cancer' :
+                        dataset = load_breast_cancer()
+
+                    features = dataset.data
+                    y = dataset.target
+                    
+                    df = pd.DataFrame(features, columns=dataset.feature_names)
+
+                    filename = df_to_load
+                    session['filename'] = filename
+                    
+                    # Summary
+                    desc     = df.describe()
+
+                    # Dataframe shape
+                    nb_rows  = dataset.data.shape[0]
+                    nb_col   = dataset.data.shape[1]
+
+                    # Dataframe informations
+                    # To display df.infos() in html template, we need to make some manipulations first.
+                    buffer = pd.compat.StringIO()
+                    df.info(buf=buffer)
+                    infos = buffer.getvalue()
+                    df_infos = pd.DataFrame(infos.split('\n'), columns= ['info'])
+                    
+                    # Missing Values Count
+                    df_na = df.isna().sum()
+                    df_na = pd.DataFrame(df_na, columns= ['Missing Value Count'])
+
+                    return render_template('dataset.html',
+                                            df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
+                                            dataset = [df.to_html(classes = 'data')],
+                                            describe = [desc.to_html(classes = 'data')],
+                                            df_infos = [df_infos.to_html(classes = 'data')],
+                                            df_na = [df_na.to_html(classes= 'data')])
+
+                # Ne fonctionne pas correctement
+                elif request.form['upload'] == 'reset_dataset' :
+
+                    df = None
+                    session.pop('filename', None)
+
+                    return render_template('dataset.html')
                 
-                df = pd.read_csv(f)
-
-                # Summary
-                desc     = df.describe()
-
-                # Dataframe shape
-                nb_rows  = df.shape[0]
-                nb_col   = df.shape[1]
-
-                # Dataframe informations
-                # To display df.infos() in html template, we need to make some manipulations first.
-                buffer = pd.compat.StringIO()
-                df.info(buf=buffer)
-                infos = buffer.getvalue()
-                df_infos = pd.DataFrame(infos.split('\n'), columns= ['info'])
-
-                # Missing Values Count
-                df_na = df.isna().sum()
-                df_na = pd.DataFrame(df_na, columns= ['Missing Value Count'])
-
-                return render_template('dataset.html',
-                                        df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
-                                        dataset = [df.to_html(classes = 'data')],
-                                        describe = [desc.to_html(classes = 'data')],
-                                        df_infos = [df_infos.to_html(classes = 'data')],
-                                        df_na = [df_na.to_html(classes= 'data')])
-
         return render_template('dataset.html')
 
     return redirect(url_for('login'))
@@ -488,8 +545,7 @@ def exploration() :
                 elif request.form['submit'] == 'dropDup' :
 
                     dup_col_selector = request.form.getlist('dup_col_selector')
-
-                    df = df.drop_duplicates(subset= dup_col_selector)
+                    df.drop_duplicates(subset= dup_col_selector, keep = False, inplace = True)
                     
                     return render_template('dataxplo.html',
                                            df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
@@ -499,14 +555,12 @@ def exploration() :
                 elif request.form['submit'] == 'dropCol' :
 
                     drop_col_selector = request.form.getlist('drop_col_selector')
-                    df = df.drop(columns= drop_col_selector)
+                    df.drop(columns= drop_col_selector, axis = 1, inplace = True)
 
                     return render_template('dataxplo.html',
                                            df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
                                            dataset = [df.to_html(classes = 'data')],
                                            col_selec = df_col_dic)
-                
-
 
                 return render_template('dataxplo.html', col_selec = df_col_dic)
 

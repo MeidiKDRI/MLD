@@ -8,8 +8,9 @@ from sklearn.linear_model import SGDClassifier
 from sklearn.datasets import load_iris
 
 file = 'iris'
-f = load_ + file + ()
+test  ='load_' + file + '()'
 
+f = test.replace("'",'')
 print(f)
 
 

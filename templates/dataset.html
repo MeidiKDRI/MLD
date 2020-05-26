@@ -80,26 +80,40 @@
                     <form action = "#" method = "POST" enctype = "multipart/form-data" class = 'custom-file form'>
                         <input type = "file" class = 'custom-file-input' id = 'file_input' name = "file" oninput = "input_filename();"/>
                         <label for="file_input" id = 'file_input_label' class = 'custom-file-label' style = 'text-align:left'>Select file</label>
-                        <input onclick = "upload('{{ request.url }}')" id = 'upload_btn' type = "submit" value="Upload" 
-                        class = 'btn btn-primary btn-md btn-block' style = 'margin-top:20px;'/>
+                         <button name= "upload" type="submit" class="btn btn-primary btn-block" style = 'margin-top:10px;' value = "upload_dataset">
+                        Upload Dataset
+                        </button>
                     </form>
                     <hr color = 'darkgrey' style='margin-top:30px;'>
                 </li>
 
                 <li>
-                    <form method="POST" name = 'sk_dataset'>
+                    <form method="POST">
                         <div class="form-group">
                             <div>
                                 <h6 style = 'text-align: center'> Scickit Learn dataset</h6>
-                                <select id = 'varia' name="variat" class="selectpicker form-control" data-live-search="true" title = 'Select dataset'>
+                                <select  name="dataset_to_load" class="selectpicker form-control" data-live-search="true" title = 'Select dataset'>
                                     <option value="iris">Iris</option>
-                                    <option value="wine">Wine</option>
                                     <option value="boston">Boston</option>
                                     <option value="diabetes">Diabetes</option>
                                     <option value="digits">Digits</option>
+                                    <option value="cancer">Breast Cancer</option>
                                 </select>
                             </div>
                         </div>
+                        <button name= "upload" type="submit" class="btn btn-primary btn-block" style = 'margin-top:10px;' value = "load_dataset">
+                        Load Dataset
+                        </button>
+                    </form>
+                    <hr color = 'darkgrey' style='margin-top:30px;'>
+
+                </li>
+
+                <li>
+                    <form method="POST">
+                        <button name= "upload" type="submit" class="btn btn-primary btn-block" style = 'margin-top:10px;' value = "reset_dataset">
+                        Reset Dataset
+                        </button>
                     </form>
                 </li>
 
