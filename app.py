@@ -484,8 +484,29 @@ def exploration() :
                                 dataset = [df.to_html(classes = 'data')],
                                 col_selec = df_col_dic)
 
+                ## Drop duplicates
                 elif request.form['submit'] == 'dropDup' :
-                    return render_template('settings.html')
+
+                    dup_col_selector = request.form.getlist('dup_col_selector')
+
+                    df = df.drop_duplicates(subset= dup_col_selector)
+                    
+                    return render_template('dataxplo.html',
+                                           df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
+                                           dataset = [df.to_html(classes = 'data')],
+                                           col_selec = df_col_dic)
+                ## Drop column(s)
+                elif request.form['submit'] == 'dropCol' :
+
+                    drop_col_selector = request.form.getlist('drop_col_selector')
+                    df = df.drop(columns= drop_col_selector)
+
+                    return render_template('dataxplo.html',
+                                           df_name = filename, nb_col = nb_col, nb_rows = nb_rows,
+                                           dataset = [df.to_html(classes = 'data')],
+                                           col_selec = df_col_dic)
+                
+
 
                 return render_template('dataxplo.html', col_selec = df_col_dic)
 

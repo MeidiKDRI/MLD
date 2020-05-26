@@ -72,97 +72,98 @@
                 <hr>
 
                 <!-- Missing Values Selectors -->
-                <h5>Missing Values</h5>
+                <h5 style= "text-align:center">Missing Values</h5>
+                <hr>
+
                 <form method="POST" >
                 <div class="form-group">
 
-                        <!-- Drop NaN -->
+                    <!-- Drop NaN -->
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="dropnaSwitch" value= true name ="dropna_checkbox"
+                        onclick="isChecked('dropna_checkbox', 'dropna_col_sel_div')">
+                        <label class="custom-control-label" for="dropnaSwitch">
+                            Drop NaN Values
+                        </label>
+                    </div>
+
+                    <!-- Displayed only if DroplNaN is checked -->
+                    <div id = 'dropna_col_sel_div'>
+                        <select name="dropna_col_selector"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
+                        <option value="all">All</option>
+                        {% for col in col_selec %}
+                        <option value="{{ col.name }}">{{ col.name }}</option>
+                        {% endfor %}
+                        </select>
+                    </div>
+                    <!-- Drop NaN -->
+
+                    <!-- Fill NaN -->
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="fillnaSwitch" value= true name ="fillna_checkbox"
+                        onclick="isChecked('fillna_checkbox','fill_values')">
+                        <label class="custom-control-label" for="fillnaSwitch">
+                            Fill NaN Values
+                        </label>
+                    </div>
+
+                    <!-- Displayed only if fillNaN is checked -->
+                    <div id= 'fill_values' style = 'display:none'>
+
                         <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="dropnaSwitch" value= true name ="dropna_checkbox"
-                            onclick="isChecked('dropna_checkbox', 'dropna_col_sel_div')">
-                            <label class="custom-control-label" for="dropnaSwitch">
-                                Drop NaN Values
+                            <input type="checkbox" class="custom-control-input" id="fillbymeanSwitch" value= true name ="fillnabymean_checkbox"
+                            onclick="isChecked('fillnabymean_checkbox','fillna_by_mean_col')">
+                            <label class="custom-control-label" for="fillbymeanSwitch">
+                                Fill by Mean
                             </label>
                         </div>
 
-                        <!-- Displayed only if DroplNaN is checked -->
-                        <div id = 'dropna_col_sel_div'>
-                            <select name="dropna_col_selector"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="fillbymedianSwitch" value= true name ="fillnabymedian_checkbox"
+                            onclick="isChecked('fillnabymedian_checkbox','fillna_by_mean_col')">
+                            <label class="custom-control-label" for="fillbymedianSwitch">
+                                Fill by Median
+                            </label>
+                        </div>
+
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="fillbyvalueSwitch" value= true name ="fillnabyvalue_checkbox"
+                            onclick="isChecked('fillnabyvalue_checkbox','fillna_by_val_col')">
+                            <label class="custom-control-label" for="fillbyvalueSwitch">
+                                Fill by Value
+                            </label>
+                        </div>
+
+                    </div>
+
+                    <!-- Displayed only when fill mean is checked is checked -->
+                    <div id = 'fillna_by_mean_col'>
+                        <select name="fillna_col_selector"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
                             <option value="all">All</option>
                             {% for col in col_selec %}
                             <option value="{{ col.name }}">{{ col.name }}</option>
                             {% endfor %}
-                            </select>
-                        </div>
-                        <!-- Drop NaN -->
-
-                        <!-- Fill NaN -->
-                        <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="fillnaSwitch" value= true name ="fillna_checkbox"
-                            onclick="isChecked('fillna_checkbox','fill_values')">
-                            <label class="custom-control-label" for="fillnaSwitch">
-                                Fill NaN Values
-                            </label>
-                        </div>
-
-                        <!-- Displayed only if fillNaN is checked -->
-                        <div id= 'fill_values' style = 'display:none'>
-
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="fillbymeanSwitch" value= true name ="fillnabymean_checkbox"
-                                onclick="isChecked('fillnabymean_checkbox','fillna_by_mean_col')">
-                                <label class="custom-control-label" for="fillbymeanSwitch">
-                                    Fill by Mean
-                                </label>
-                            </div>
-
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="fillbymedianSwitch" value= true name ="fillnabymedian_checkbox"
-                                onclick="isChecked('fillnabymedian_checkbox','fillna_by_mean_col')">
-                                <label class="custom-control-label" for="fillbymedianSwitch">
-                                    Fill by Median
-                                </label>
-                            </div>
-
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="fillbyvalueSwitch" value= true name ="fillnabyvalue_checkbox"
-                                onclick="isChecked('fillnabyvalue_checkbox','fillna_by_val_col')">
-                                <label class="custom-control-label" for="fillbyvalueSwitch">
-                                    Fill by Value
-                                </label>
-                            </div>
-
-                        </div>
-
-                        <!-- Displayed only when fill mean is checked is checked -->
-                        <div id = 'fillna_by_mean_col'>
-                            <select name="fillna_col_selector"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
-                                <option value="all">All</option>
-                                {% for col in col_selec %}
-                                <option value="{{ col.name }}">{{ col.name }}</option>
-                                {% endfor %}
-                            </select>
-                            <hr>
-                        </div>
-
-                        <!-- Displayed only when fill value is checked is checked -->
-                        <div id = 'fillna_by_val_col'>
-                            <input name = 'fill_value' type="text" class="form-control" placeholder="Enter Value">
-                            <select name="fillna_col_selector"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
-                                <option value="all">All</option>
-                                {% for col in col_selec %}
-                                <option value="{{ col.name }}">{{ col.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
+                        </select>
                         <hr>
-                        <!-- Fill NaN -->
+                    </div>
 
-                    <button name= "submit" type="submit" class="btn btn-info btn-block" style = 'margin-top:10px;' value = 'cleanNan'>Clean NaN</button>
-
+                    <!-- Displayed only when fill value is checked is checked -->
+                    <div id = 'fillna_by_val_col'>
+                        <input name = 'fill_value' type="text" class="form-control" placeholder="Enter Value">
+                        <select name="fillna_col_selector"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
+                            <option value="all">All</option>
+                            {% for col in col_selec %}
+                            <option value="{{ col.name }}">{{ col.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                     <hr>
+                    <!-- Fill NaN -->
 
-                    <button name= "submit" type="submit" class="btn btn-info btn-block" style = 'margin-top:10px;' value = "dropDup">Drop duplicates</button>
+                    <!-- Clean Data Btn -->
+                    <button name= "submit" type="submit" class="btn btn-info btn-block" style = 'margin-top:10px;' value = 'cleanNan'>
+                    Clean NaN
+                    </button>
 
                 </div>
                 </form>
@@ -170,32 +171,50 @@
                 <hr>
             </li>
 
+            <!-- Data Cleaning Panel -->
             <li>
+                <h5 style= "text-align:center">Data Cleaning Panel</h5>
+                <hr>
 
-                <!-- Data Cleaning Panel -->
-                <h5>Data Cleaning Panel</h5>
-                <form id='testor' method="POST" name = 'droping'>
-                    <div class="form-group">
-
-                        <div>
-                            <h6> Select columns to drop.</h6>
-                            <select id = 'varia' name="variat" class="selectpicker form-control" data-live-search="true" title = 'Select columns'
-                            >
-                                <option value="pomme">cool</option>
-                                <option value="avocat">mega</option>
-                                <option value="tarte">puf</option>
-
+                <!-- Drop duplicates Btn -->
+                <form method="POST">
+                        <h6> Drop duplicates</h6>
+                        <div id = 'duplicate_cols'>
+                            <select name="dup_col_selector"  class="selectpicker form-control" data-live-search="true" title = 'Subset'>
+                                <option value="all">All</option>
+                                {% for col in col_selec %}
+                                <option value="{{ col.name }}">{{ col.name }}</option>
+                                {% endfor %}
                             </select>
                         </div>
-                        <hr>
-
-                    </div>
-
+                    <button name= "submit" type="submit" class="btn btn-info btn-block" style = 'margin-top:10px;' value = "dropDup">
+                    Drop duplicates
+                    </button>
                 </form>
-                <!-- Data Cleaning Panel -->
                 <hr>
-                </a>
+                <!-- Drop duplicates Btn -->
+
+                <!-- Drop Columns Btn -->
+                <form method="POST">
+                        <h6> Drop column(s)</h6>
+                        <div id = 'drop_cols'>
+                            <select name="drop_col_selector"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
+                                <option value="all">All</option>
+                                {% for col in col_selec %}
+                                <option value="{{ col.name }}">{{ col.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    <button name= "submit" type="submit" class="btn btn-info btn-block" style = 'margin-top:10px;' value = "dropCol">
+                    Drop Column(s)
+                    </button>
+                </form>
+                <!-- Drop Columns Btn -->
+
+                <hr>
             </li>
+            <!-- Data Cleaning Panel -->
+
         </ul>
 
         </div>
