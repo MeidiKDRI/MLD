@@ -6,8 +6,11 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import SGDClassifier
 from sklearn.datasets import load_iris
 
+a = [1,5,6,7,99,15]
+b = sorted(a)
+print(b[-1])
 
-lista = ['a', 'b', 'c']
+'''lista = ['a', 'b', 'c']
 listb = ['a', 'b']
 
 
@@ -18,9 +21,20 @@ def Diff(li1, li2):
 li1 = [10, 15, 20, 25, 30, 35, 40] 
 li2 = [25, 40, 35] 
 print(list(set(lista) - set(listb))) 
+'''
 
+'''dic = {'1':4500, '2':9000, '3':13500 ,'4':18000}
 
-            ###########################################
+a = 4600
+keys = []
+
+for k, v in dic.items() :
+    if a > v :
+        keys.append(k)
+        
+print(keys[-1])'''
+
+'''            ###########################################
             ###########################################
             ##### FOR TEST ONLY #######################
             ###########################################
@@ -50,7 +64,7 @@ print(list(set(lista) - set(listb)))
             ###########################################
             ###########################################
             ##### FOR TEST ONLY #######################
-            ###########################################
+            ###########################################'''
 
 
 #print([value for key, value in models.items() if element in key])

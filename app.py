@@ -38,7 +38,6 @@ import time
 from time import strftime, gmtime
 
 
-
 def do_plot():
     # Loading 
     data = load_breast_cancer()
@@ -648,11 +647,11 @@ def model() :
 
             if request.method == 'POST':
 
+                # User's input parameters
                 label_selected = request.form.get('target')
                 features_selected = request.form.getlist('features')
                 input_test_size = request.form.get('splitValueInput')
                 test_size = float(input_test_size)
-                print(test_size)
                 reg_mods_selected = request.form.getlist('reg_model')
                 classif_mods_selected = request.form.getlist('class_model')
 
@@ -668,14 +667,12 @@ def model() :
                 col_to_drop = list(set(cols) - set(features_selected))
 
                 X = df.drop(col_to_drop, axis = 1)
-                print(X)
                 y = df[label_selected]
-                print(y)
 
+                # X_train X_test split
                 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size, random_state = 123456)
 
-                print('train =' , X_train)
-                # Training Loop        
+                # Training Loop
                 models = {'Linear Regression': LinearRegression(),
                         'Logistic Regression' : LogisticRegression(solver= 'lbfgs', max_iter= 10000),
                         'KNN' : KNeighborsClassifier(n_neighbors = 10),
@@ -718,6 +715,13 @@ def model() :
                 result = pd.DataFrame({'Model ' : model_list,
                                     'Run time' : runtime_list,
                                     'Accuracy Score' : scor_list})
+                # We sort the df by score
+                result = result.sort_values(by=['Accuracy Score'], ascending=False)
+
+                model_key = model_list
+                model_score_value = scor_list
+                model_dict = dict(zip(model_key, model_score_value))
+                print(model_dict)
 
                 return render_template('model.html', df_result = [result.to_html(classes = 'data')],
                         **minimum_context,

@@ -95,7 +95,7 @@
                     <div >
                         <h6>Features 'X'</h6>
                         <select id = 'features' name="features" 
-                        class="selectpicker form-control" multiple data-live-search="true" title = 'Select your Label'
+                        class="selectpicker form-control" multiple data-live-search="true" title = 'Select your Features'
                         onchange = "selected('features', 'features_selected')">
                             <option value="all">All</option>
                             {% for col in col_selec %}
@@ -158,8 +158,12 @@
         <!-- Main page -->
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-
             <h1 class="h2">Model Training</h1>
+
+            <div class="btn-group mr-2">
+                <button class="btn btn-sm btn-outline-secondary">Add model</button>
+                <button class="btn btn-sm btn-outline-secondary">Save model</button>
+            </div>
         </div>
 
         <div>
