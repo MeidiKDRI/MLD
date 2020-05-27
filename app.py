@@ -349,8 +349,10 @@ def dataset() :
 
                     features = dataset.data
                     y = dataset.target
+                                        
+                    df = pd.DataFrame(data= np.c_[features, y],
+                                        columns= dataset['feature_names'] + ['target'])
                     
-                    df = pd.DataFrame(features, columns=dataset.feature_names)
 
                     filename = dataset_to_load + '_sklearn_dataset'
                     session['filename'] = filename
@@ -620,9 +622,9 @@ def model() :
         # idToken expires after 1 hour, so we refresh the token to avoid stale token.
         user = auth.refresh(user['refreshToken'])
         session['user'] = user
+        global df
 
         try:
-
 
             # Dictionnary of columns to display into select tags
             cols = df.columns
@@ -640,39 +642,6 @@ def model() :
             regression_dic = [{'name': model} for model in regression_models]
             classification_dic = [{'name': model} for model in classification_models]
 
-            ###########################################
-            ###########################################
-            ##### FOR TEST ONLY #######################
-            ###########################################
-            data = df.copy()
-            data.drop(['cabin', 'body', 'boat', 'home.dest'], axis = 1, inplace = True)
-            data.dropna()
-            data['age'] = data['age'].fillna(data.groupby(['pclass', 'sex'])['age'].transform('mean'))
-            data.head()
-            data.dropna(axis = 0, inplace = True)
-
-            dummies = pd.get_dummies(data['pclass'])
-            data = pd.concat([data, dummies], axis = 1)
-            data.drop(['pclass', 3.0], inplace = True, axis = 1)
-
-            dummies = pd.get_dummies(data['sex'])
-            data = pd.concat([data, dummies], axis = 1)
-            data.drop(['sex', 'male'], inplace = True, axis = 1)
-
-            dummies = pd.get_dummies(data['embarked'])
-            data = pd.concat([data, dummies], axis = 1)
-            data.drop(['embarked', 'C'], inplace = True, axis = 1)
-
-
-
-
-
-            ###########################################
-            ###########################################
-            ##### FOR TEST ONLY #######################
-            ###########################################
-
-
             # Empty list & dict for the training loop management
             models_list = []
             mods = {}
@@ -681,28 +650,31 @@ def model() :
 
                 label_selected = request.form.get('target')
                 features_selected = request.form.getlist('features')
-                test_size = request.form['splitValueInput']
+                input_test_size = request.form.get('splitValueInput')
+                test_size = float(input_test_size)
+                print(test_size)
                 reg_mods_selected = request.form.getlist('reg_model')
                 classif_mods_selected = request.form.getlist('class_model')
 
                 # We concat the 2 models lists
                 models_list = reg_mods_selected + classif_mods_selected
-                #print(models_list)
-                #print(data)
+
                 minimum_context = {'reg_models' : regression_dic,
                 'classif_model'  : classification_dic,
                 'col_selec' : df_col_dic}
 
+                # Drop cols for X
+                # We compare the user selected cols for X with cols in the df
+                col_to_drop = list(set(cols) - set(features_selected))
 
+                X = df.drop(col_to_drop, axis = 1)
+                print(X)
+                y = df[label_selected]
+                print(y)
 
-                X = data.drop(['survived', 'ticket', 'name'], axis = 1)
-                y = data['survived']
+                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size, random_state = 123456)
 
-                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 123456)
-
-                #print(X_train)
-                #print(y_train)
-
+                print('train =' , X_train)
                 # Training Loop        
                 models = {'Linear Regression': LinearRegression(),
                         'Logistic Regression' : LogisticRegression(solver= 'lbfgs', max_iter= 10000),
@@ -711,7 +683,6 @@ def model() :
                         'Decision Tree Classifier' : DecisionTreeClassifier(),
                         'SGDClassifier' : SGDClassifier()
                         }
-                #print(models)
                 
                 # Check element in the moelds list is in the models dict
                 for element in models_list :
@@ -728,13 +699,9 @@ def model() :
                 csv_list = []
 
                 for k, v in mods.items() :
-                    
-                    print(v)
-                    print(k)
+
                     start_time = time.time()
-                    print()
                     model = v
-                    print(model)
                     model = model.fit(X_train, y_train)
                     runtime = time.time() - start_time
 
@@ -746,16 +713,11 @@ def model() :
                     scor_list.append(round(scor, 3))
 
                     y_predict = model.predict(X_test)
-                
-                print(model_list)
-                print(runtime_list)
-                print(scor_list)
 
                 # We pass all statistics into a dataframe to compare models
                 result = pd.DataFrame({'Model ' : model_list,
                                     'Run time' : runtime_list,
                                     'Accuracy Score' : scor_list})
-                print(result)
 
                 return render_template('model.html', df_result = [result.to_html(classes = 'data')],
                         **minimum_context,
