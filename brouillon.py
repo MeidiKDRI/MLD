@@ -4,14 +4,14 @@ from sklearn.cluster import KMeans
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import SGDClassifier
-
 from sklearn.datasets import load_iris
 
-file = 'iris'
-test  ='load_' + file + '()'
+from sklearn.datasets import load_digits
 
-f = test.replace("'",'')
-print(f)
+file = 'iris'
+test  = 'load_' + file + '()'
+f = eval('load_' + file + '()')
+print(f.feature_names)
 
 
 

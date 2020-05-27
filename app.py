@@ -344,25 +344,15 @@ def dataset() :
 
                 elif request.form['upload'] == 'load_dataset' :
 
-                    df_to_load = request.form.get('dataset_to_load')
-
-                    if df_to_load == 'iris' :
-                        dataset = load_iris()
-                    elif df_to_load == 'boston' :
-                        dataset = load_boston()
-                    elif df_to_load == 'diabetes' :
-                        dataset = load_diabetes()
-                    elif df_to_load == 'digits' :
-                        dataset = load_digits()
-                    elif df_to_load == 'cancer' :
-                        dataset = load_breast_cancer()
+                    dataset_to_load = request.form.get('dataset_to_load')
+                    dataset = eval('load_' + dataset_to_load + '()') # eval allow to convert string to object
 
                     features = dataset.data
                     y = dataset.target
                     
                     df = pd.DataFrame(features, columns=dataset.feature_names)
 
-                    filename = df_to_load
+                    filename = dataset_to_load + '_sklearn_dataset'
                     session['filename'] = filename
                     
                     # Summary
