@@ -6,6 +6,14 @@ import json
 import pandas as pd
 from werkzeug.utils import secure_filename
 import io
+import random
+
+
+import base64
+
+
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.figure import Figure
 
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -580,6 +588,23 @@ def process():
 # Data Visualisation
 ####################
 
+@app.route('/plot.png')
+def plot_png():
+    fig = create_figure()
+    output = io.BytesIO()
+    FigureCanvas(fig).print_png(output)
+    return Response(output.getvalue(), mimetype='image/png')
+
+def create_figure():
+    fig = Figure()
+    
+    axis = fig.add_subplot(1, 1, 1)
+    data = load_iris()
+
+    axis.hist(data)
+    return fig
+
+
 @app.route('/visualization')
 def visualization() :
 
@@ -595,8 +620,16 @@ def visualization() :
             # Dictionnary of columns for form select
             cols = df.columns
             df_col_dic = [{'name':col} for col in cols]
+            
+            df.hist(figsize = (10,8), bins = 25)
+            buf = io.BytesIO()
+            plt.savefig(buf, format='png')
+            buf.seek(0)
+            buffer = b''.join(buf)
+            b2 = base64.b64encode(buffer)
+            test2 = b2.decode('utf-8')
 
-            return render_template('dataviz.html', dataset = [df.to_html(classes = 'data')])
+            return render_template('dataviz.html', test2 = test2)
         except:
 
             flash('There is no dataframe uploaded. PLease visit DATASET page first', 'warning')
@@ -680,7 +713,7 @@ def model() :
                         'Decision Tree Classifier' : DecisionTreeClassifier(),
                         'SGDClassifier' : SGDClassifier()
                         }
-                
+
                 # Check element in the moelds list is in the models dict
                 for element in models_list :
                     for k, v in models.items() :
@@ -706,7 +739,7 @@ def model() :
                     runtime_list.append(strftime("%H:%M:%S", gmtime(runtime)))
 
                     # Scores
-                    scor = model.score(X_train, y_train)
+                    scor = model.score(X_test, y_test)
                     scor_list.append(round(scor, 3))
 
                     y_predict = model.predict(X_test)

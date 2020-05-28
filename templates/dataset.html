@@ -69,11 +69,12 @@
                     <h5 style = 'text-align:center'>
                     {%if username %} {{username}} {% endif %}
                     </h5>
-                    <hr color = 'darkgrey' style='margin-top:30px;'>
+                    <hr color = 'darkgrey' style='margin-top:20px;'>
                 </li>
 
                 <li class="nav-item">
                     <h6 style = 'text-align: center'>Import your dataset</h6>
+                    <hr color = 'darkgrey' style='margin-top:20px;'>
                 </li>
 
                 <li class="nav-item">
@@ -129,21 +130,23 @@
 
                 <h1 class="h2">Dataset Import</h1>
 
+                <!-- Dataset infos -->
                 <div>
                     <h6 style = 'display: inline-block'>{%if df_name%}{{df_name}}{% endif %}</h6>
                     <h6 style = 'display: inline-block'>{%if nb_col%} | {{nb_col}} Columns{% endif %}</h6>
                     <h6 style = 'display: inline-block'>{%if nb_rows%} | {{nb_rows}} Rows{% endif %}</h6>
                 </div>
 
-                    {% for table in dataset %}
+                <!-- Dataset -->
+                {% for table in dataset %}
 
-                        <div class="table-responsive" style = 'height: 300px; width: 100%; border-style:solid; border-width:2px;'>
-                            {{ table|safe }}
-                        </div>
-                    {% endfor %}
-
+                    <div class="table-responsive" style = 'height: 300px; width: 100%; border-style:solid; border-width:2px;'>
+                        {{ table|safe }}
+                    </div>
+                {% endfor %}
                 <hr>
 
+                <!-- Summary -->
                 <div>
                     <div class="table-responsive" style = 'margin: auto; width: 75%'>
                         {% for table in describe %}
@@ -155,8 +158,9 @@
 
                 <hr>
 
+                <!-- Row for df_info and NaN -->
                 <div class = 'row' style = 'margin:auto; height:55%'>
-
+                    <!-- df_infos -->
                     <div class='col w-50'>
                         <div class="table-responsive" style = 'margin: auto; width: 50%'>
                             {% for table in df_infos %}
@@ -166,6 +170,7 @@
                         </div>
                     </div>
 
+                    <!-- NaN -->
                     <div class='col w-50'>
                         <div class="table-responsive" style = 'margin: auto; width: 50%'>
                             {% for table in df_na %}

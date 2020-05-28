@@ -32,7 +32,7 @@ Login and Sign Up button will be there for connection and subscription.
 The main page will be a large and unique page with anchors sending user to differents parts.  
 Data Exploration, Data Visualization, Model Training, Model Prediction, Model export.
 
-## Les features :
+## Features :
 - Member area : Authentication with Firebase.  
 - Dataset .csv Import.  
 - Dataframe display.  
