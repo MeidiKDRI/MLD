@@ -721,12 +721,13 @@ def model() :
                 model_key = model_list
                 model_score_value = scor_list
                 model_dict = dict(zip(model_key, model_score_value))
-                print(model_dict)
+                max_key = max(model_dict, key= model_dict.get) # Find the max value in a dict
 
                 return render_template('model.html', df_result = [result.to_html(classes = 'data')],
                         **minimum_context,
                         label_selected = label_selected, features_selected = features_selected, test_size = test_size,
-                        reg_mods_selected = reg_mods_selected, classif_mods_selected = classif_mods_selected)
+                        reg_mods_selected = reg_mods_selected, classif_mods_selected = classif_mods_selected,
+                        best_model = max_key)
                 
             return render_template('model.html',
                                    reg_models = regression_dic,

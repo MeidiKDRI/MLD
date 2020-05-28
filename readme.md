@@ -12,10 +12,14 @@ Then, the user will be able to try one or several models, evaluate and compre th
 In the **'Model Prediction'** area, it gonna be easy to make a prediction and export the model.  
 
 ## Screenshot of the new version using Flask.
-![image](https://user-images.githubusercontent.com/57437129/82053064-00862c80-96bd-11ea-9202-a3764ad1ed42.png) 
+### Dataset Import
+![Screenshot001](https://user-images.githubusercontent.com/57437129/83120029-c2333900-a0d0-11ea-9cc9-a85d2eabcc4d.png)
 
-Data Exploration page  
-![image](https://user-images.githubusercontent.com/57437129/82055250-8061c600-96c0-11ea-8f29-b7414de28e22.png)
+### Data Exploration page  
+![Screenshot002](https://user-images.githubusercontent.com/57437129/83120101-df680780-a0d0-11ea-9329-be85b2c050d6.png)
+
+### Model Training page
+![Screenshot003](https://user-images.githubusercontent.com/57437129/83120137-ed1d8d00-a0d0-11ea-9973-f17020a1ffc9.png)
 
 
 ## Web Map
@@ -45,13 +49,12 @@ Data Exploration, Data Visualization, Model Training, Model Prediction, Model ex
 - Update informations page.
 - Change password page.
 - Settings page.
+- Model Training part.
 
 ## In progress :
 - Data Visualization part.
-- Plateform.
-    - Data Exploration part.
+- Data Exploration part.
 - CSS.
-- Model Training part.
 - Model prediction part.
 
 ## To Do :

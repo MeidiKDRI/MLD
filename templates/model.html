@@ -81,7 +81,6 @@
                         <select id = 'target' name="target" 
                         class="selectpicker form-control" data-live-search="true" title = 'Select your Label'
                         onchange = "selected('target', 'target_selected')">
-                            <option value="all">All</option>
                             {% for col in col_selec %}
                             <option value="{{ col.name }}">{{ col.name }}</option>
                             {% endfor %}
@@ -157,65 +156,68 @@
 
         <!-- Main page -->
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Model Training</h1>
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Model Training</h1>
 
-            <div class="btn-group mr-2">
-                <button class="btn btn-sm btn-outline-secondary">Add model</button>
-                <button class="btn btn-sm btn-outline-secondary">Save model</button>
+                <div class="btn-group mr-2">
+                    <button class="btn btn-sm btn-outline-secondary">Add model</button>
+                    <button class="btn btn-sm btn-outline-secondary">Save model</button>
+                </div>
             </div>
-        </div>
-
-        <div>
-            <span style = 'display: inline-block;font-weight: bold;'>
-            Label [y] : 
-            <h6 style = 'font-weight: normal;' id="target_selected"></h6>
-            <h6 style = "display:inline-block">{%if label_selected%}{{label_selected}}{% endif %}</h6>
-            </span>
-        </div>
-
-        <div>
-            <span style = 'display: inline-block;font-weight: bold;'>
-            Features [X] : 
-            <h6 style = 'font-weight: normal;' id="features_selected"></h6>
-            <h6 style = "display:inline-block">{%if features_selected%}{{features_selected}}{% endif %}</h6>
-            </span>
-        </div>
-
-        <div>
-            <span style = 'display: inline-block;font-weight: bold;'>
-            Test Size : 
-            <h6 style = 'font-weight: normal;' id="split_value"></h6>
-            <h6 style = "display:inline-block">{%if test_size%}{{test_size}}{% endif %}</h6>
-            </span>
-        </div>
-
-        <div>
-            <span style = 'display: inline-block; font-weight: bold;'>
-            Regression Model : 
-            <h6 style = 'font-weight: normal;' id="regmod_selected"></h6>
-            <h6 style = "display:inline-block">{%if reg_mods_selected%}{{reg_mods_selected}}{% endif %}</h6>
-            </span>
-        </div>
-
-        <div>
-            <span style = 'display: inline-block; font-weight: bold;'>
-            Classification Model : 
-            <h6 style = 'font-weight: normal;' id="classmod_selected"></h6>
-            <h6 style = "display:inline-block">{%if classif_mods_selected%}{{classif_mods_selected}}{% endif %}</h6>
-            </span>
-        </div>
 
             <div>
-                {%if df_name%}{{df_name}}{% endif %}
-                <h6 style = 'display: inline-block'>{%if nb_col%} | {{nb_col}} Columns{% endif %}</h6>
-                <h6 style = 'display: inline-block'>{%if nb_rows%} | {{nb_rows}} Rows{% endif %}</h6>
+                <span style = 'display: inline-block;font-weight: bold;'>
+                Label [y] : 
+                <h6 style = 'font-weight: normal;' id="target_selected"></h6>
+                <h6 style = "display:inline-block">{%if label_selected%}{{label_selected}}{% endif %}</h6>
+                </span>
             </div>
 
+            <div>
+                <span style = 'display: inline-block;font-weight: bold;'>
+                Features [X] : 
+                <h6 style = 'font-weight: normal;' id="features_selected"></h6>
+                <h6 style = "display:inline-block">{%if features_selected%}{{features_selected}}{% endif %}</h6>
+                </span>
+            </div>
+
+            <div>
+                <span style = 'display: inline-block;font-weight: bold;'>
+                Test Size : 
+                <h6 style = 'font-weight: normal;' id="split_value"></h6>
+                <h6 style = "display:inline-block">{%if test_size%}{{test_size}}{% endif %}</h6>
+                </span>
+            </div>
+
+            <div>
+                <span style = 'display: inline-block; font-weight: bold;'>
+                Regression Model : 
+                <h6 style = 'font-weight: normal;' id="regmod_selected"></h6>
+                <h6 style = "display:inline-block">{%if reg_mods_selected%}{{reg_mods_selected}}{% endif %}</h6>
+                </span>
+            </div>
+
+            <div>
+                <span style = 'display: inline-block; font-weight: bold;'>
+                Classification Model : 
+                <h6 style = 'font-weight: normal;' id="classmod_selected"></h6>
+                <h6 style = "display:inline-block">{%if classif_mods_selected%}{{classif_mods_selected}}{% endif %}</h6>
+                </span>
+            </div>
 
             <hr>
 
-            <div class="table-responsive">
+            {%if best_model %}
+                <div class="card" class="shadow p-3 mb-5 bg-white rounded" 
+                style = 'margin: auto; width: 50%; margin-bottom:20px; padding:10px;'>
+                    <h6 style = "display:inline-block; text-align:center">
+                    Best score {{ best_model }}
+                    </h6>
+                </div>
+            {% endif %}
+
+            <div class="table" style = 'margin: auto; width:50%;'>
+
                 {% for table in df_result %}
                 {{ table|safe }}
                 {% endfor %}
