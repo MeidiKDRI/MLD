@@ -121,9 +121,12 @@
                     {%if df_name%}{{df_name}}{% endif %}
                 </div>
 
- {% if test2 != None %}
-    <img src="data:image/png;base64,{{ test2 }}">
-{% endif %}
+            {% if hist %}
+                <img src="data:image/png;base64,{{ hist }}">
+            {% endif %}
+
+
+
 
             </div>
 

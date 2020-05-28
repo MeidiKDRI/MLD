@@ -46,17 +46,23 @@ import time
 from time import strftime, gmtime
 
 
-def do_plot():
-    # Loading 
-    data = load_breast_cancer()
-    
-    plt.hist(data)
 
-    # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
-    bytes_image = io.BytesIO()
-    plt.savefig(bytes_image, format='png')
-    bytes_image.seek(0)
-    return bytes_image
+
+# Data histogram function
+def data_hist(data):
+
+    # Plot
+    data.hist(figsize = (10,8), bins = 25)
+
+    # Save as an Image
+    buff = io.BytesIO()
+    plt.savefig(buff, format='png')
+    buff.seek(0)
+    buffer = b''.join(buff)
+    encoded = base64.b64encode(buffer)
+    hist = encoded.decode('utf-8')
+
+    return hist
 
 
 ##############################################
@@ -103,14 +109,6 @@ def pricing() :
 ############
 # Login page
 ############
-
-@app.route('/correlation_matrix', methods=['GET'])
-def correlation_matrix():
-    bytes_obj = do_plot()
-    
-    return send_file(bytes_obj,
-                     attachment_filename='plot.png',
-                     mimetype='image/png')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -318,6 +316,7 @@ def dataset() :
             if request.method == 'POST':
 
                 if request.form['upload'] == 'upload_dataset' :
+                    df = None
                     f        = request.files['file']
                     filename = secure_filename(f.filename)
                     session['filename'] = filename
@@ -351,8 +350,9 @@ def dataset() :
 
                 elif request.form['upload'] == 'load_dataset' :
 
+                    df = None
                     dataset_to_load = request.form.get('dataset_to_load')
-                    dataset = eval('load_' + dataset_to_load + '()') # eval allow to convert string to object
+                    dataset = eval('load_' + dataset_to_load + '()') # eval() allow to convert string to object
 
                     features = dataset.data
                     y = dataset.target
@@ -588,22 +588,6 @@ def process():
 # Data Visualisation
 ####################
 
-@app.route('/plot.png')
-def plot_png():
-    fig = create_figure()
-    output = io.BytesIO()
-    FigureCanvas(fig).print_png(output)
-    return Response(output.getvalue(), mimetype='image/png')
-
-def create_figure():
-    fig = Figure()
-    
-    axis = fig.add_subplot(1, 1, 1)
-    data = load_iris()
-
-    axis.hist(data)
-    return fig
-
 
 @app.route('/visualization')
 def visualization() :
@@ -621,15 +605,9 @@ def visualization() :
             cols = df.columns
             df_col_dic = [{'name':col} for col in cols]
             
-            df.hist(figsize = (10,8), bins = 25)
-            buf = io.BytesIO()
-            plt.savefig(buf, format='png')
-            buf.seek(0)
-            buffer = b''.join(buf)
-            b2 = base64.b64encode(buffer)
-            test2 = b2.decode('utf-8')
+            hist = data_hist(df)
 
-            return render_template('dataviz.html', test2 = test2)
+            return render_template('dataviz.html', hist = hist)
         except:
 
             flash('There is no dataframe uploaded. PLease visit DATASET page first', 'warning')
