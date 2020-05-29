@@ -49,6 +49,23 @@ import time
 from time import strftime, gmtime
 
 
+
+def do_stripplot(data, col1, col2):
+    
+    # Plot
+    sns.stripplot(x=col1, y=col2, data=data);
+
+    # Save as an Image
+    stripplot_buff = io.BytesIO()
+    plt.savefig(stripplot_buff, format='png')
+    stripplot_buff.seek(0)
+    stripplot_buffer = b''.join(stripplot_buff)
+    stripplot_encoded = base64.b64encode(stripplot_buffer)
+    data_stripplot = stripplot_encoded.decode('utf-8')
+
+    return data_stripplot
+
+
 def do_corr_matrix(data):
     
     # Plot
@@ -690,6 +707,16 @@ def visualization() :
                     return render_template('dataviz.html',
                                         df_name= filename,
                                         corr_matrix = corr_matrix, col_selec= df_col_dic)
+                    
+                    
+                elif request.form['graph'] == 'stripplot':
+                    col_selected_1 = request.form.get('plot_col_selector_1')
+                    col_selected_2 = request.form.get('plot_col_selector_2')
+
+                    stripplot = do_stripplot(df, col_selected_1, col_selected_2)
+                    return render_template('dataviz.html',
+                                        df_name= filename,
+                                        stripplot = stripplot, col_selec= df_col_dic)
 
             return render_template('dataviz.html',
                                    df_name= filename, col_selec= df_col_dic)

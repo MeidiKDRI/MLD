@@ -100,7 +100,7 @@
 
                     <!-- Displayed only if Hist is checked -->
                     <div id = 'hist_col_sel_div'>
-                        <select name="hist_col_selector"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
+                        <select name="hist_col_selector"  class="selectpicker form-control" data-live-search="true" title = 'Select columns'>
                         <option value="all">All</option>
                         {% for col in col_selec %}
                         <option value="{{ col.name }}">{{ col.name }}</option>
@@ -122,7 +122,7 @@
 
                     <!-- Displayed only if mosaic is checked -->
                     <div id = 'mosaic_col_sel_div'>
-                        <select name="mosaic_col_selector"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
+                        <select name="mosaic_col_selector"  class="selectpicker form-control" data-live-search="true" title = 'Select columns'>
                         <option value="all">All</option>
                         {% for col in col_selec %}
                         <option value="{{ col.name }}">{{ col.name }}</option>
@@ -138,20 +138,29 @@
                         <input type="checkbox" class="custom-control-input" id="plotSwitch" value= true name ="plot_checkbox"
                         onclick="isChecked('plot_checkbox', 'plot_col_sel_div')">
                         <label class="custom-control-label" for="plotSwitch">
-                            Plot
+                            Seaborn Plot
                         </label>
                     </div>
 
                     <!-- Displayed only if plot is checked -->
                     <div id = 'plot_col_sel_div'>
-                        <select name="plot_col_selector"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
+                        <select name="plot_col_selector_1"  class="selectpicker form-control" data-live-search="true" title = 'Select column 1'>
                         <option value="all">All</option>
                         {% for col in col_selec %}
                         <option value="{{ col.name }}">{{ col.name }}</option>
                         {% endfor %}
                         </select>
-                        <button name = 'graph' value = 'plot' type="submit" class="btn btn-info btn-block" >Plot</button>
+
+                        <select name="plot_col_selector_2"  class="selectpicker form-control" data-live-search="true" title = 'Select column 2'>
+                        <option value="all">All</option>
+                        {% for col in col_selec %}
+                        <option value="{{ col.name }}">{{ col.name }}</option>
+                        {% endfor %}
+                        </select>
+
+                        <button name = 'graph' value = 'stripplot' type="submit" class="btn btn-info btn-block" >Seaborn Plot</button>
                     </div>
+
                     <hr>
                     <!-- Plot -->
 
@@ -189,33 +198,42 @@
                     {%if df_name%} <h6>Dataset : {{df_name}}</h6>{% endif %}
                 </div>
 
+                <!-- Graphs -->
                 <div >
-                            {% if heatmap %}
-                                <img src="data:image/png;base64,{{ heatmap }}">
-                            {% endif %}
+                    {% if heatmap %}
+                        <h6>Heatmap Graph for Missing Values.</h6>
+                        <img src="data:image/png;base64,{{ heatmap }}">
+                    {% endif %}
                 </div>
 
                 <div>
-                            {% if hist %}
-                                <img src="data:image/png;base64,{{ hist }}">
-                            {% endif %}
+                    {% if hist %}
+                        <h6>Histogram Graph.</h6>
+                        <img src="data:image/png;base64,{{ hist }}">
+                    {% endif %}
                 </div>
 
                 <div>
-                            {% if corr_matrix %}
-                                <img src="data:image/png;base64,{{ corr_matrix }}">
-                            {% endif %}
+                    {% if corr_matrix %}
+                        <h6>Correlation Matrix.</h6>
+                        <img src="data:image/png;base64,{{ corr_matrix }}">
+                    {% endif %}
                 </div>
                 
                 <div>
-                            {% if mosaic %}
-                                <img src="data:image/png;base64,{{ mosaic }}">
-                            {% endif %}
+                    {% if mosaic %}
+                        <h6>Seaborn Mosaic Graph.</h6>
+                        <img src="data:image/png;base64,{{ mosaic }}">
+                    {% endif %}
                 </div>
 
-
-
-
+                <div>
+                    {% if stripplot %}
+                        <h6>Seaborn plot 'Stripplot'.</h6>
+                        <img src="data:image/png;base64,{{ stripplot }}">
+                    {% endif %}
+                </div>
+                <!-- Graphs -->
 
             </div>
 
