@@ -107,6 +107,12 @@ footer {
   padding: 10px;
 }
 
+#corr_col_sel_div
+{
+  display:none;
+  padding: 10px;
+}
+
 /* div depending on checkbox */
 
 

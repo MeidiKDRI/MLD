@@ -79,7 +79,7 @@
                 <div class="form-group">
 
                     <!-- Drop NaN -->
-                    <div class="custom-control custom-switch">
+                    <div class="custom-control custom-switch" style = 'margin-left:10px;'>
                         <input type="checkbox" class="custom-control-input" id="dropnaSwitch" value= true name ="dropna_checkbox"
                         onclick="isChecked('dropna_checkbox', 'dropna_col_sel_div')">
                         <label class="custom-control-label" for="dropnaSwitch">
@@ -99,7 +99,7 @@
                     <!-- Drop NaN -->
 
                     <!-- Fill NaN -->
-                    <div class="custom-control custom-switch">
+                    <div class="custom-control custom-switch" style = 'margin-left:10px;'>
                         <input type="checkbox" class="custom-control-input" id="fillnaSwitch" value= true name ="fillna_checkbox"
                         onclick="isChecked('fillna_checkbox','fill_values')">
                         <label class="custom-control-label" for="fillnaSwitch">
@@ -110,7 +110,7 @@
                     <!-- Displayed only if fillNaN is checked -->
                     <div id= 'fill_values' style = 'display:none'>
 
-                        <div class="custom-control custom-switch">
+                        <div class="custom-control custom-switch" style = 'margin-left:15px;'>
                             <input type="checkbox" class="custom-control-input" id="fillbymeanSwitch" value= true name ="fillnabymean_checkbox"
                             onclick="isChecked('fillnabymean_checkbox','fillna_by_mean_col')">
                             <label class="custom-control-label" for="fillbymeanSwitch">
@@ -118,7 +118,7 @@
                             </label>
                         </div>
 
-                        <div class="custom-control custom-switch">
+                        <div class="custom-control custom-switch" style = 'margin-left:15px;'>
                             <input type="checkbox" class="custom-control-input" id="fillbymedianSwitch" value= true name ="fillnabymedian_checkbox"
                             onclick="isChecked('fillnabymedian_checkbox','fillna_by_mean_col')">
                             <label class="custom-control-label" for="fillbymedianSwitch">
@@ -126,7 +126,7 @@
                             </label>
                         </div>
 
-                        <div class="custom-control custom-switch">
+                        <div class="custom-control custom-switch" style = 'margin-left:15px;'>
                             <input type="checkbox" class="custom-control-input" id="fillbyvalueSwitch" value= true name ="fillnabyvalue_checkbox"
                             onclick="isChecked('fillnabyvalue_checkbox','fillna_by_val_col')">
                             <label class="custom-control-label" for="fillbyvalueSwitch">
@@ -144,7 +144,6 @@
                             <option value="{{ col.name }}">{{ col.name }}</option>
                             {% endfor %}
                         </select>
-                        <hr>
                     </div>
 
                     <!-- Displayed only when fill value is checked is checked -->
@@ -157,7 +156,6 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <hr>
                     <!-- Fill NaN -->
 
                     <!-- Clean Data Btn -->

@@ -85,29 +85,12 @@
                     <div class="form-group">
 
                     <!-- Heatmap -->
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="heatSwitch" value= true name ="heat_checkbox"
-                        onclick="isChecked('heat_checkbox', 'heat_col_sel_div')">
-                        <label class="custom-control-label" for="heatSwitch">
-                            Heatmap
-                        </label>
-                    </div>
-
-                    <!-- Displayed only if Heatmap is checked -->
-                    <div id = 'heat_col_sel_div'>
-                        <select name="heat_col_selector"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
-                        <option value="all">All</option>
-                        {% for col in col_selec %}
-                        <option value="{{ col.name }}">{{ col.name }}</option>
-                        {% endfor %}
-                        </select>
-                        <button button name = 'graph' value = 'heat' type="submit" class="btn btn-info btn-block" >NaN Heatmap</button>
-                    </div>
+                    <button button name = 'graph' value = 'heat' type="submit" class="btn btn-info btn-block" >Seaborn Heatmap</button>
                     <hr>
                     <!-- Heatmap -->
 
                     <!-- Hist -->
-                    <div class="custom-control custom-switch">
+                    <div class="custom-control custom-switch" style = 'margin-left:10px;'>
                         <input type="checkbox" class="custom-control-input" id="histSwitch" value= true name ="hist_checkbox"
                         onclick="isChecked('hist_checkbox', 'hist_col_sel_div')">
                         <label class="custom-control-label" for="histSwitch">
@@ -117,7 +100,7 @@
 
                     <!-- Displayed only if Hist is checked -->
                     <div id = 'hist_col_sel_div'>
-                        <select name="dropna_col_selector"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
+                        <select name="hist_col_selector"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
                         <option value="all">All</option>
                         {% for col in col_selec %}
                         <option value="{{ col.name }}">{{ col.name }}</option>
@@ -129,7 +112,7 @@
                     <!-- Hist -->
 
                     <!-- Mosaic -->
-                    <div class="custom-control custom-switch">
+                    <div class="custom-control custom-switch" style = 'margin-left:10px;'>
                         <input type="checkbox" class="custom-control-input" id="mosaicSwitch" value= true name ="mosaic_checkbox"
                         onclick="isChecked('mosaic_checkbox', 'mosaic_col_sel_div')">
                         <label class="custom-control-label" for="mosaicSwitch">
@@ -137,9 +120,9 @@
                         </label>
                     </div>
 
-                    <!-- Displayed only if Hist is checked -->
+                    <!-- Displayed only if mosaic is checked -->
                     <div id = 'mosaic_col_sel_div'>
-                        <select name="dropna_col_selector"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
+                        <select name="mosaic_col_selector"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
                         <option value="all">All</option>
                         {% for col in col_selec %}
                         <option value="{{ col.name }}">{{ col.name }}</option>
@@ -151,7 +134,7 @@
                     <!-- Mosaic -->
 
                     <!-- Plot -->
-                    <div class="custom-control custom-switch">
+                    <div class="custom-control custom-switch" style = 'margin-left:10px;'>
                         <input type="checkbox" class="custom-control-input" id="plotSwitch" value= true name ="plot_checkbox"
                         onclick="isChecked('plot_checkbox', 'plot_col_sel_div')">
                         <label class="custom-control-label" for="plotSwitch">
@@ -159,9 +142,9 @@
                         </label>
                     </div>
 
-                    <!-- Displayed only if Hist is checked -->
+                    <!-- Displayed only if plot is checked -->
                     <div id = 'plot_col_sel_div'>
-                        <select name="dropna_col_selector"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
+                        <select name="plot_col_selector"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
                         <option value="all">All</option>
                         {% for col in col_selec %}
                         <option value="{{ col.name }}">{{ col.name }}</option>
@@ -172,10 +155,15 @@
                     <hr>
                     <!-- Plot -->
 
+                    <!-- Correlation Matrix -->
+                    <button name = 'graph' value = 'corr' type="submit" class="btn btn-info btn-block" >Correlation Matrix</button>
+                    <!-- Correlation Matrix -->
+
+                    <hr>
+
                     </div>
                     </form>
                     <!-- Graphs Selectors -->
-                    <hr>
                 </li>
 
             </ul>

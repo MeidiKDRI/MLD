@@ -11,13 +11,9 @@ b = sorted(a)
 print(b[-1])
 
 
-hist = hist, heatmap = heatmap, corr_matrix = corr_matrix, mosaic = data_mosaic
 
-
-            col_selected = 'sex'
-            corr_matrix = do_corr_matrix(df)
-            data_mosaic = do_mosaic(df, col_selected)
-            hist = do_global_hist(df)
+            
+            
 
 '''lista = ['a', 'b', 'c']
 listb = ['a', 'b']

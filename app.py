@@ -81,10 +81,13 @@ def do_mosaic(data, col):
     return data_mosaic
 
 # Data histogram function
-def do_global_hist(data):
+def do_hist(data, col):
 
     # Plot
-    data.hist(figsize = (10,8), bins = 25)
+    if col == 'all' :
+        data.hist(figsize = (10,8), bins = 25)
+    else : 
+        data.hist(col, figsize = (10,8), bins = 25)
 
     # Save as an Image
     hist_buff = io.BytesIO()
@@ -100,7 +103,7 @@ def do_global_hist(data):
 def do_heatmap(data):
 
     # Plot
-    plt.rcParams['figure.figsize'] = (5.0, 3.0)
+    plt.rcParams['figure.figsize'] = (10.0, 8.0)
     sns.heatmap(data.isna());
 
     # Save as an Image
@@ -657,16 +660,39 @@ def visualization() :
             df_col_dic = [{'name':col} for col in cols]
 
             if request.method == 'POST':
-                if request.form['graph'] == 'heatmap':
+                
+                if request.form['graph'] == 'heat':
                     heatmap = do_heatmap(df)
+                    return render_template('dataviz.html',
+                                        df_name= filename,
+                                        heatmap = heatmap, col_selec= df_col_dic)
+
+                elif request.form['graph'] == 'hist':
+                    
+                    col_selected = request.form.get('hist_col_selector')
+                    hist = do_hist(df, col_selected)
 
                     return render_template('dataviz.html',
                                         df_name= filename,
-                                        heatmap = heatmap)
-            
+                                        hist = hist, col_selec= df_col_dic)
+
+
+                elif request.form['graph'] == 'mosaic':
+
+                    col_selected = request.form.get('mosaic_col_selector')
+                    data_mosaic = do_mosaic(df, col_selected)
+                    return render_template('dataviz.html',
+                                        df_name= filename,
+                                        mosaic = data_mosaic, col_selec= df_col_dic)
+                    
+                elif request.form['graph'] == 'corr':
+                    corr_matrix = do_corr_matrix(df)
+                    return render_template('dataviz.html',
+                                        df_name= filename,
+                                        corr_matrix = corr_matrix, col_selec= df_col_dic)
 
             return render_template('dataviz.html',
-                                   df_name= filename)
+                                   df_name= filename, col_selec= df_col_dic)
         except:
 
             flash('There is no dataframe uploaded. PLease visit DATASET page first', 'warning')
@@ -830,11 +856,13 @@ def prediction() :
         session['user'] = user
 
         try:
+
+            filename = session['filename']
             # Dictionnary of columns for form select
             cols = df.columns
             df_col_dic = [{'name':col} for col in cols]
             
-            return render_template('prediction.html', dataset = [df.to_html(classes = 'data')])
+            return render_template('prediction.html', df_name= filename)
         except:
 
             flash('There is no dataframe uploaded. PLease visit DATASET page first', 'warning')
