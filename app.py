@@ -13,6 +13,7 @@ import base64
 
 import seaborn as sns
 
+from statsmodels.graphics.mosaicplot import mosaic
 
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -48,10 +49,9 @@ import time
 from time import strftime, gmtime
 
 
-def data_corr(data):
+def do_corr_matrix(data):
     
     # Plot
-
     palette = sns.diverging_palette(220, 10, as_cmap=True)
     sns.heatmap(data.corr(), cmap = palette);
     
@@ -61,12 +61,27 @@ def data_corr(data):
     corr_buff.seek(0)
     corr_buffer = b''.join(corr_buff)
     corr_encoded = base64.b64encode(corr_buffer)
-    corr_mat = corr_encoded.decode('utf-8')
+    data_corr = corr_encoded.decode('utf-8')
 
-    return corr_mat
+    return data_corr
+
+def do_mosaic(data, col):
+    
+    # Plot
+    mosaic(data, [col]);
+
+    # Save as an Image
+    mosaic_buff = io.BytesIO()
+    plt.savefig(mosaic_buff, format='png')
+    mosaic_buff.seek(0)
+    mosaic_buffer = b''.join(mosaic_buff)
+    mosaic_encoded = base64.b64encode(mosaic_buffer)
+    data_mosaic = mosaic_encoded.decode('utf-8')
+
+    return data_mosaic
 
 # Data histogram function
-def data_hist(data):
+def do_global_hist(data):
 
     # Plot
     data.hist(figsize = (10,8), bins = 25)
@@ -82,7 +97,7 @@ def data_hist(data):
     return hist
 
 # Data histogram function
-def data_heatmap(data):
+def do_heatmap(data):
 
     # Plot
     plt.rcParams['figure.figsize'] = (5.0, 3.0)
@@ -611,7 +626,7 @@ def exploration() :
 
     return redirect(url_for('login'))
 
-@app.route('/process',methods= ['GET','POST'])
+@app.route('/process', methods= ['GET','POST'])
 def process():
     firstName = request.form.get('firstName')
     print(format(firstName))
@@ -623,7 +638,7 @@ def process():
 ####################
 
 
-@app.route('/visualization')
+@app.route('/visualization', methods= ['GET','POST'])
 def visualization() :
 
     # Manage the user connection
@@ -641,12 +656,17 @@ def visualization() :
             cols = df.columns
             df_col_dic = [{'name':col} for col in cols]
 
-            corr_matrix = data_corr(df)
-            heatmap = data_heatmap(df)
-            hist = data_hist(df)
+            if request.method == 'POST':
+                if request.form['graph'] == 'heatmap':
+                    heatmap = do_heatmap(df)
+
+                    return render_template('dataviz.html',
+                                        df_name= filename,
+                                        heatmap = heatmap)
+            
+
             return render_template('dataviz.html',
-                                   df_name= filename,
-                                   hist = hist, heatmap = heatmap, corr_matrix = corr_matrix)
+                                   df_name= filename)
         except:
 
             flash('There is no dataframe uploaded. PLease visit DATASET page first', 'warning')

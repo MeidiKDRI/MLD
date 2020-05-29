@@ -80,27 +80,101 @@
 
                 <li class="nav-item">
 
-                    <!-- Missing Values Selectors -->
+                    <!-- Graphs Selectors -->
                     <form method="POST" >
                     <div class="form-group">
-                        <button name = 'graph' value = 'hist_plot' type="submit" class="btn btn-info btn-block" >Hist</button>
 
-                            <select name="nan_action" class="selectpicker form-control" title = 'Select a method'>
-                            {% for na_meth in na_actions %}
-                            <option value="{{ na_meth.name }}">{{ na_meth.name }}</option>
-                            {% endfor %}
-                            </select>
+                    <!-- Heatmap -->
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="heatSwitch" value= true name ="heat_checkbox"
+                        onclick="isChecked('heat_checkbox', 'heat_col_sel_div')">
+                        <label class="custom-control-label" for="heatSwitch">
+                            Heatmap
+                        </label>
+                    </div>
 
-                            <select name="col_selector" class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
-                            <option value="all">All</option>
-                            {% for col in col_selec %}
-                            <option value="{{ col.name }}">{{ col.name }}</option>
-                            {% endfor %}
-                            </select>
-                        <button type="submit" class="btn btn-info btn-block" >Clean NaN</button>
+                    <!-- Displayed only if Heatmap is checked -->
+                    <div id = 'heat_col_sel_div'>
+                        <select name="heat_col_selector"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
+                        <option value="all">All</option>
+                        {% for col in col_selec %}
+                        <option value="{{ col.name }}">{{ col.name }}</option>
+                        {% endfor %}
+                        </select>
+                        <button button name = 'graph' value = 'heat' type="submit" class="btn btn-info btn-block" >NaN Heatmap</button>
+                    </div>
+                    <hr>
+                    <!-- Heatmap -->
+
+                    <!-- Hist -->
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="histSwitch" value= true name ="hist_checkbox"
+                        onclick="isChecked('hist_checkbox', 'hist_col_sel_div')">
+                        <label class="custom-control-label" for="histSwitch">
+                            Histograms
+                        </label>
+                    </div>
+
+                    <!-- Displayed only if Hist is checked -->
+                    <div id = 'hist_col_sel_div'>
+                        <select name="dropna_col_selector"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
+                        <option value="all">All</option>
+                        {% for col in col_selec %}
+                        <option value="{{ col.name }}">{{ col.name }}</option>
+                        {% endfor %}
+                        </select>
+                        <button button name = 'graph' value = 'hist' type="submit" class="btn btn-info btn-block" >Hist</button>
+                    </div>
+                    <hr>
+                    <!-- Hist -->
+
+                    <!-- Mosaic -->
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="mosaicSwitch" value= true name ="mosaic_checkbox"
+                        onclick="isChecked('mosaic_checkbox', 'mosaic_col_sel_div')">
+                        <label class="custom-control-label" for="mosaicSwitch">
+                            Mosaic
+                        </label>
+                    </div>
+
+                    <!-- Displayed only if Hist is checked -->
+                    <div id = 'mosaic_col_sel_div'>
+                        <select name="dropna_col_selector"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
+                        <option value="all">All</option>
+                        {% for col in col_selec %}
+                        <option value="{{ col.name }}">{{ col.name }}</option>
+                        {% endfor %}
+                        </select>
+                        <button name = 'graph' value = 'mosaic' type="submit" class="btn btn-info btn-block" >Mosaic</button>
+                    </div>
+                    <hr>
+                    <!-- Mosaic -->
+
+                    <!-- Plot -->
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="plotSwitch" value= true name ="plot_checkbox"
+                        onclick="isChecked('plot_checkbox', 'plot_col_sel_div')">
+                        <label class="custom-control-label" for="plotSwitch">
+                            Plot
+                        </label>
+                    </div>
+
+                    <!-- Displayed only if Hist is checked -->
+                    <div id = 'plot_col_sel_div'>
+                        <select name="dropna_col_selector"  class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
+                        <option value="all">All</option>
+                        {% for col in col_selec %}
+                        <option value="{{ col.name }}">{{ col.name }}</option>
+                        {% endfor %}
+                        </select>
+                        <button name = 'graph' value = 'plot' type="submit" class="btn btn-info btn-block" >Plot</button>
+                    </div>
+                    <hr>
+                    <!-- Plot -->
+
                     </div>
                     </form>
-                    <!-- Missing Values Selectors -->
+                    <!-- Graphs Selectors -->
                     <hr>
                 </li>
 
@@ -112,13 +186,19 @@
 
         <!-- Main page -->
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-            <div class="container-fluid h-100" style = "width:100%;">
 
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">Data Visualization</h1>
-                <hr>
 
+                <div class="btn-group mr-2"> 
+                    <button class="btn btn-sm btn-outline-secondary">Save Graph as Image</button>
+                    <button class="btn btn-sm btn-outline-secondary">Save Page as PDF</button>
+                </div>
+            </div>
+
+            <div class="container-fluid h-100" style = "width:100%;">
                 <div>
-                    {%if df_name%} <h6>{{df_name}}</h6>{% endif %}
+                    {%if df_name%} <h6>Dataset : {{df_name}}</h6>{% endif %}
                 </div>
 
                 <div >
@@ -138,6 +218,14 @@
                                 <img src="data:image/png;base64,{{ corr_matrix }}">
                             {% endif %}
                 </div>
+                
+                <div>
+                            {% if mosaic %}
+                                <img src="data:image/png;base64,{{ mosaic }}">
+                            {% endif %}
+                </div>
+
+
 
 
 

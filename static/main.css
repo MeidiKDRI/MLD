@@ -54,20 +54,59 @@ footer {
 }
 
 /* div depending on checkbox */
+
+.custom-control custom-switch{
+    padding: 5px;
+}
+
 #dropna_col_sel_div
 {
   display:none;
+  padding: 10px;
+}
+
+#fill_values
+{
+  display:none;
+  padding: 10px;
 }
 
 #fillna_by_mean_col
 {
   display:none;
+  padding: 10px;
 }
 
 #fillna_by_val_col
 {
   display:none;
+  padding: 10px;
 }
+
+#heat_col_sel_div
+{
+  display:none;
+  padding: 10px;
+}
+
+#hist_col_sel_div
+{
+  display:none;
+  padding: 10px;
+}
+
+#mosaic_col_sel_div
+{
+  display:none;
+  padding: 10px;
+}
+
+#plot_col_sel_div
+{
+  display:none;
+  padding: 10px;
+}
+
 /* div depending on checkbox */
 
 
