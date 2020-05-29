@@ -118,13 +118,26 @@
                 <hr>
 
                 <div>
-                    {%if df_name%}{{df_name}}{% endif %}
+                    {%if df_name%} <h6>{{df_name}}</h6>{% endif %}
                 </div>
 
-            {% if hist %}
-                <img src="data:image/png;base64,{{ hist }}">
-            {% endif %}
+                <div >
+                            {% if heatmap %}
+                                <img src="data:image/png;base64,{{ heatmap }}">
+                            {% endif %}
+                </div>
 
+                <div>
+                            {% if hist %}
+                                <img src="data:image/png;base64,{{ hist }}">
+                            {% endif %}
+                </div>
+
+                <div>
+                            {% if corr_matrix %}
+                                <img src="data:image/png;base64,{{ corr_matrix }}">
+                            {% endif %}
+                </div>
 
 
 

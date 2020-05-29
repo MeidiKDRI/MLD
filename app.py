@@ -11,6 +11,8 @@ import random
 
 import base64
 
+import seaborn as sns
+
 
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -46,7 +48,22 @@ import time
 from time import strftime, gmtime
 
 
+def data_corr(data):
+    
+    # Plot
 
+    palette = sns.diverging_palette(220, 10, as_cmap=True)
+    sns.heatmap(data.corr(), cmap = palette);
+    
+    # Save as an Image
+    corr_buff = io.BytesIO()
+    plt.savefig(corr_buff, format='png')
+    corr_buff.seek(0)
+    corr_buffer = b''.join(corr_buff)
+    corr_encoded = base64.b64encode(corr_buffer)
+    corr_mat = corr_encoded.decode('utf-8')
+
+    return corr_mat
 
 # Data histogram function
 def data_hist(data):
@@ -55,15 +72,31 @@ def data_hist(data):
     data.hist(figsize = (10,8), bins = 25)
 
     # Save as an Image
-    buff = io.BytesIO()
-    plt.savefig(buff, format='png')
-    buff.seek(0)
-    buffer = b''.join(buff)
-    encoded = base64.b64encode(buffer)
-    hist = encoded.decode('utf-8')
+    hist_buff = io.BytesIO()
+    plt.savefig(hist_buff, format='png')
+    hist_buff.seek(0)
+    hist_buffer = b''.join(hist_buff)
+    hist_encoded = base64.b64encode(hist_buffer)
+    hist = hist_encoded.decode('utf-8')
 
     return hist
 
+# Data histogram function
+def data_heatmap(data):
+
+    # Plot
+    plt.rcParams['figure.figsize'] = (5.0, 3.0)
+    sns.heatmap(data.isna());
+
+    # Save as an Image
+    buff2 = io.BytesIO()
+    plt.savefig(buff2, format='png')
+    buff2.seek(0)
+    buffer = b''.join(buff2)
+    encoded = base64.b64encode(buffer)
+    heatMap = encoded.decode('utf-8')
+
+    return heatMap
 
 ##############################################
 ############# CONFIG #########################
@@ -392,10 +425,11 @@ def dataset() :
                 # Ne fonctionne pas correctement
                 elif request.form['upload'] == 'reset_dataset' :
 
-                    df = None
                     session.pop('filename', None)
 
-                    return render_template('dataset.html')
+                    df = None
+
+                    return redirect(url_for('dataset'))
                 
         return render_template('dataset.html')
 
@@ -601,13 +635,18 @@ def visualization() :
         session['user'] = user
 
         try:
+
+            filename = session['filename']
             # Dictionnary of columns for form select
             cols = df.columns
             df_col_dic = [{'name':col} for col in cols]
-            
-            hist = data_hist(df)
 
-            return render_template('dataviz.html', hist = hist)
+            corr_matrix = data_corr(df)
+            heatmap = data_heatmap(df)
+            hist = data_hist(df)
+            return render_template('dataviz.html',
+                                   df_name= filename,
+                                   hist = hist, heatmap = heatmap, corr_matrix = corr_matrix)
         except:
 
             flash('There is no dataframe uploaded. PLease visit DATASET page first', 'warning')
