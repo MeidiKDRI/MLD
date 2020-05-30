@@ -8,6 +8,7 @@ from werkzeug.utils import secure_filename
 import io
 import random
 
+import pickle
 
 import base64
 
@@ -745,6 +746,7 @@ def model() :
         user = auth.refresh(user['refreshToken'])
         session['user'] = user
         global df
+        global best_model
 
         try:
 
@@ -812,6 +814,7 @@ def model() :
                             mods[k] = v
 
                 # Empties lists for the result dataTable
+                model_name = []
                 model_list = []
                 model_list = []
                 runtime_list = []
@@ -825,6 +828,7 @@ def model() :
                     model = model.fit(X_train, y_train)
                     runtime = time.time() - start_time
 
+                    model_name.append(v)
                     model_list.append(k)
                     runtime_list.append(strftime("%H:%M:%S", gmtime(runtime)))
 
@@ -841,16 +845,17 @@ def model() :
                 # We sort the df by score
                 result = result.sort_values(by=['Accuracy Score'], ascending=False)
 
-                model_key = model_list
+                # We make a dictionnary to store the best model.
+                model_key = model_name
                 model_score_value = scor_list
                 model_dict = dict(zip(model_key, model_score_value))
-                max_key = max(model_dict, key= model_dict.get) # Find the max value in a dict
+                best_model = max(model_dict, key= model_dict.get) # Find the max value in a dict
 
                 return render_template('model.html', df_result = [result.to_html(classes = 'data')],
                         **minimum_context,
                         label_selected = label_selected, features_selected = features_selected, test_size = test_size,
                         reg_mods_selected = reg_mods_selected, classif_mods_selected = classif_mods_selected,
-                        best_model = max_key)
+                        best_model = best_model)
                 
             return render_template('model.html',
                                    reg_models = regression_dic,
@@ -888,8 +893,11 @@ def prediction() :
             # Dictionnary of columns for form select
             cols = df.columns
             df_col_dic = [{'name':col} for col in cols]
+
             
-            return render_template('prediction.html', df_name= filename)
+            return render_template('prediction.html',
+                                   df_name= filename,
+                                   best_model = best_model)
         except:
 
             flash('There is no dataframe uploaded. PLease visit DATASET page first', 'warning')

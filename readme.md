@@ -5,6 +5,8 @@ MLP is a web application using Flask Python web app framework.
 ## The Concept :
 The main purpose of MLP is to allow a user without a large knowlegde of machine learning to try some models and concepts. Directly in the MLP console, without code.  
 
+![Screenshot004](https://user-images.githubusercontent.com/57437129/83324103-1f5ef400-a263-11ea-8e0d-6712b134f033.png)
+
 After a connection to the plateform member area, the user is able to import and explore a dataset inside **'Data Exploration'** and **'Data Visualization'** pages.  
 
 Then, the user will be able to try one or several models, evaluate and compre them in **'Model Training'** page.  
@@ -13,14 +15,16 @@ In the **'Model Prediction'** area, it gonna be easy to make a prediction and ex
 
 ## Screenshot of the new version using Flask.
 ### Dataset Import
-![Screenshot001](https://user-images.githubusercontent.com/57437129/83120029-c2333900-a0d0-11ea-9cc9-a85d2eabcc4d.png)
+![Screenshot001](https://user-images.githubusercontent.com/57437129/83324301-98ab1680-a264-11ea-9396-6c00da4d28c8.png)
 
 ### Data Exploration page  
-![Screenshot002](https://user-images.githubusercontent.com/57437129/83120101-df680780-a0d0-11ea-9329-be85b2c050d6.png)
+![Screenshot002](https://user-images.githubusercontent.com/57437129/83324315-b8dad580-a264-11ea-8812-c3614cdfd42b.png)
+
+### Data Visualization page
+![Screenshot007](https://user-images.githubusercontent.com/57437129/83324340-e9bb0a80-a264-11ea-8282-193fc4398a0a.png)
 
 ### Model Training page
-![Screenshot003](https://user-images.githubusercontent.com/57437129/83120137-ed1d8d00-a0d0-11ea-9973-f17020a1ffc9.png)
-
+![Screenshot003](https://user-images.githubusercontent.com/57437129/83324317-c4c69780-a264-11ea-8eb0-d86668b3c35c.png)
 
 ## Web Map
 - Presentation page :  
@@ -50,6 +54,7 @@ Data Exploration, Data Visualization, Model Training, Model Prediction, Model ex
 - Change password page.
 - Settings page.
 - Model Training part.
+- Presentation page.
 
 ## In progress :
 - Data Visualization part.
@@ -58,7 +63,6 @@ Data Exploration, Data Visualization, Model Training, Model Prediction, Model ex
 - Model prediction part.
 
 ## To Do :
-- Presentation page.
 - Dockerize the app.
 - Deploy
 

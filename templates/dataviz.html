@@ -123,7 +123,6 @@
                     <!-- Displayed only if mosaic is checked -->
                     <div id = 'mosaic_col_sel_div'>
                         <select name="mosaic_col_selector"  class="selectpicker form-control" data-live-search="true" title = 'Select columns'>
-                        <option value="all">All</option>
                         {% for col in col_selec %}
                         <option value="{{ col.name }}">{{ col.name }}</option>
                         {% endfor %}
@@ -145,14 +144,12 @@
                     <!-- Displayed only if plot is checked -->
                     <div id = 'plot_col_sel_div'>
                         <select name="plot_col_selector_1"  class="selectpicker form-control" data-live-search="true" title = 'Select column 1'>
-                        <option value="all">All</option>
                         {% for col in col_selec %}
                         <option value="{{ col.name }}">{{ col.name }}</option>
                         {% endfor %}
                         </select>
 
                         <select name="plot_col_selector_2"  class="selectpicker form-control" data-live-search="true" title = 'Select column 2'>
-                        <option value="all">All</option>
                         {% for col in col_selec %}
                         <option value="{{ col.name }}">{{ col.name }}</option>
                         {% endfor %}
