@@ -70,7 +70,8 @@ Data Exploration, Data Visualization, Model Training, Model Prediction, Model ex
 ![Screenshot001](https://user-images.githubusercontent.com/57437129/80616232-f1f31080-8a40-11ea-904b-8acaf8181f1c.png)  
 
 ## Pyrebase install required :
-- pip install pyrebase.
+- For Python 3.6.8 : pip install pyrebase.  
+- For Python >= 3.7 : pip install pyrebase4.  
 
 ## Credits :
 Plateform developped by Meidi KADRI - Feb 2020.  
