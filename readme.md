@@ -5,7 +5,7 @@ MLP is a web application using Flask Python web app framework.
 ## The Concept :
 The main purpose of MLP is to allow a user without a large knowlegde of machine learning to try some models and concepts. Directly in the MLP console, without code.  
 
-![Screenshot001](https://user-images.githubusercontent.com/57437129/83362637-208f3e80-a393-11ea-91df-543d8731db32.png)
+![Screenshot004](https://user-images.githubusercontent.com/57437129/83362829-80d2b000-a394-11ea-81df-780548ccf6f0.png)
 
 After a connection to the plateform member area, the user is able to import and explore a dataset inside **'Data Exploration'** and **'Data Visualization'** pages.  
 
