@@ -887,7 +887,7 @@ def model() :
 # Prediction
 ############
 
-@app.route('/prediction')
+@app.route('/prediction', methods = ['GET', 'POST'])
 def prediction() :
 
     # Manage the user connection
@@ -907,32 +907,44 @@ def prediction() :
 
             y_predict = best_model.predict(X_test)
 
+            if request.method == 'POST' :
+                
+                if request.form['pred_btn'] == 'conf_matrix' :
 
+                    # Confusion Matrix Plot
+                    cm_plot = plot_confusion_matrix(best_model, X_test, y_test,
+                                                    display_labels= y,
+                                                    cmap= plt.cm.Blues)
+
+                    # Save as an Image
+                    cm_buff = io.BytesIO()
+                    plt.savefig(cm_buff, format='png')
+                    cm_buff.seek(0)
+                    cm_buffer = b''.join(cm_buff)
+                    cm_encoded = base64.b64encode(cm_buffer)
+                    cm = cm_encoded.decode('utf-8')
+
+                    return render_template('prediction.html',
+                                        df_name = filename,
+                                        best_model = best_model_name,
+                                        cm_plot = cm)
+
+                elif request.form['pred_btn'] == 'pred_table' :
+
+                    # We display a prediction table to compare result and prediction
+                    df_predictions = pd.DataFrame({
+                        "target": y_predict,
+                        "prediction": y_test})
             
-            # Confusion Matrix Plot
-            cm_plot = plot_confusion_matrix(best_model, X_test, y_test,
-                                            display_labels= y,
-                                            cmap= plt.cm.Blues)
-
-            # Save as an Image
-            cm_buff = io.BytesIO()
-            plt.savefig(cm_buff, format='png')
-            cm_buff.seek(0)
-            cm_buffer = b''.join(cm_buff)
-            cm_encoded = base64.b64encode(cm_buffer)
-            cm = cm_encoded.decode('utf-8')
-
-
-            # We display a prediction table to compare result and prediction
-            df_predictions = pd.DataFrame({
-                "target": y_predict,
-                "prediction": y_test})
+                    return render_template('prediction.html',
+                                df_name = filename,
+                                best_model = best_model_name,
+                                df_prediction = [df_predictions.to_html(classes = 'data')])
+            
             
             return render_template('prediction.html',
                                    df_name = filename,
-                                   best_model = best_model_name,
-                                   df_prediction = [df_predictions.to_html(classes = 'data')],
-                                   cm_plot = cm)
+                                   best_model = best_model_name)
         except:
 
             flash('There is no dataframe uploaded. PLease visit DATASET page first', 'warning')

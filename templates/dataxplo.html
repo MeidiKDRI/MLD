@@ -247,7 +247,7 @@
                 <h6 style = "display:inline-block">{%if nb_rows%} | {{nb_rows}} Rows{% endif %}</h6>
             </div>
 
-            <div class="table-responsive" style = 'height: 300px; width: 100%; border-style:solid; border-width:2px;'>
+            <div class="table-responsive" style = 'margin:auto; height: 300px; width: 50%; border-style:solid; border-width:1px;'>
                 {% for table in dataset %}
                 {{ table|safe }}
                 {% endfor %}

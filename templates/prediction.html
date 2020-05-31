@@ -141,22 +141,24 @@
 
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 
-
             <div>
                 {% if cm_plot %}
                     <h6 style = 'text-align:center'>Confusion Matrix Plot</h6>
                     <img src="data:image/png;base64,{{ cm_plot }}">
+                    <hr>
                 {% endif %}
             </div>
 
-            <hr>
-        </div>
-            <div class="table" style = 'margin: auto; width:50%;'>
-
                 {% for table in df_prediction %}
-                {{ table|safe }}
+                    <div class="table" style = 'margin: auto; width:50%;'>
+                        {{ table|safe }}
+                    </div>
+                    <hr>
+
                 {% endfor %}
-            </div>
+
+        </div>
+
         </main>
         <!-- Main page -->
 

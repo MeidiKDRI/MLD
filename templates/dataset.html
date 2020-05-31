@@ -146,16 +146,15 @@
 
                 <!-- Dataset -->
                 {% for table in dataset %}
-
-                    <div class="table-responsive" style = 'height: 300px; width: 100%; border-style:solid; border-width:2px;'>
-                        {{ table|safe }}
+                    <div class="table-responsive" style = 'margin:auto; height: 300px; width: 50%; border-style:solid; border-width:1px;'>
+                    {{ table|safe }}
                     </div>
                 {% endfor %}
                 <hr>
 
                 <!-- Summary -->
                 <div>
-                    <div class="table-responsive" style = 'margin: auto; width: 75%'>
+                    <div class="table-responsive" style = 'margin: auto; width: 50%'>
                         {% for table in describe %}
                         <h5>Summary</h5>
                         {{ table|safe }}
@@ -166,25 +165,21 @@
                 <hr>
 
                 <!-- Row for df_info and NaN -->
-                <div class = 'row' style = 'margin:auto; height:55%'>
+                <div class = 'row' style = 'margin:auto; width:75%'>
                     <!-- df_infos -->
-                    <div class='col w-50'>
-                        <div class="table-responsive" style = 'margin: auto; width: 50%'>
-                            {% for table in df_infos %}
-                            <h5>Dataframe Informations</h5>
-                            {{ table|safe }}
-                            {% endfor %}
-                        </div>
+                    <div class="table-responsive" style = 'margin: auto; width: 50%'>
+                        {% for table in df_infos %}
+                        <h5>Dataframe Informations</h5>
+                        {{ table|safe }}
+                        {% endfor %}
                     </div>
 
                     <!-- NaN -->
-                    <div class='col w-50'>
-                        <div class="table-responsive" style = 'margin: auto; width: 50%'>
-                            {% for table in df_na %}
-                            <h5>Missing values</h5>
-                            {{ table|safe }}
-                            {% endfor %}
-                        </div>
+                    <div class="table-responsive" style = 'margin: auto; width: 50%'>
+                        {% for table in df_na %}
+                        <h5>Missing values</h5>
+                        {{ table|safe }}
+                        {% endfor %}
                     </div>
                 </div>
             </div>
