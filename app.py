@@ -1,34 +1,31 @@
 import pyrebase
 from flask import *
-import secrets
-import time
 import json
-import pandas as pd
+import secrets
+
 from werkzeug.utils import secure_filename
 import io
-import random
-
-import pickle
-
 import base64
 
+import numpy as np
+import pandas as pd
+import random
+
+import datetime
+import time
+from time import strftime, gmtime
+
+# Graphs
 import seaborn as sns
-
-from statsmodels.graphics.mosaicplot import mosaic
-
+import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
+from statsmodels.graphics.mosaicplot import mosaic
 
-import matplotlib.pyplot as plt
-import seaborn as sns
-import numpy as np
-
+# SKLEARN
 from sklearn.datasets import load_iris
-from sklearn.datasets import load_boston
 from sklearn.datasets import load_diabetes
-from sklearn.datasets import load_digits
 from sklearn.datasets import load_breast_cancer
-
 
 from sklearn.model_selection import train_test_split
 
@@ -39,20 +36,46 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LinearRegression, LogisticRegression, SGDClassifier
 
-from sklearn.pipeline import Pipeline
-from sklearn.feature_extraction.text import TfidfTransformer
-
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import classification_report
 
-import datetime
-import time
-from time import strftime, gmtime
+# Saving models
+import pickle
 
+##############################################
+############# CONFIG #########################
+##############################################
 
+app = Flask(__name__)
+app.secret_key = secrets.token_bytes(32)
+
+# Firebase configuration
+config = {
+    "apiKey": "AIzaSyCqtOhxgh9x2uTTRnCyQ2MFMnsfH5fjFV0",
+    "authDomain": "machine-learning-plateform.firebaseapp.com",
+    "databaseURL": "https://machine-learning-plateform.firebaseio.com",
+    "projectId": "machine-learning-plateform",
+    "storageBucket": "machine-learning-plateform.appspot.com",
+    "messagingSenderId": "858997576334",
+    "appId": "1:858997576334:web:973fcb03973218aba62fdf",
+    "measurementId": "G-GJPBZD2GD4"  
+}
+
+# Firebase init
+firebase = pyrebase.initialize_app(config)
+# Firebase authentication
+auth = firebase.auth()
+# Firebase Database
+db = firebase.database()
+
+##############################################
+
+##############################################
+############# GRAPHS #########################
+##############################################
 
 def do_stripplot(data, col1, col2):
-    
+
     # Plot
     sns.stripplot(x=col1, y=col2, data=data);
 
@@ -66,13 +89,12 @@ def do_stripplot(data, col1, col2):
 
     return data_stripplot
 
-
 def do_corr_matrix(data):
-    
+
     # Plot
     palette = sns.diverging_palette(220, 10, as_cmap=True)
     sns.heatmap(data.corr(), cmap = palette);
-    
+
     # Save as an Image
     corr_buff = io.BytesIO()
     plt.savefig(corr_buff, format='png')
@@ -84,7 +106,7 @@ def do_corr_matrix(data):
     return data_corr
 
 def do_mosaic(data, col):
-    
+
     # Plot
     mosaic(data, [col]);
 
@@ -98,7 +120,6 @@ def do_mosaic(data, col):
 
     return data_mosaic
 
-# Data histogram function
 def do_hist(data, col):
 
     # Plot
@@ -135,29 +156,7 @@ def do_heatmap(data):
     return heatMap
 
 ##############################################
-############# CONFIG #########################
-##############################################
-app = Flask(__name__)
-app.secret_key = secrets.token_bytes(32)
 
-# Firebase configuration
-config = {
-    "apiKey": "AIzaSyCqtOhxgh9x2uTTRnCyQ2MFMnsfH5fjFV0",
-    "authDomain": "machine-learning-plateform.firebaseapp.com",
-    "databaseURL": "https://machine-learning-plateform.firebaseio.com",
-    "projectId": "machine-learning-plateform",
-    "storageBucket": "machine-learning-plateform.appspot.com",
-    "messagingSenderId": "858997576334",
-    "appId": "1:858997576334:web:973fcb03973218aba62fdf",
-    "measurementId": "G-GJPBZD2GD4"  
-}
-
-# Firebase init
-firebase = pyrebase.initialize_app(config)
-# Firebase authentication
-auth = firebase.auth()
-# Firebase Database
-db = firebase.database()
 
 ##############################################
 ############# ROUTES #########################
