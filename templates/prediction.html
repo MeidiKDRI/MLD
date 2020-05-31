@@ -66,92 +66,52 @@
         <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
         <div class="sidebar-sticky pt-3">
             <ul class="nav flex-column">
-            <li class="nav-item">
-                <h3 style = 'text-align: center'>{%if username %} {{username}} {% endif %}</h3>
-            </li>
-            <li class="nav-item">
-                <hr>
-                <h5>Missing Values</h5>
 
-                <!-- Missing Values Selectors -->
+            <li>
+                <h5 style = 'text-align:center'>
+                {%if username %} {{username}} {% endif %}
+                </h5>
+                <hr color = 'darkgrey' style='margin-top:20px;'>
+            </li>
+
+            <li class="nav-item">
+                <h6 style = 'text-align: center'>Control Panel</h6>
+                <hr color = 'darkgrey' style='margin-top:20px;'>
+            </li>
+
+            <li class="nav-item">
+
+                <!-- Prediction Panel Control -->
                 <form method="POST" >
                 <div class="form-group">
-                        <select name="nan_action" class="selectpicker form-control" title = 'Select a method'>
-                        {% for na_meth in na_actions %}
-                        <option value="{{ na_meth.name }}">{{ na_meth.name }}</option>
-                        {% endfor %}
-                        </select>
 
-                        <select name="col_selector" class="selectpicker form-control" multiple data-live-search="true" title = 'Select columns'>
-                        <option value="all">All</option>
-                        {% for col in col_selec %}
-                        <option value="{{ col.name }}">{{ col.name }}</option>
-                        {% endfor %}
-                        </select>
-                    <button type="submit" class="btn btn-info btn-block" >Clean NaN</button>
+                <!-- Confusion Matrix Plot -->
+                <h6 style= 'text-align:center'>Display Prédictions</h6>
+                <button name = 'pred_btn' value = 'conf_matrix' type="submit" class="btn btn-info btn-block" >Confusion Matrix Plot</button>
+                <!-- Confusion Matrix Plot -->
+
+                <!-- Predictions Table -->
+                <button name = 'pred_btn' value = 'pred_table' type="submit" class="btn btn-info btn-block" >Predictions Table</button>
+                <hr>
+                <!-- Predictions Table -->
+
+                <!-- ROC Curves -->
+                <h6 style= 'text-align:center'>Display Prediction Performances</h6>
+                <button name = 'pred_btn' value = 'roc' type="submit" class="btn btn-info btn-block" >ROC Curves</button>
+                <hr>
+                <!-- ROC Curves -->
+
+                <!-- Prediction -->
+                <h6 style= 'text-align:center'>Try to make a prediction with input values</h6>
+                <button name = 'pred_btn' value = 'make_pred' type="submit" class="btn btn-info btn-block" >Make Prediction</button>
+                <hr>
+                <!-- Prediction -->
+
                 </div>
                 </form>
-                <!-- Missing Values Selectors -->
-                <hr>
+                <!-- Prediction Panel Control -->
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="shopping-cart"></span>
-                ...
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="users"></span>
-                ...
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="bar-chart-2"></span>
-                ...
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="layers"></span>
-                ...
-                </a>
-            </li>
-            </ul>
-
-            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-            <span>...</span>
-            <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
-                <span data-feather="plus-circle"></span>
-            </a>
-            </h6>
-            <ul class="nav flex-column mb-2">
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="file-text"></span>
-                ...
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="file-text"></span>
-                ...
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="file-text"></span>
-                ...
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                <span data-feather="file-text"></span>
-                ...
-                </a>
-            </li>
             </ul>
         </div>
         </nav>
@@ -164,8 +124,10 @@
             <h1 class="h2">Predictions Page</h1>
 
             <div class="btn-group mr-2"> 
+                <a class="btn btn-sm btn-outline-primary" href="{{url_for('model')}}">Previous step</a>
                 <button class="btn btn-sm btn-outline-secondary">Save Predictions as CSV</button>
                 <button class="btn btn-sm btn-outline-secondary">Save Page as PDF</button>
+                <a class="btn btn-sm btn-outline-success" href="{{url_for('visualization')}}">Export Model</a>
             </div>
         </div>
 
@@ -175,11 +137,26 @@
                 {%if best_model%} <h6>Best Model from training : {{best_model}}</h6>{% endif %}
             </div>
             <hr>
+        </div>
 
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+
+
+            <div>
+                {% if cm_plot %}
+                    <h6 style = 'text-align:center'>Confusion Matrix Plot</h6>
+                    <img src="data:image/png;base64,{{ cm_plot }}">
+                {% endif %}
+            </div>
 
             <hr>
         </div>
+            <div class="table" style = 'margin: auto; width:50%;'>
 
+                {% for table in df_prediction %}
+                {{ table|safe }}
+                {% endfor %}
+            </div>
         </main>
         <!-- Main page -->
 

@@ -23,21 +23,20 @@ from matplotlib.figure import Figure
 from statsmodels.graphics.mosaicplot import mosaic
 
 # SKLEARN
-from sklearn.datasets import load_iris
-from sklearn.datasets import load_diabetes
-from sklearn.datasets import load_breast_cancer
+from sklearn.datasets import load_iris, load_diabetes, load_breast_cancer
 
 from sklearn.model_selection import train_test_split
 
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.cluster import KMeans
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LinearRegression, LogisticRegression, SGDClassifier
 
 from sklearn.model_selection import cross_val_score
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, confusion_matrix
+
+from sklearn.metrics import plot_confusion_matrix
 
 # Saving models
 import pickle
@@ -745,7 +744,13 @@ def model() :
         user = auth.refresh(user['refreshToken'])
         session['user'] = user
         global df
+        global best_model_name
         global best_model
+        global X_train
+        global X_test
+        global y_train
+        global y_test
+        global y
 
         try:
 
@@ -820,6 +825,7 @@ def model() :
                 scor_list = []
                 csv_list = []
 
+                # We pass all models inside a loop
                 for k, v in mods.items() :
 
                     start_time = time.time()
@@ -844,7 +850,13 @@ def model() :
                 # We sort the df by score
                 result = result.sort_values(by=['Accuracy Score'], ascending=False)
 
-                # We make a dictionnary to store the best model.
+                # We make a dictionnary to store the best model name.
+                model_key = model_list
+                model_score_value = scor_list
+                model_dict = dict(zip(model_key, model_score_value))
+                best_model_name = max(model_dict, key= model_dict.get) # Find the max value in a dict
+
+                # We do the same to fetch the best model.
                 model_key = model_name
                 model_score_value = scor_list
                 model_dict = dict(zip(model_key, model_score_value))
@@ -854,7 +866,7 @@ def model() :
                         **minimum_context,
                         label_selected = label_selected, features_selected = features_selected, test_size = test_size,
                         reg_mods_selected = reg_mods_selected, classif_mods_selected = classif_mods_selected,
-                        best_model = best_model)
+                        best_model = best_model_name)
                 
             return render_template('model.html',
                                    reg_models = regression_dic,
@@ -893,10 +905,34 @@ def prediction() :
             cols = df.columns
             df_col_dic = [{'name':col} for col in cols]
 
+            y_predict = best_model.predict(X_test)
+
+
+            
+            # Confusion Matrix Plot
+            cm_plot = plot_confusion_matrix(best_model, X_test, y_test,
+                                            display_labels= y,
+                                            cmap= plt.cm.Blues)
+
+            # Save as an Image
+            cm_buff = io.BytesIO()
+            plt.savefig(cm_buff, format='png')
+            cm_buff.seek(0)
+            cm_buffer = b''.join(cm_buff)
+            cm_encoded = base64.b64encode(cm_buffer)
+            cm = cm_encoded.decode('utf-8')
+
+
+            # We display a prediction table to compare result and prediction
+            df_predictions = pd.DataFrame({
+                "target": y_predict,
+                "prediction": y_test})
             
             return render_template('prediction.html',
-                                   df_name= filename,
-                                   best_model = best_model)
+                                   df_name = filename,
+                                   best_model = best_model_name,
+                                   df_prediction = [df_predictions.to_html(classes = 'data')],
+                                   cm_plot = cm)
         except:
 
             flash('There is no dataframe uploaded. PLease visit DATASET page first', 'warning')

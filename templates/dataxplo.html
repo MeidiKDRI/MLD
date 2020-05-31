@@ -65,14 +65,21 @@
         <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
         <div class="sidebar-sticky pt-3">
             <ul class="nav flex-column">
+            <li>
+                <h5 style = 'text-align:center'>
+                {%if username %} {{username}} {% endif %}
+                </h5>
+                <hr color = 'darkgrey' style='margin-top:20px;'>
+            </li>
+
             <li class="nav-item">
-                <h3 style = 'text-align: center'>{%if username %} {{username}} {% endif %}</h3>
+                <h6 style = 'text-align: center'>Control Panel</h6>
+                <hr color = 'darkgrey' style='margin-top:20px;'>
             </li>
             <li class="nav-item">
-                <hr>
 
                 <!-- Missing Values Selectors -->
-                <h5 style= "text-align:center">Missing Values</h5>
+                <h6 style= "text-align:center">Missing Values</h6>
                 <hr>
 
                 <form method="POST" >
@@ -171,7 +178,7 @@
 
             <!-- Data Cleaning Panel -->
             <li>
-                <h5 style= "text-align:center">Data Cleaning Panel</h5>
+                <h6 style= "text-align:center">Data Cleaning Panel</h6>
                 <hr>
 
                 <!-- Drop duplicates Btn -->
@@ -225,9 +232,11 @@
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Data Exploration</h1>
 
-            <div class="btn-group mr-2"> 
+            <div class="btn-group mr-2">
+                <a class="btn btn-sm btn-outline-primary" href="{{url_for('dataset')}}">Previous step</a>
                 <button class="btn btn-sm btn-outline-secondary">Save Graph as Image</button>
                 <button class="btn btn-sm btn-outline-secondary">Save Page as PDF</button>
+                <a class="btn btn-sm btn-outline-success" href="{{url_for('visualization')}}">Next step</a>
             </div>
         </div>
 

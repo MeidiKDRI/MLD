@@ -65,12 +65,19 @@
         <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
         <div class="sidebar-sticky pt-3">
             <ul class="nav flex-column">
-            <li class="nav-item">
-                <h3 style = 'text-align: center'>{%if username %} {{username}} {% endif %}</h3>
+            <li>
+                <h5 style = 'text-align:center'>
+                {%if username %} {{username}} {% endif %}
+                </h5>
+                <hr color = 'darkgrey' style='margin-top:20px;'>
             </li>
+
             <li class="nav-item">
-                <h4>Control Panel</h4>
-                <hr>
+                <h6 style = 'text-align: center'>Control Panel</h6>
+                <hr color = 'darkgrey' style='margin-top:20px;'>
+            </li>
+            
+            <li class="nav-item">
 
                 <form method="POST" >
                 <div class="form-group">
@@ -160,9 +167,11 @@
                 <h1 class="h2">Model Training</h1>
 
                 <div class="btn-group mr-2" style= "float: right;">
+                    <a class="btn btn-sm btn-outline-primary" href="{{url_for('visualization')}}">Previous step</a>
                     <button class="btn btn-sm btn-outline-secondary">Add model</button>
                     <button class="btn btn-sm btn-outline-secondary">Save model</button>
                     <button class="btn btn-sm btn-outline-secondary">Save Page as PDF</button>
+                    <a class="btn btn-sm btn-outline-success" href="{{url_for('prediction')}}">Next step</a>
                 </div>
             </div>
 

@@ -85,7 +85,7 @@
                     <div class="form-group">
 
                     <!-- Heatmap -->
-                    <button button name = 'graph' value = 'heat' type="submit" class="btn btn-info btn-block" >Seaborn Heatmap</button>
+                    <button name = 'graph' value = 'heat' type="submit" class="btn btn-info btn-block" >Seaborn Heatmap</button>
                     <hr>
                     <!-- Heatmap -->
 
@@ -184,9 +184,11 @@
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">Data Visualization</h1>
 
-                <div class="btn-group mr-2"> 
+                <div class="btn-group mr-2">
+                    <a class="btn btn-sm btn-outline-primary" href="{{url_for('exploration')}}">Previous step</a>
                     <button class="btn btn-sm btn-outline-secondary">Save Graph as Image</button>
                     <button class="btn btn-sm btn-outline-secondary">Save Page as PDF</button>
+                    <a class="btn btn-sm btn-outline-success" href="{{url_for('model')}}">Next step</a>
                 </div>
             </div>
 
